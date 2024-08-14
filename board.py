@@ -5,6 +5,7 @@ from queen import Queen
 from king import King
 from pawn import Pawn
 
+# Inicializar un tablero de 8x8, donde cada posicion esta vacia 
 class Board:
     def __init__(self):
         self.__positions__ = []
@@ -13,7 +14,8 @@ class Board:
             for _ in range(8):
                 col.append(None)
             self.__positions__.append(col)
-        self.__positions__[0][0] = Rook("BLACK") # Black
+# Asignando posiciones de cada pieza negra
+        self.__positions__[0][0] = Rook("BLACK")           # Torre, caballo, alfil, rebina y rey
         self.__positions__[0][1] = Knight("BLACK")
         self.__positions__[0][2] = Bishop("BLACK")
         self.__positions__[0][3] = Queen("BLACK")
@@ -21,7 +23,9 @@ class Board:
         self.__positions__[0][5] = Bishop("BLACK")
         self.__positions__[0][6] = Knight("BLACK")
         self.__positions__[0][7] = Rook("BLACK")
-         
+# Se crea una lista con 8 peones negros y se les asigna en la fila 1 
+        self.__positions__[1] = [Pawn("BLACK") for _ in range(8)]
+# # Asignando posiciones de cada pieza blanca (fila 0 y 1)     
         self.__positions__[7][0] = Rook("WHITE") 
         self.__positions__[7][1] = Knight("WHITE")
         self.__positions__[7][2] = Bishop("WHITE")
@@ -30,6 +34,7 @@ class Board:
         self.__positions__[7][5] = Bishop("WHITE")
         self.__positions__[7][6] = Knight("WHITE")
         self.__positions__[7][7] = Rook("WHITE")
-
+        self.__positions__[6] = [Pawn("WHITE") for _ in range(8)]
+# Devuelve la pieza en la posicion segun cada pieza
     def get_piece(self, row, col):
         return self.__positions__[row][col]
