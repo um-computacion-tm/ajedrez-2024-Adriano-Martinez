@@ -15,7 +15,7 @@ class Board:
                 col.append(None)
             self.__positions__.append(col)
 # Asignando posiciones de cada pieza negra
-        self.__positions__[0][0] = Rook("BLACK")           # Torre, caballo, alfil, reina y rey
+        self.__positions__[0][0] = Rook("BLACK")           # Torre, caballo, alfil, rebina y rey
         self.__positions__[0][1] = Knight("BLACK")
         self.__positions__[0][2] = Bishop("BLACK")
         self.__positions__[0][3] = Queen("BLACK")
