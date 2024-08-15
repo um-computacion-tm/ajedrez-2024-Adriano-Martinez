@@ -5,6 +5,13 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.0.5] - 2024-08-14
+### Agregando
+- Carpeta piece, con todas las piezas del ajedres.
+
+### Cambios
+- En el archivo board.py me falto agregar a los peones en el tablero. 
+
 ## [0.0.4] - 2024-08-13
 ### Agregando
 - Archivo Dockerfile
