@@ -1,4 +1,4 @@
-from piece import Piece
+from .piece import Piece
 
 class Pawn(Piece):
     def __init__(self, color):
@@ -6,11 +6,3 @@ class Pawn(Piece):
 
     def __str__(self):
         return"Pb"if self.__color__ == "white"else"pn"
-
-
-
-     
-
-
-     
-    
