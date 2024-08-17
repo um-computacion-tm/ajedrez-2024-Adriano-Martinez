@@ -1,5 +1,8 @@
-def suma(a,b):
-    return a + b
+from cli import play
 
-if __name__ == '__main__':
-    print(suma(1, 2))
+def main():
+    play()
+
+if __name__ == "__main__":
+    main()
+
