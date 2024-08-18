@@ -5,4 +5,4 @@ class Bishop(Piece):
         super().__init__(color)
 
     def __str__(self):
-        return"Bb"if self.__color__ == "white"else"bn"
+        return "Bb" if self.__color__ == "white" else "bn"

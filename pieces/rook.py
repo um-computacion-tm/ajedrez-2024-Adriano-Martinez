@@ -5,4 +5,4 @@ class Rook(Piece):
         super().__init__(color)
 
     def __str__(self):
-        return"Rb"if self.__color__ == "white"else"rn"
+        return "Rb" if self.__color__ == "white" else "rn"

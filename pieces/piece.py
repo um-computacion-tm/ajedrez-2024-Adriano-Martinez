@@ -3,4 +3,4 @@ class Piece:
         self.__color__ = color
     
     def __str__(self):
-        return ""
+        return "Piece"

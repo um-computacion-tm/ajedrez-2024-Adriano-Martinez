@@ -5,4 +5,4 @@ class Queen(Piece):
         super().__init__(color)
 
     def __str__(self):
-        return"Qb"if self.__color__ == "white"else"qn"
+        return "Qw" if self.__color__ == "white" else "qn"
