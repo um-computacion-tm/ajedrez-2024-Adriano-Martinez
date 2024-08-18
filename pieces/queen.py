@@ -1,8 +1,5 @@
 from .piece import Piece
 
 class Queen(Piece):
-    def __init__(self, color):
-        super().__init__(color)
-
-    def __str__(self):
-        return "Qw" if self.__color__ == "white" else "qn"
+    def get_symbol(self):
+      return "Qw" if self.__color__ == "white" else "qn"

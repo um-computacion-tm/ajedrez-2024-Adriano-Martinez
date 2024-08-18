@@ -3,4 +3,7 @@ class Piece:
         self.__color__ = color
     
     def __str__(self):
-        return "Piece"
+        return self.get_symbol()
+
+    def get_symbol(self):
+        raise NotImplementedError("implementar metodo en subclases")
