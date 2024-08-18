@@ -5,4 +5,4 @@ class Knight(Piece):
         super().__init__(color)
 
     def __str__(self):
-        return"Kb"if self.__color__ == "white"else"kn"
+        return "Kb" if self.__color__ == "white" else "kn"

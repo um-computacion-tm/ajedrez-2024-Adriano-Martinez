@@ -5,4 +5,4 @@ class Pawn(Piece):
         super().__init__(color)
 
     def __str__(self):
-        return"Pb"if self.__color__ == "white"else"pn"
+        return "Pb" if self._color == "white" else "pn"
