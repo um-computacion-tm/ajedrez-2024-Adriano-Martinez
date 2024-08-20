@@ -5,6 +5,12 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.0.9] - 2024-08-19
+### Agregando
+- Implementando metodos para que el jugador pueda mover su pieza en board.py
+- Implementando metodos para validar el movimiento de la pieza en chess.py
+
+
 ## [0.0.8] - 2024-08-17
 ### Agregando
 - Carpeta tests para probar funcionalidad de board.py, pieces y cheess.py

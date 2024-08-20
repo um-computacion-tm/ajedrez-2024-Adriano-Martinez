@@ -7,3 +7,5 @@ class Piece:
 
     def get_symbol(self):
         raise NotImplementedError("implementar metodo en subclases")
+    
+    
