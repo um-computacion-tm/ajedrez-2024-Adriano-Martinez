@@ -38,3 +38,9 @@ class Board:
 # Devuelve la pieza en la posicion segun cada pieza
     def get_piece(self, row, col):
         return self.__positions__[row][col]
+    
+    def move_piece(self, from_row, from_col, to_row, to_col):
+     piece = self.get_piece(from_row, from_col)
+     if piece is not None:
+        self.__positions__[to_row][to_col] = piece
+        self.__positions__[from_row][from_col] = None
