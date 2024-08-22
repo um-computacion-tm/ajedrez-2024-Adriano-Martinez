@@ -1,7 +1,4 @@
-from cli import play
-
-def main():
-    play()
+from cli import main
 
 if __name__ == "__main__":
     main()

@@ -10,7 +10,23 @@ from pieces.pawn import Pawn
 
 class TestBoard(unittest.TestCase):
     def setUp(self):
-        self.board = Board()
+        self.__board__ = Board()
+
+    def test_str_board(self):
+        board = Board()
+        self.assertEqual(
+            str(board),
+            (
+                "♖      ♖\n"
+                "        \n"
+                "        \n"
+                "        \n"
+                "        \n"
+                "        \n"
+                "        \n"
+                "♜      ♜\n"
+            )
+        )
 
 # Verifica las piezas negras en la fila 0
     def test_initialization(self):

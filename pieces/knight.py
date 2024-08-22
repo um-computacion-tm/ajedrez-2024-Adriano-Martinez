@@ -1,5 +1,5 @@
 from .piece import Piece
 
 class Knight(Piece):
-    def get_symbol(self):
-        return "Kb" if self.__color__ == "white" else "kn"
+    def __str__(self):
+        return "♘" if self.__color__ == "WHITE" else "♞"

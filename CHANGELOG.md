@@ -5,6 +5,17 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.0.9] - 2024-08-21
+### Agregando
+- Método show_board para mostrar el estado actual del tablero.
+- Implementación del método __str__ para una mejor visualización del tablero.
+- Nuevo metodo de testeo unitario para verificar la implementación de __str__ en board.py
+
+### Cambios
+- Arreglado un error en la validación de movimientos 
+- Reformulando codigo en piezas 
+
+
 ## [0.0.9] - 2024-08-19
 ### Agregando
 - Implementando metodos para que el jugador pueda mover su pieza en board.py

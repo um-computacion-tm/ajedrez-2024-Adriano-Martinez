@@ -1,8 +1,6 @@
 from .piece import Piece
 
-class Pawn(Piece):
-     def get_symbol(self):
-        return "Pb" if self.__color__ == "white" else "pn"
 
-     
-       
+class Pawn(Piece):
+    def __str__(self):
+        return "♙" if self.get_color() == "WHITE" else "♟"
