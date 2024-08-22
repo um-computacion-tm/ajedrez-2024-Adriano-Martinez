@@ -1,5 +1,5 @@
 from .piece import Piece
 
 class Bishop(Piece):
-    def get_symbol(self):
-      return "Bb" if self.__color__ == "white" else "bn"
+    def __str__(self):
+        return "♗" if self.__color__ == "WHITE" else "♝"

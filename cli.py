@@ -2,12 +2,12 @@ from chess import Chess
 
 def main():
     chess = Chess()
-    while True:
+    while chess.is_playing():
         play(chess)
 
 def play(chess):
     try:
-        # print(chess.show_board())
+        print(chess.show_board())
         print("turn: ", chess.turn)
         from_row = int(input("From row: "))  #De la fila
         from_col = int(input("From col: "))  #De la columna
@@ -20,7 +20,6 @@ def play(chess):
         print("error", e)
         return 
     
-
 
 if __name__ == '__main__':
     main()
