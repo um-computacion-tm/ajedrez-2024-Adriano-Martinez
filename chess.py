@@ -5,14 +5,15 @@ class Chess:
         self.__board__ = Board()
         self.__turn__ = "WHITE"
         self.__history__ = []   # lista de movimientos 
+        self.__game_over__ = False
     
     def is_playing(self):
         return True
 
     def move(self, from_row,from_col, to_row, to_col,): #MOVIMIENTO
-        # validate coords 
-        piece = self.__board__.get_piece(from_row, from_col)
         
+        piece = self.__board__.get_piece(from_row, from_col)
+
         if piece is None:
             raise ValueError("No hay pieza en la posición de origen.")
         
@@ -23,10 +24,16 @@ class Chess:
         if not is_valid:
             raise ValueError(message)
         
-        self.__board__.move_piece(from_row, from_col, to_row, to_col)
+        self.__board__.mover_pieza(from_row, from_col, to_row, to_col)
         self.__history__.append((from_row, from_col, to_row, to_col))
     
         self.change_turn()
+
+
+    def validate_coords(self, from_row, from_col, to_row, to_col):
+        if not (0 <= from_row < 8 and 0 <= from_col < 8 and 0 <= to_row < 8 and 0 <= to_col < 8):
+            raise ValueError("Coordenadas fuera del rango. Deben estar entre 0 y 7.")
+
 
     def show_board(self):
         return str(self.__board__)
@@ -41,4 +48,8 @@ class Chess:
         else:
             self.__turn__ = "WHITE" #cambia a blanco
         print(f"Es el turno de {self.__turn__}") # Muestra de quien es el turno
+
+    def end_game(self):
+        self.__game_over__ = True
+        print("El juego ha terminado.")
 

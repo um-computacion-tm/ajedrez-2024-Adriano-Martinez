@@ -5,7 +5,14 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-## [0.0.9] - 2024-08-21
+## [0.1.1] - 2024-08-22
+### Agregando
+- Archivo exeptions.py para definir excepciones
+- Metodo para mover piezas 
+### Cambios
+- Arreglado un error en el test del tablero 
+
+## [0.1.0] - 2024-08-21
 ### Agregando
 - Método show_board para mostrar el estado actual del tablero.
 - Implementación del método __str__ para una mejor visualización del tablero.
