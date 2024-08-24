@@ -7,5 +7,6 @@ class Pawn(Piece):
         return "♙" if self.get_color() == "WHITE" else "♟"
     
 
-    def mov_correcto(self, x, y):
+    def mov_correcto(self, from_x, from_y, to_x, to_y):
         ...
+     

@@ -59,23 +59,31 @@ class Board:
     
     def mover_pieza(self, from_row, from_col, to_row, to_col):
      piece = self.get_piece(from_row, from_col)
-     if piece is not None:
-        if piece.mov_correcto(to_row, to_col):  
-            self.__positions__[to_row][to_col] = piece
-            self.__positions__[from_row][from_col] = None
-        else:
-            raise ValueError("Movimiento no válido para esta pieza.")
-     else:
+     if piece is None:
         raise ValueError("No hay pieza en la posición de origen.")
+    
+     is_valid, message = self.is_valid_move(from_row, from_col, to_row, to_col, piece)
+     if not is_valid:
+        raise ValueError(message)
+    
+    # mueve la la pieza si el movimiento es válido 
+     self.__positions__[to_row][to_col] = piece
+     self.__positions__[from_row][from_col] = None
 
-
-   
     def is_valid_move(self, from_row, from_col, to_row, to_col, piece):
-        
-        destination_piece = self.get_piece(to_row, to_col)
-        if destination_piece is not None and destination_piece.get_color() == piece.get_color():
-            return False, "No puedes capturar tu propia pieza."
+    # verifica si el movimiento está dentro del rango del tablero
+     if not (0 <= from_row < 8 and 0 <= from_col < 8 and 0 <= to_row < 8 and 0 <= to_col < 8):
+        return False, "Coordenadas fuera del rango del tablero."
+    
+    # verifica si la pieza de destino es del mismo color
+     destination_piece = self.get_piece(to_row, to_col)
+     if destination_piece is not None and destination_piece.get_color() == piece.get_color():
+        return False, "No puedes capturar tu propia pieza."
+    
+    # verifica el movimiento específico de la pieza
+     if not piece.mov_correcto(from_row, from_col, to_row, to_col):
+        return False, "Movimiento no válido para esta pieza."
 
-        return True, "Movimiento válido."
+     return True, "Movimiento válido."
 
         
