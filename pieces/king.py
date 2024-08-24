@@ -7,5 +7,5 @@ class King(Piece):
     
 
 
-    def mov_correcto(self, x, y):
-        ...
+    def mov_correcto(self, from_x, from_y, to_x, to_y):
+        return max(abs(from_x - to_x), abs(from_y - to_y)) == 1

@@ -8,5 +8,5 @@ class Piece:
     def __str__(self):
         return ""
     
-    def mov_correcto(self, x, y):
+    def mov_correcto(self, from_x, from_y, to_x, to_y):
         raise NotImplementedError("Implementar")

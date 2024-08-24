@@ -6,5 +6,5 @@ class Rook(Piece):
    
  
  
-    def mov_correcto(self, x, y):
-        ...
+    def mov_correcto(self, from_x, from_y, to_x, to_y):
+        return from_x == to_x or from_y == to_y
