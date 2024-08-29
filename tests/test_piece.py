@@ -1,11 +1,12 @@
 import unittest
-
 from pieces.piece import Piece
+from board import Board  
 
 class TestPiece(unittest.TestCase):
     
     def setUp(self):
-        self.piece = Piece("white")
+        self.board = Board()  
+        self.piece = Piece("white", self.board)  
 
     def test_get_color(self):
         self.assertEqual(self.piece.get_color(), "white")

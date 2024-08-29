@@ -5,6 +5,21 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.1.4] - 2024-08-28
+### Agregando
+- Implementado codigo en rook.py para que la  pieza rook no pueda moverce en caso de que haya una 
+pieza en su camino
+
+### Cambios
+- Corrigiendo errores en los tests 
+
+
+## [0.1.3] - 2024-08-24
+### Agregando
+- Implementado codigo para el test de la pieza rook y la pieza king
+
+
+
 ## [0.1.2] - 2024-08-23
 ### Agregando
 - Movimiento del rey y la torre
