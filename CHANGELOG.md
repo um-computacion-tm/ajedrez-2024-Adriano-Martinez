@@ -5,6 +5,11 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.1.5] - 2024-08-28
+### Agregando
+- Implementando movimiento para el rey y el alfil
+- Archivo de tests para el alfil
+
 ## [0.1.4] - 2024-08-28
 ### Agregando
 - Implementado codigo en rook.py para que la  pieza rook no pueda moverce en caso de que haya una 
