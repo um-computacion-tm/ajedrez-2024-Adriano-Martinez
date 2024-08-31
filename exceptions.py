@@ -24,3 +24,8 @@ class InvalidMoveBishopMove(Exception):
     def __init__(self, message="Movimiento no válido para el alfil."):
         self.message = message
         super().__init__(self.message)
+
+class InvalidMoveQueenMove(InvalidMove):
+    def __init__(self, message="Movimiento inválido para la Reina."):
+        self.message = message
+        super().__init__(self.message)
