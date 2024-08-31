@@ -36,7 +36,7 @@ class TestRook(unittest.TestCase):
         empty_board = Board()  # Crea un tablero vacío
         empty_rook = Rook("WHITE", empty_board)  
         with self.assertRaises(InvalidMoveRookMove):
-            empty_rook.mov_correcto(0, 0, 0, 7)  
+            empty_rook.mov_correcto(0, 0, 0, 7)  # No hay pieza en el tablero vacío
 
     def test_invalid_diagonal_move(self):
         # Movimiento diagonal no permitido
@@ -44,12 +44,12 @@ class TestRook(unittest.TestCase):
             self.white_rook.mov_correcto(0, 0, 7, 7)
 
     def test_no_move(self):
-        with self.assertRaises(InvalidMoveRookMove):
-            self.white_rook.mov_correcto(0, 0, 0, 0)
+     with self.assertRaises(InvalidMoveRookMove):
+        self.white_rook.mov_correcto(0, 0, 0, 0)
 
 if __name__ == "__main__":
     unittest.main()
-     
+
         
     
 
