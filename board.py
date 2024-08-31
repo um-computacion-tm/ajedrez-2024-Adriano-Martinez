@@ -14,7 +14,7 @@ class Board:
             for _ in range(8):
                 col.append(None)
             self.__positions__.append(col)
-## Asignando posiciones de cada pieza negra
+    # Asignando posiciones de cada pieza negra
         self.__positions__[0][0] = Rook("BLACK", self)           # Torre, caballo, alfil, reina y rey
         self.__positions__[0][1] = Knight("BLACK", self)
         self.__positions__[0][2] = Bishop("BLACK", self)
@@ -23,10 +23,11 @@ class Board:
         self.__positions__[0][5] = Bishop("BLACK", self)
         self.__positions__[0][6] = Knight("BLACK", self)
         self.__positions__[0][7] = Rook("BLACK", self)
-# Se crea una lista con 8 peones negros y se les asigna en la fila 1
-        for i in range(8):
-         self.__positions__[1][i]= Pawn("BLACK", self)
-# # Asignando posiciones de cada pieza blanca (fila 0 y 1)     
+
+     # Inicializar peones negros
+        self.initialize_pawns(1, "BLACK")
+
+     # Asignando posiciones de cada pieza blanca (fila 0 y 1)     
         self.__positions__[7][0] = Rook("WHITE", self)
         self.__positions__[7][1] = Knight("WHITE", self)
         self.__positions__[7][2] = Bishop("WHITE", self)
@@ -35,11 +36,16 @@ class Board:
         self.__positions__[7][5] = Bishop("WHITE", self)
         self.__positions__[7][6] = Knight("WHITE", self)
         self.__positions__[7][7] = Rook("WHITE", self)
-        
-        for i in range(8):
-         self.__positions__[6][i]= Pawn("WHITE", self)
- 
     
+    # Inicializar peones blancos
+        self.initialize_pawns(6, "WHITE")
+
+
+    def initialize_pawns(self, row, color):
+        for i in range(8):
+            self.__positions__[row][i] = Pawn(color, self)
+
+        
     def __str__(self):
         board_str = ""
         for row in self.__positions__:
