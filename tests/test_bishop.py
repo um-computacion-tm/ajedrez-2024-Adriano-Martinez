@@ -1,4 +1,4 @@
-import unittest
+import unittest 
 from pieces.bishop import Bishop
 from board import Board
 from exceptions import InvalidMoveBishopMove
@@ -10,7 +10,6 @@ class TestBishop(unittest.TestCase):
         self.white_bishop = Bishop("WHITE", self.board)
         self.black_bishop = Bishop("BLACK", self.board)
 
-        
         self.board.set_piece(4, 4, self.white_bishop)
         self.board.set_piece(2, 2, None)
         self.board.set_piece(6, 6, None)
@@ -32,10 +31,17 @@ class TestBishop(unittest.TestCase):
         with self.assertRaises(InvalidMoveBishopMove):
             self.white_bishop.mov_correcto(4, 4, 4, 5)  # Movimiento vertical
 
-        # Movimiento bloqueado por otra pieza
+        # Movimiento bloqueado por otra pieza rival
         self.board.set_piece(5, 5, Bishop("BLACK", self.board))  
         with self.assertRaises(InvalidMoveBishopMove):
             self.white_bishop.mov_correcto(4, 4, 6, 6)  
 
+        # Movimiento bloqueado por pieza propia
+        self.board.set_piece(5, 5, Bishop("WHITE", self.board))  
+        with self.assertRaises(InvalidMoveBishopMove):
+            self.white_bishop.mov_correcto(4, 4, 6, 6)  
+
+if __name__ == "__main__":
+    unittest.main()
 
 
