@@ -5,11 +5,24 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-## [0.1.6] - 2024-08-29
+## [0.1.8] - 2024-09-3
+### Agregando
+- Implementando movimientos para el caballo 
+
+### Cambios
+- Modificando movimiento en la pieza queen
+
+
+## [0.1.7] - 2024-08-31
+### Agregando
+- Implementando movimientos para la reina y agregando movimientos inavalidos en caso de que el movimiento no sea el correcro para esta pieza 
+- Agregando archivo test  para la reina
+
+## [0.1.6] - 2024-08-30
 ### Agregando
 - Refactorizando codigo en bishop, board y rook
 
-## [0.1.5] - 2024-08-28
+## [0.1.5] - 2024-08-29
 ### Agregando
 - Implementando movimiento para el rey y el alfil
 - Archivo de tests para el alfil
