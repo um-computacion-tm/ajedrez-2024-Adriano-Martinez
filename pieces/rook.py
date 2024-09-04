@@ -17,10 +17,10 @@ class Rook(Piece):
         # Verificar si el camino está bloqueado
         if from_x == to_x:  # Movimiento vertical
             if not self._check_path(from_x, from_y, to_y, vertical=True):
-                raise InvalidMoveRookMove("Camino bloqueado en movimiento vertical.")
+                raise InvalidMoveRookMove("Camino bloqueado por otra pieza en movimiento vertical.")
         else:  # Movimiento horizontal
             if not self._check_path(from_x, from_y, to_x, vertical=False):
-                raise InvalidMoveRookMove("Camino bloqueado en movimiento horizontal.")
+                raise InvalidMoveRookMove("Camino bloqueado por otra pieza en movimiento horizontal.")
 
         return True
 
