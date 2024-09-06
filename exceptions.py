@@ -34,3 +34,9 @@ class InvalidMoveKnightMove(InvalidMove):
     def __init__(self, message="Movimiento inválido para el caballo."):
         self.message = message
         super().__init__(self.message)
+
+
+class InvalidMovePawnMove(Exception):
+    def __init__(self, message="Movimiento inválido para el peón."):
+        self.message = message
+        super().__init__(self.message)
