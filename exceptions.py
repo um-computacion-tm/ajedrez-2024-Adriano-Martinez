@@ -1,36 +1,38 @@
-
 class InvalidMove(Exception):
-    pass
+    def __init__(self, message="Movimiento inválido"):
+        self.message = message
+        super().__init__(self.message)
 
 class InvalidMoveNoPiece(InvalidMove):
     def __init__(self, message="No hay pieza en la posición de origen."):
-        self.message = message
-        super().__init__(self.message)
+        super().__init__(message)
 
+class InvalidPieceMove(InvalidMove):
+    def __init__(self, piece_name, message=None):
+        if not message:
+            message = f"Movimiento no válido para {piece_name}."
+        super().__init__(message)
 
-class InvalidMoveRookMove(InvalidMove):
-     def __init__(self, message="Movimiento no válido para la torre."):
-        self.message = message
-        super().__init__(self.message)
+class InvalidMoveRookMove(InvalidPieceMove):
+    def __init__(self, message=None):
+        super().__init__("la torre", message)
 
+class InvalidMoveKingMove(InvalidPieceMove):
+    def __init__(self, message=None):
+        super().__init__("el rey", message)
 
-class InvalidMoveKingMove(InvalidMove):
-    def __init__(self, message="Movimiento no válido para el rey."):
-        self.message = message
-        super().__init__(self.message)
+class InvalidMoveBishopMove(InvalidPieceMove):
+    def __init__(self, message=None):
+        super().__init__("el alfil", message)
 
+class InvalidMoveQueenMove(InvalidPieceMove):
+    def __init__(self, message=None):
+        super().__init__("la Reina", message)
 
-class InvalidMoveBishopMove(Exception):
-    def __init__(self, message="Movimiento no válido para el alfil."):
-        self.message = message
-        super().__init__(self.message)
+class InvalidMoveKnightMove(InvalidPieceMove):
+    def __init__(self, message=None):
+        super().__init__("el caballo", message)
 
-class InvalidMoveQueenMove(InvalidMove):
-    def __init__(self, message="Movimiento inválido para la Reina."):
-        self.message = message
-        super().__init__(self.message)
-
-class InvalidMoveKnightMove(InvalidMove):
-    def __init__(self, message="Movimiento inválido para el caballo."):
-        self.message = message
-        super().__init__(self.message)
+class InvalidMovePawnMove(InvalidPieceMove):
+    def __init__(self, message=None):
+        super().__init__("el peón", message)
