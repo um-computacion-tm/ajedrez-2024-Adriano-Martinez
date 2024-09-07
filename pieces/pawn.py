@@ -9,14 +9,17 @@ class Pawn(Piece):
         direction = 1 if self.__color__ == "WHITE" else -1
         start_row = 1 if self.__color__ == "WHITE" else 6
 
-        if self.is_forward_move(from_x, from_y, to_x, to_y, direction, start_row):
+        if self.is_forward_move(from_x, from_y, to_x, to_y):
             return True
         elif self.is_diagonal_capture(from_x, from_y, to_x, to_y, direction):
             return True
 
         raise InvalidMovePawnMove("Movimiento no válido para el peón.")
 
-    def is_forward_move(self, from_x, from_y, to_x, to_y, direction, start_row):
+    def is_forward_move(self, from_x, from_y, to_x, to_y):
+        direction = 1 if self.__color__ == "WHITE" else -1
+        start_row = 1 if self.__color__ == "WHITE" else 6
+        
         # Movimiento de una casilla hacia adelante
         if from_x == to_x:
             if to_y == from_y + direction:
