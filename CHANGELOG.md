@@ -5,6 +5,14 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.2.2] - 2024-09-8
+### Cambios
+- Arreglando error de test en queen.py
+
+## [0.2.1] - 2024-09-7
+### Agregando
+- Implementando tests para queen.py 
+
 ## [0.2.0] - 2024-09-6
 ### Agregando
 - Refactorizando codigo de queen.py y exceptions.py
