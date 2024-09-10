@@ -5,6 +5,11 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.2.3] - 2024-09-9
+### Agregando
+- Subiendo archivo test_kniht.py e implementando metodos para testear
+- subiendo archivo test_pawn.py 
+
 ## [0.2.2] - 2024-09-8
 ### Cambios
 - Arreglando error de test en queen.py
