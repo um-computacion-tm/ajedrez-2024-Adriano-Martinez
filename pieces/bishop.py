@@ -5,28 +5,51 @@ class Bishop(Piece):
     def __str__(self):
         return "♗" if self.__color__ == "WHITE" else "♝"
 
-    def __is_path_clear(self, from_x, from_y, to_x, to_y):
-        step_x = 1 if to_x > from_x else -1
-        step_y = 1 if to_y > from_y else -1
+    def mov_correcto(self, from_x, from_y, to_x, to_y):
+        # Verifica que el movimiento sea diagonal
+        if abs(to_x - from_x) != abs(to_y - from_y):
+            raise InvalidMoveBishopMove("Movimiento no válido para el alfil.")
         
-        x, y = from_x + step_x, from_y + step_y
+        # Verifica que el camino esté despejado
+        direction_x = 1 if to_x > from_x else -1
+        direction_y = 1 if to_y > from_y else -1
+        x, y = from_x + direction_x, from_y + direction_y
+
         while x != to_x and y != to_y:
             piece = self.__board__.get_piece(x, y)
             if piece is not None:
-                if piece.get_color() == self.__color__:
-                    return False  # Movimiento bloqueado por una pieza propia
+                if piece.get_color() == self.get_color():
+                    raise InvalidMoveBishopMove("Movimiento bloqueado por una pieza propia.")
                 else:
-                    return False  # Movimiento bloqueado por una pieza rival
-            x += step_x
-            y += step_y
-        
-        return True  
-
-    def mov_correcto(self, from_x, from_y, to_x, to_y):
-        if from_x == to_x or from_y == to_y:
-            raise InvalidMoveBishopMove("Movimiento no válido para el alfil.")
-        
-        if not self.__is_path_clear(from_x, from_y, to_x, to_y):
-            raise InvalidMoveBishopMove("Movimiento bloqueado por otra pieza.")
+                    raise InvalidMoveBishopMove("Movimiento bloqueado por una pieza rival.")
+            x += direction_x
+            y += direction_y
         
         return True
+
+    def get_possible_positions(self, from_row, from_col):
+     possibles = []
+
+    # Define las cuatro direcciones diagonales
+     directions = [(-1, -1), (-1, 1), (1, -1), (1, 1)]
+    
+     for step_row, step_col in directions:
+        row, col = from_row + step_row, from_col + step_col
+        while 0 <= row < 8 and 0 <= col < 8:
+            piece = self.__board__.get_piece(row, col)
+            if piece is None:
+                possibles.append((row, col))  # Casilla vacía, movimiento válido
+            elif piece.get_color() != self.get_color():
+                possibles.append((row, col))  # Captura posible
+                break  # Se detiene después de capturar una pieza
+            else:
+                break  # Movimiento bloqueado por una pieza propia
+            row += step_row
+            col += step_col
+
+     return possibles
+
+
+     
+
+
