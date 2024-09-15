@@ -36,3 +36,8 @@ class InvalidMoveKnightMove(InvalidPieceMove):
 class InvalidMovePawnMove(InvalidPieceMove):
     def __init__(self, message=None):
         super().__init__("el peón", message)
+
+
+class OutOfBoard(InvalidMove):
+    def __init__(self, message=None):
+        super().__init__("La posicion indicada se encuentra fuera del tablero", message)

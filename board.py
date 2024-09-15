@@ -4,6 +4,7 @@ from pieces.bishop import Bishop
 from pieces.queen import Queen
 from pieces.king import King
 from pieces.pawn import Pawn
+from exceptions import OutOfBoard
 
 # Inicializar un tablero de 8x8, donde cada posicion esta vacia 
 class Board:
@@ -47,24 +48,30 @@ class Board:
 
         
     def __str__(self):
-        board_str = ""
-        for row in self.__positions__:
+        board_str = "  a b c d e f g h\n"
+        for i, row in enumerate(self.__positions__):
+            row_label = str(8 - i)  # Etiquetas de filas 8-1
+            row_str = row_label + " "  # Agregar etiqueta de fila
             for cell in row:
                 if cell is not None:
-                    board_str += str(cell) + " "  # Agregar un espacio después de cada pieza
+                    row_str += str(cell) + " "
                 else:
-                    board_str += ". "  # Representar una casilla vacía con un punto
-            board_str += "\n"
+                    row_str += ". "
+            board_str += row_str + "\n"
         return board_str
 
-    
+
 # Devuelve la pieza en la posicion segun cada pieza
     def get_piece(self, row, col):
+        if not (
+            0 <= row < 8 or 0 <= col < 8
+        ):
+            raise OutOfBoard()
         return self.__positions__[row][col]
-    
+
     def set_piece(self, row, col, piece):
         self.__positions__[row][col] = piece
-
+    
     def mover_pieza(self, from_row, from_col, to_row, to_col):
      piece = self.get_piece(from_row, from_col)
      if piece is None:
@@ -75,23 +82,22 @@ class Board:
         raise ValueError(message)
     
     # Mueve la pieza si el movimiento es válido 
-     self.__positions__[to_row][to_col] = piece
-     self.__positions__[from_row][from_col] = None
+     self.set_piece(to_row, to_col, piece)
+     self.set_piece(from_row, from_col, None)
 
     def is_valid_move(self, from_row, from_col, to_row, to_col, piece):
-    # verifica si el movimiento está dentro del rango del tablero
+    # Verifica si las coordenadas están dentro del rango del tablero
      if not (0 <= from_row < 8 and 0 <= from_col < 8 and 0 <= to_row < 8 and 0 <= to_col < 8):
         return False, "Coordenadas fuera del rango del tablero."
     
-    # verifica si la pieza de destino es del mismo color
+    # Verifica si la pieza de destino es del mismo color
      destination_piece = self.get_piece(to_row, to_col)
      if destination_piece is not None and destination_piece.get_color() == piece.get_color():
         return False, "No puedes capturar tu propia pieza."
     
-    # verifica el movimiento específico de la pieza
+    # Verifica el movimiento específico de la pieza
      if not piece.mov_correcto(from_row, from_col, to_row, to_col):
         return False, "Movimiento no válido para esta pieza."
 
      return True, "Movimiento válido."
-
         

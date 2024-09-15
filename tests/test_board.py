@@ -1,5 +1,4 @@
 import unittest
-
 from board import Board
 from pieces.rook import Rook
 from pieces.knight import Knight
@@ -15,17 +14,16 @@ class TestBoard(unittest.TestCase):
     def test_str_board(self):
         board = Board()
         self.assertEqual(str(board),
-                         
-            "♜ ♞ ♝ ♛ ♚ ♝ ♞ ♜ \n"
-            "♟ ♟ ♟ ♟ ♟ ♟ ♟ ♟ \n"
-            ". . . . . . . . \n"
-            ". . . . . . . . \n"
-            ". . . . . . . . \n"
-            ". . . . . . . . \n"
-            "♙ ♙ ♙ ♙ ♙ ♙ ♙ ♙ \n"
-            "♖ ♘ ♗ ♕ ♔ ♗ ♘ ♖ \n"
+            "  a b c d e f g h\n"
+            "8 ♜ ♞ ♝ ♛ ♚ ♝ ♞ ♜ \n"  # Espacio después del último símbolo
+            "7 ♟ ♟ ♟ ♟ ♟ ♟ ♟ ♟ \n"
+            "6 . . . . . . . . \n"
+            "5 . . . . . . . . \n"
+            "4 . . . . . . . . \n"
+            "3 . . . . . . . . \n"
+            "2 ♙ ♙ ♙ ♙ ♙ ♙ ♙ ♙ \n"
+            "1 ♖ ♘ ♗ ♕ ♔ ♗ ♘ ♖ \n"  # Espacio después del último símbolo
         )
-
 
 # Verifica las piezas negras en la fila 0
     def test_initialization(self):
@@ -37,7 +35,7 @@ class TestBoard(unittest.TestCase):
         self.assertIsInstance(self.__board__.get_piece(0, 5), Bishop)
         self.assertIsInstance(self.__board__.get_piece(0, 6), Knight)
         self.assertIsInstance(self.__board__.get_piece(0, 7), Rook)
-        
+
 # Verifica los peones negros en la fila 1
         for col in range(8):
             self.assertIsInstance(self.__board__.get_piece(1, col), Pawn)
