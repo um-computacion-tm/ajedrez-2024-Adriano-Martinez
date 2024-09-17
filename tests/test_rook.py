@@ -44,8 +44,9 @@ class TestRook(unittest.TestCase):
             self.white_rook.mov_correcto(0, 0, 7, 7)
 
     def test_no_move(self):
-     with self.assertRaises(InvalidMoveRookMove):
-        self.white_rook.mov_correcto(0, 0, 0, 0)
+        # Verifica que no se permite mover a la misma posición
+        with self.assertRaises(InvalidMoveRookMove):
+            self.white_rook.mov_correcto(0, 0, 0, 0)
 
 if __name__ == "__main__":
     unittest.main()
