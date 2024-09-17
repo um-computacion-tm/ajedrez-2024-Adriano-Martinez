@@ -1,9 +1,9 @@
 from .piece import Piece
-from exceptions import InvalidMoveNoPiece, InvalidMoveRookMove
+from exceptions import InvalidMoveRookMove
 
 class Rook(Piece):
     def __str__(self):
-        return "♖" if self.__color__ == "WHITE" else "♜"
+        return "♖" if self.get_color() == "WHITE" else "♜"
 
     def mov_correcto(self, from_x, from_y, to_x, to_y):
         # Verificar que el movimiento es horizontal o vertical

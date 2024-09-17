@@ -1,4 +1,5 @@
 from pieces.rook import Rook
+from pieces.piece import Piece
 from pieces.knight import Knight
 from pieces.bishop import Bishop
 from pieces.queen import Queen
@@ -86,18 +87,15 @@ class Board:
      self.set_piece(from_row, from_col, None)
 
     def is_valid_move(self, from_row, from_col, to_row, to_col, piece):
-    # Verifica si las coordenadas están dentro del rango del tablero
-     if not (0 <= from_row < 8 and 0 <= from_col < 8 and 0 <= to_row < 8 and 0 <= to_col < 8):
-        return False, "Coordenadas fuera del rango del tablero."
+     if not (Piece.is_position_valid(from_row, from_col) and Piece.is_position_valid(to_row, to_col)):
+       return False, "Coordenadas fuera del rango del tablero."
     
-    # Verifica si la pieza de destino es del mismo color
      destination_piece = self.get_piece(to_row, to_col)
      if destination_piece is not None and destination_piece.get_color() == piece.get_color():
-        return False, "No puedes capturar tu propia pieza."
+       return False, "No puedes capturar tu propia pieza."
     
-    # Verifica el movimiento específico de la pieza
      if not piece.mov_correcto(from_row, from_col, to_row, to_col):
-        return False, "Movimiento no válido para esta pieza."
+       return False, "Movimiento no válido para esta pieza."
 
      return True, "Movimiento válido."
         
