@@ -9,6 +9,14 @@ class Chess:
     
     def is_playing(self):
         return True
+    
+    def parse_position(self, pos):
+     if len(pos) != 2 or pos[0] not in 'abcdefgh' or pos[1] not in '12345678':
+        raise ValueError("Posición inválida. Usa el formato 'e2'.")
+    
+     col = ord(pos[0]) - ord('a')  
+     row = 8 - int(pos[1])  
+     return row, col
 
     def move(self, from_row,from_col, to_row, to_col,): #MOVIMIENTO
         
