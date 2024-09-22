@@ -1,4 +1,5 @@
 from board import Board
+from exceptions import InvalidMoveNoPiece, InvalidMove
 
 class Chess:
     def __init__(self):
@@ -12,31 +13,28 @@ class Chess:
     
     def parse_position(self, pos):
      if len(pos) != 2 or pos[0] not in 'abcdefgh' or pos[1] not in '12345678':
-        raise ValueError("Posición inválida. Usa el formato 'e2'.")
-    
-     col = ord(pos[0]) - ord('a')  
-     row = 8 - int(pos[1])  
+        raise InvalidMove("Posición inválida. Usa el formato 'e2'.")  # Lanzar excepción personalizada
+
+     col = ord(pos[0]) - ord('a')
+     row = 8 - int(pos[1])
      return row, col
 
-    def move(self, from_row,from_col, to_row, to_col,): #MOVIMIENTO
-        
-        piece = self.__board__.get_piece(from_row, from_col)
+    def move(self, from_row, from_col, to_row, to_col):
+     piece = self.__board__.get_piece(from_row, from_col)
 
-        if piece is None:
-            raise ValueError("No hay pieza en la posición de origen.")
-        
-        if piece.get_color() != self.__turn__:
-            raise ValueError("No es tu turno para mover esta pieza.")
-        
-        is_valid, message = self.__board__.is_valid_move(from_row, from_col, to_row, to_col, piece)
-        if not is_valid:
-            raise ValueError(message)
-        
-        self.__board__.mover_pieza(from_row, from_col, to_row, to_col)
-        self.__history__.append((from_row, from_col, to_row, to_col))
+     if piece is None:
+        raise InvalidMoveNoPiece()  # Lanza la excepción 
     
-        self.change_turn()
+     if piece.get_color() != self.__turn__:
+        raise InvalidMove("No es tu turno para mover esta pieza.")
+    
+     is_valid, message = self.__board__.is_valid_move(from_row, from_col, to_row, to_col, piece)
+     if not is_valid:
+        raise InvalidMove(message)
 
+     self.__board__.mover_pieza(from_row, from_col, to_row, to_col)
+     self.__history__.append((from_row, from_col, to_row, to_col))
+     self.change_turn()
 
     def validate_coords(self, from_row, from_col, to_row, to_col):
         if not (0 <= from_row < 8 and 0 <= from_col < 8 and 0 <= to_row < 8 and 0 <= to_col < 8):
@@ -60,4 +58,3 @@ class Chess:
     def end_game(self):
         self.__game_over__ = True
         print("El juego ha terminado.")
-

@@ -2,7 +2,7 @@ class Piece:
     def __init__(self, color, board):
         self.__color__ = color
         self.__board__ = board
-        
+
     def get_color(self):
         return self.__color__
 
@@ -24,29 +24,82 @@ class Piece:
         possible_positions = self.get_possible_positions(from_row, from_col)
         return (to_row, to_col) in possible_positions
 
+    # Diagonales
     def possible_diagonal_positions(self, from_row, from_col):
-        return ()
+        possibles = []
+        directions = [(-1, -1), (-1, 1), (1, -1), (1, 1)]  # Diagonales
+        for step_row, step_col in directions:
+            row, col = from_row + step_row, from_col + step_col
+            while 0 <= row < 8 and 0 <= col < 8:
+                piece = self.__board__.get_piece(row, col)
+                if piece is None:
+                    possibles.append((row, col))  # Casilla vacía
+                elif piece.get_color() != self.get_color():
+                    possibles.append((row, col))  # Captura posible
+                    break  # Detener después de capturar
+                else:
+                    break  # Bloqueado por pieza propia
+                row += step_row
+                col += step_col
+        return possibles
 
+    # Ortogonales
     def possible_orthogonal_positions(self, from_row, from_col):
         return (
-            self.possible_positions_vd(from_row, from_col) +
-            self.possible_positions_va(from_row, from_col)
+            self.possible_positions_vertical(from_row, from_col) +
+            self.possible_positions_horizontal(from_row, from_col)
         )
 
-    def possible_positions_vd(self, row, col):
+    def possible_positions_vertical(self, row, col):
         possibles = []
+
+        # Movimiento hacia abajo
         for next_row in range(row + 1, 8):
-            other_piece = self.__board__.get_piece(next_row, col)
-            if other_piece is not None:
-                if other_piece.__color__ != self.__color__:
-                    possibles.append((next_row, col))
-                break
-            possibles.append((next_row, col))
-        return possibles
+            piece = self.__board__.get_piece(next_row, col)
+            if piece is None:
+                possibles.append((next_row, col))  # Casilla vacía
+            elif piece.get_color() != self.get_color():
+                possibles.append((next_row, col))  # Captura posible
+                break  # Detener después de capturar
+            else:
+                break  # Bloqueado por pieza propia
 
-    def possible_positions_va(self, row, col):
-        possibles = []
+        # Movimiento hacia arriba
         for next_row in range(row - 1, -1, -1):
-            possibles.append((next_row, col))
+            piece = self.__board__.get_piece(next_row, col)
+            if piece is None:
+                possibles.append((next_row, col))  # Casilla vacía
+            elif piece.get_color() != self.get_color():
+                possibles.append((next_row, col))  # Captura posible
+                break  # Detener después de capturar
+            else:
+                break  # Bloqueado por pieza propia
+
         return possibles
 
+    def possible_positions_horizontal(self, row, col):
+        possibles = []
+
+        # Movimiento hacia la derecha
+        for next_col in range(col + 1, 8):
+            piece = self.__board__.get_piece(row, next_col)
+            if piece is None:
+                possibles.append((row, next_col))  # Casilla vacía
+            elif piece.get_color() != self.get_color():
+                possibles.append((row, next_col))  # Captura posible
+                break  # Detener después de capturar
+            else:
+                break  # Bloqueado por pieza propia
+
+        # Movimiento hacia la izquierda
+        for next_col in range(col - 1, -1, -1):
+            piece = self.__board__.get_piece(row, next_col)
+            if piece is None:
+                possibles.append((row, next_col))  # Casilla vacía
+            elif piece.get_color() != self.get_color():
+                possibles.append((row, next_col))  # Captura posible
+                break  # Detener después de capturar
+            else:
+                break  # Bloqueado por pieza propia
+
+        return possibles

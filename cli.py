@@ -1,4 +1,5 @@
 from chess import Chess
+from exceptions import *
 import os
 
 class Cli:
@@ -17,10 +18,10 @@ class Cli:
 
             if opcion == '1':
                 print("\nIniciando partida...\n")
-                self.iniciar_partida()  # Aquí llamas a la función que inicia la partida
+                self.iniciar_partida()  # Llama a la función que inicia la partida
                 break
             elif opcion == '2':
-                self.mostrar_instrucciones()  # Aquí llamas a la función que muestra las instrucciones
+                self.mostrar_instrucciones()  # Llama a la función que muestra las instrucciones
             elif opcion == '3':
                 print("\nSaliendo del juego... ¡Hasta luego!")
                 break
@@ -29,51 +30,57 @@ class Cli:
 
     def iniciar_partida(self):
         print("Partida iniciada...\n")
+        print("Las blancas comienzan el juego.\n")  # Mensaje inicial
         self.play_game()  # Inicia el juego
 
     def mostrar_instrucciones(self):
+        self.clear_terminal()  # Limpia la pantalla para mostrar las instrucciones
         print("\nInstrucciones del Juego:")
         print("1. El juego de ajedrez se juega en un tablero de 8x8.")
         print("2. Cada jugador mueve una pieza por turno.")
         print("3. El objetivo es hacer jaque mate al rey del oponente.")
         print("4. Para mover una pieza, selecciona primero la posición de origen y luego la de destino.")
+        input("\nPresiona Enter para volver al menú...")  
 
     def play_game(self):
-        print("Las blancas comienzan el juego.\n")
-        while self.__chess__.is_playing():
-            self.display_board_and_turn()
-            from_input, to_input = self.get_move_input()
-            result = self.attempt_move(from_input, to_input)
-            if result:
-                print(f'\nError: {result}')
-            elif self.__chess__.end_game():
-                break
+     while self.__chess__.is_playing():
+        self.display_board_and_turn()
+        from_input, to_input = self.get_move_input()
+        result = self.attempt_move(from_input, to_input)
+        if result:
+            print(f'\nError: {result}')  # Muestra el mensaje de error
+        elif self.__chess__.end_game():
+            print("\n¡Fin del juego!")
+            break
 
     def display_board_and_turn(self):
-     self.clear_terminal()
-     print(f"\n  {self.__chess__.turn} TO MOVE\n")
-     print(self.__chess__.show_board())
+        self.clear_terminal()
+        print("\nEs el turno de las", "blancas" if self.__chess__.turn == "WHITE" else "negras")  # Muestra el turno
+        print(self.__chess__.show_board())  # Muestra el tablero
 
+    
     def get_move_input(self):
-        while True:
-            print('\nEnter your move')
-            from_input = input('From (e.g. e2): ').strip().lower()
-            to_input = input('To (e.g. e4): ').strip().lower()
-            try:
-                self.__chess__.parse_position(from_input)  # Verificar formato de entrada
-                self.__chess__.parse_position(to_input)  # Verificar formato de entrada
-                return from_input, to_input
-            except ValueError as e:
-                print(f'\nError: {e}\nPor favor, ingresa una posición válida.')
+     while True:
+        print('\nIntroduce tu movimiento')
+        from_input = input('Desde (e.g. e2): ').strip().lower()
+        to_input = input('Hasta (e.g. e4): ').strip().lower()
+        
+        try:
+            self.__chess__.parse_position(from_input)  # Verifica formato de entrada
+            self.__chess__.parse_position(to_input)  # Verifica formato de entrada
+            return from_input, to_input
+        except InvalidMove as e:  
+            print(f'\nError: {e.message}\nPor favor, ingresa una posición válida.')
+
 
     def attempt_move(self, from_input, to_input):
-        try:
-            from_row, from_col = self.__chess__.parse_position(from_input)
-            to_row, to_col = self.__chess__.parse_position(to_input)
-            self.__chess__.move(from_row, from_col, to_row, to_col)
-            return None  # No hay error
-        except Exception as e:
-            return str(e)
-
+     try:
+        from_row, from_col = self.__chess__.parse_position(from_input)
+        to_row, to_col = self.__chess__.parse_position(to_input)
+        self.__chess__.move(from_row, from_col, to_row, to_col)
+        return None
+     except InvalidMove as e:
+        return str(e)  
+        
     def clear_terminal(self):
         os.system('cls' if os.name == 'nt' else 'clear')

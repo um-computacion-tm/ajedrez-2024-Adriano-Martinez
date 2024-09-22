@@ -5,7 +5,7 @@ from pieces.bishop import Bishop
 from pieces.queen import Queen
 from pieces.king import King
 from pieces.pawn import Pawn
-from exceptions import OutOfBoard
+from exceptions import OutOfBoard, InvalidMoveNoPiece, InvalidMove
 
 # Inicializar un tablero de 8x8, donde cada posicion esta vacia 
 class Board:
@@ -65,7 +65,7 @@ class Board:
 # Devuelve la pieza en la posicion segun cada pieza
     def get_piece(self, row, col):
         if not (
-            0 <= row < 8 or 0 <= col < 8
+            0 <= row < 8 and 0 <= col < 8
         ):
             raise OutOfBoard()
         return self.__positions__[row][col]
@@ -76,12 +76,12 @@ class Board:
     def mover_pieza(self, from_row, from_col, to_row, to_col):
      piece = self.get_piece(from_row, from_col)
      if piece is None:
-        raise ValueError("No hay pieza en la posición de origen.")
+        raise InvalidMoveNoPiece()  # Lanza la excepción personalizada
     
      is_valid, message = self.is_valid_move(from_row, from_col, to_row, to_col, piece)
      if not is_valid:
-        raise ValueError(message)
-    
+        raise InvalidMove(message)  # Lanza la excepción personalizada
+
     # Mueve la pieza si el movimiento es válido 
      self.set_piece(to_row, to_col, piece)
      self.set_piece(from_row, from_col, None)
@@ -98,4 +98,3 @@ class Board:
        return False, "Movimiento no válido para esta pieza."
 
      return True, "Movimiento válido."
-        
