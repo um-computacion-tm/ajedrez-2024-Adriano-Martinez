@@ -9,7 +9,7 @@ class Chess:
         self.__game_over__ = False
     
     def is_playing(self):
-        return True
+         return not self.__game_over__
     
     def parse_position(self, pos):
      if len(pos) != 2 or pos[0] not in 'abcdefgh' or pos[1] not in '12345678':
