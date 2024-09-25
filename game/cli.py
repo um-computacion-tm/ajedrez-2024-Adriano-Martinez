@@ -1,5 +1,5 @@
-from chess import Chess
-from exceptions import *
+from game.chess import Chess
+from game.exceptions import *
 import os
 
 class Cli:
@@ -44,15 +44,21 @@ class Cli:
 
     
     def play(self):
-        while self.__chess__.is_playing():
-            self.display_board_and_turn()
-            from_input, to_input = self.get_move_input()
-            result = self.attempt_move(from_input, to_input)
-            if result:
-                print(f'\nError: {result}')  # Muestra el mensaje de error
-            elif self.__chess__.end_game():
-                print("\n¡Fin del juego!")
-                break
+     while self.__chess__.is_playing():
+        self.display_board_and_turn()
+        print("Escribe 'draw' para solicitar un empate o realiza un movimiento.")
+        from_input, to_input = self.get_move_input()
+        
+        if from_input == 'draw':
+            self.__chess__.request_draw()
+            continue
+        
+        result = self.attempt_move(from_input, to_input)
+        if result:
+            print(f'\nError: {result}')  # Muestra el mensaje de error
+        elif self.__chess__.end_game():
+            print("\n¡Fin del juego!")
+            break
 
     def display_board_and_turn(self):
         self.clear_terminal()
@@ -60,17 +66,20 @@ class Cli:
         print(self.__chess__.show_board())  # Muestra el tablero
 
     def get_move_input(self):
-        while True:
-            print('\nIntroduce tu movimiento')
-            from_input = input('Desde (e.g. e2): ').strip().lower()
-            to_input = input('Hasta (e.g. e4): ').strip().lower()
-            
-            try:
-                self.__chess__.parse_position(from_input)  # Verifica formato de entrada
-                self.__chess__.parse_position(to_input)  # Verifica formato de entrada
-                return from_input, to_input
-            except InvalidMove as e:  
-                print(f'\nError: {e}\nPor favor, ingresa una posición válida.')
+     while True:
+        print('\nIntroduce tu movimiento')
+        from_input = input('Desde (e.g. e2 o draw): ').strip().lower()  # Permite 'draw' como entrada
+        if from_input == 'draw':
+            return 'draw', None  # Retorna 'draw' si se solicita un empate
+
+        to_input = input('Hasta (e.g. e4): ').strip().lower()
+        
+        try:
+            self.__chess__.parse_position(from_input)  # Verifica formato de entrada
+            self.__chess__.parse_position(to_input)  # Verifica formato de entrada
+            return from_input, to_input
+        except InvalidMove as e:  
+            print(f'\nError: {e}\nPor favor, ingresa una posición válida.')
 
     def attempt_move(self, from_input, to_input):
         try:

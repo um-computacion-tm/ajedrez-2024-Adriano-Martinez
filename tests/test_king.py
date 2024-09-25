@@ -1,7 +1,7 @@
 import unittest
-from pieces.king import King
-from board import Board
-from exceptions import InvalidMoveKingMove
+from game.pieces.king import King
+from game.board import Board
+from game.exceptions import InvalidMoveKingMove
 
 class TestKing(unittest.TestCase): 
 

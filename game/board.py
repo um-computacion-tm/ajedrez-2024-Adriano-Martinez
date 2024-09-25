@@ -1,11 +1,11 @@
-from pieces.rook import Rook
-from pieces.piece import Piece
-from pieces.knight import Knight
-from pieces.bishop import Bishop
-from pieces.queen import Queen
-from pieces.king import King
-from pieces.pawn import Pawn
-from exceptions import OutOfBoard, InvalidMoveNoPiece, InvalidMove
+from game.pieces.rook import Rook
+from game.pieces.piece import Piece
+from game.pieces.knight import Knight
+from game.pieces.bishop import Bishop
+from game.pieces.queen import Queen
+from game.pieces.king import King
+from game.pieces.pawn import Pawn
+from game.exceptions import OutOfBoard, InvalidMoveNoPiece, InvalidMove
 
 # Inicializar un tablero de 8x8, donde cada posicion esta vacia 
 class Board:
@@ -98,3 +98,11 @@ class Board:
        return False, "Movimiento no válido para esta pieza."
 
      return True, "Movimiento válido."
+    
+    def get_all_pieces(self, color):
+     pieces = []
+     for row in self.__positions__:
+        for piece in row:
+            if piece is not None and piece.get_color() == color:
+                pieces.append(piece)
+     return pieces

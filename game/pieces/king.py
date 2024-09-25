@@ -1,5 +1,5 @@
 from .piece import Piece
-from exceptions import InvalidMoveKingMove
+from game.exceptions import InvalidMoveKingMove
 
 class King(Piece):
     def __str__(self):

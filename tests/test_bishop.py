@@ -1,7 +1,7 @@
 import unittest
-from pieces.bishop import Bishop
-from board import Board
-from exceptions import InvalidMoveBishopMove
+from game.pieces.bishop import Bishop
+from game.board import Board
+from game.exceptions import InvalidMoveBishopMove
 
 class TestBishop(unittest.TestCase):
 

@@ -1,7 +1,7 @@
 import unittest
-from pieces.knight import Knight
-from exceptions import InvalidMoveKnightMove
-from board import Board
+from game.pieces.knight import Knight
+from game.exceptions import InvalidMoveKnightMove
+from game.board import Board
 
 class TestKnight(unittest.TestCase):
 

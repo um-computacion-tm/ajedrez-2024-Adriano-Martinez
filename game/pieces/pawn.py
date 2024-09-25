@@ -1,5 +1,5 @@
 from .piece import Piece
-from exceptions import InvalidMovePawnMove
+from game.exceptions import InvalidMovePawnMove
 
 class Pawn(Piece):
     def __str__(self):

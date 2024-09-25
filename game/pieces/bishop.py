@@ -1,5 +1,5 @@
 from .piece import Piece
-from exceptions import InvalidMoveBishopMove
+from game.exceptions import InvalidMoveBishopMove
 
 class Bishop(Piece):
     def __str__(self):

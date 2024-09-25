@@ -1,7 +1,7 @@
 import unittest
-from board import Board
-from pieces.queen import Queen
-from exceptions import InvalidMoveQueenMove
+from game.board import Board
+from game.pieces.queen import Queen
+from game.exceptions import InvalidMoveQueenMove
 
 class TestQueen(unittest.TestCase):
     def setUp(self):

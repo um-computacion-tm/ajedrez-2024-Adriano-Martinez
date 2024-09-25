@@ -1,4 +1,4 @@
-from cli import Cli
+from game.cli import Cli
 
 def main():
     interfaz = Cli()

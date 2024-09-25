@@ -1,6 +1,6 @@
 import unittest
-from pieces.piece import Piece
-from board import Board  
+from game.pieces.piece import Piece
+from game.board import Board  
 
 class TestPiece(unittest.TestCase):
     

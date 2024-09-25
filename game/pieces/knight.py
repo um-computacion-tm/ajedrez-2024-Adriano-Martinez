@@ -1,5 +1,5 @@
 from .piece import Piece
-from exceptions import InvalidMoveKnightMove
+from game.exceptions import InvalidMoveKnightMove
 
 
 class Knight(Piece):

@@ -1,7 +1,7 @@
 import unittest
-from pieces.rook import Rook
-from board import Board
-from exceptions import InvalidMoveRookMove
+from game.pieces.rook import Rook
+from game.board import Board
+from game.exceptions import InvalidMoveRookMove
 
 class TestRook(unittest.TestCase):
     def setUp(self):

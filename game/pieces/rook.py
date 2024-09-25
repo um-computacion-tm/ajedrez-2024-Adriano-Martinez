@@ -1,5 +1,5 @@
 from .piece import Piece
-from exceptions import InvalidMoveRookMove
+from game.exceptions import InvalidMoveRookMove
 
 class Rook(Piece):
     def __str__(self):
