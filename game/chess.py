@@ -13,37 +13,39 @@ class Chess:
     
     def parse_position(self, pos):
         if len(pos) != 2 or pos[0] not in 'abcdefgh' or pos[1] not in '12345678':
-            raise InvalidMove("Posición inválida. Usa el formato 'e2'.")  # Lanzar excepción personalizada
-
+            raise ValueError("Posición inválida. Usa el formato 'e2'.")
         col = ord(pos[0]) - ord('a')
         row = 8 - int(pos[1])
         return row, col
 
     def move(self, from_input, to_input):
-    # Convierte las posiciones de entrada a índices de filas y columnas
-     from_row, from_col = self.parse_position(from_input)
-     to_row, to_col = self.parse_position(to_input)
+     try:
+        # Convertir las posiciones en notación de ajedrez a coordenadas de fila y columna
+         from_row, from_col = self.parse_position(from_input)
+         to_row, to_col = self.parse_position(to_input)
 
-     piece = self.__board__.get_piece(from_row, from_col)
+        # Obtener la pieza en la posición de origen
+         piece = self.__board__.get_piece(from_row, from_col)
+        
+         if piece is None:
+            raise InvalidMoveNoPiece("No hay ninguna pieza en la posición de origen.")
+        
+         if piece.get_color() != self.__turn__:
+            raise InvalidMove("No es tu turno para mover esta pieza.")
+        
+        # Verificar si el movimiento es válido
+         is_valid, message = self.__board__.is_valid_move(from_row, from_col, to_row, to_col, piece)
+        
+         if not is_valid:
+            raise InvalidMove(message)
+        
+        # Realizar el movimiento
+         self.__board__.mover_pieza(from_row, from_col, to_row, to_col)
+         self.__history__.append((from_input, to_input))  # Guardar el historial usando notación ajedrecística
+         self.change_turn()
 
-     if piece is None:
-        raise InvalidMoveNoPiece()  # Lanza la excepción 
-
-     if piece.get_color() != self.__turn__:
-        raise InvalidMove("No es tu turno para mover esta pieza.")
-
-    # Verifica si el movimiento es válido
-     is_valid, message = self.__board__.is_valid_move(from_row, from_col, to_row, to_col, piece)
-     if not is_valid:
-        raise InvalidMove(message)
-
-    # Mueve la pieza
-     self.__board__.mover_pieza(from_row, from_col, to_row, to_col)
-     self.__history__.append((from_row, from_col, to_row, to_col))
-     self.change_turn()
-
-    # Verifica si el juego ha terminado después de cada movimiento
-     self.end_game()
+     except (InvalidMoveNoPiece, InvalidMove) as e:
+        print(f"Error: {e}")
 
 
     def validate_coords(self, from_row, from_col, to_row, to_col):

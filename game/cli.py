@@ -48,11 +48,11 @@ class Cli:
         self.display_board_and_turn()
         print("Escribe 'draw' para solicitar un empate o realiza un movimiento.")
         from_input, to_input = self.get_move_input()
-        
+
         if from_input == 'draw':
             self.__chess__.request_draw()
             continue
-        
+
         result = self.attempt_move(from_input, to_input)
         if result:
             print(f'\nError: {result}')  # Muestra el mensaje de error
@@ -68,7 +68,7 @@ class Cli:
     def get_move_input(self):
      while True:
         print('\nIntroduce tu movimiento')
-        from_input = input('Desde (e.g. e2 o draw): ').strip().lower()  # Permite 'draw' como entrada
+        from_input = input('Desde (e.g. e2 o draw): ').strip().lower()
         if from_input == 'draw':
             return 'draw', None  # Retorna 'draw' si se solicita un empate
 
@@ -79,18 +79,21 @@ class Cli:
             self.__chess__.parse_position(to_input)  # Verifica formato de entrada
             return from_input, to_input
         except InvalidMove as e:  
-            print(f'\nError: {e}\nPor favor, ingresa una posición válida.')
+            print(f'\nError en la entrada: {e}\nPor favor, ingresa una posición válida.')
+        except Exception as e:  # Captura errores inesperados
+            print(f'\nError inesperado en la entrada: {e}\nPor favor, intenta de nuevo.')
 
     def attempt_move(self, from_input, to_input):
-        try:
-            from_row, from_col = self.__chess__.parse_position(from_input)
-            to_row, to_col = self.__chess__.parse_position(to_input)
-            self.__chess__.move(from_row, from_col, to_row, to_col)
-            return None
-        except InvalidMove as e:
-            return str(e)  
-        except Exception as e:
-            return f"Ocurrió un error inesperado: {e}"
+     try:
+        # Usar directamente from_input y to_input
+        self.__chess__.move(from_input, to_input)
+        return None
+     except InvalidMoveNoPiece as e:
+        return str(e)  # Devolver el mensaje de error específico
+     except InvalidMove as e:
+        return str(e)  # Devolver el mensaje de error específico
+     except Exception as e:
+        return f"Ocurrió un error inesperado: {e}"  # Devolver el mensaje de error general
 
     def clear_terminal(self):
         os.system('cls' if os.name == 'nt' else 'clear')

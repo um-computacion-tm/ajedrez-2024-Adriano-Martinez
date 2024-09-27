@@ -98,7 +98,7 @@ class Board:
        return False, "Movimiento no válido para esta pieza."
 
      return True, "Movimiento válido."
-    
+
     def get_all_pieces(self, color):
      pieces = []
      for row in self.__positions__:
