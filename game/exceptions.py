@@ -3,7 +3,7 @@ class InvalidMove(Exception):
         self.message = message
         super().__init__(self.message)
 
-class InvalidMoveNoPiece(InvalidMove):
+class PieceNotFound(InvalidMove):
     def __init__(self, message="No hay pieza en la posición de origen."):
         super().__init__(message)
 
@@ -39,5 +39,5 @@ class InvalidMovePawnMove(InvalidPieceMove):
 
 
 class OutOfBoard(InvalidMove):
-    def __init__(self, message=None):
-        super().__init__("La posicion indicada se encuentra fuera del tablero", message)
+    def __init__(self, message="La posición indicada se encuentra fuera del tablero"):
+        super().__init__(message)

@@ -1,5 +1,6 @@
 from game.board import Board
-from game.exceptions import InvalidMoveNoPiece, InvalidMove
+from game.exceptions import PieceNotFound, InvalidMove
+import pickle
 
 class Chess:
     def __init__(self):
@@ -12,40 +13,38 @@ class Chess:
         return not self.__game_over__
     
     def parse_position(self, pos):
-        if len(pos) != 2 or pos[0] not in 'abcdefgh' or pos[1] not in '12345678':
-            raise ValueError("Posición inválida. Usa el formato 'e2'.")
-        col = ord(pos[0]) - ord('a')
-        row = 8 - int(pos[1])
-        return row, col
+     if len(pos) != 2 or pos[0] not in 'abcdefgh' or pos[1] not in '12345678':
+        raise ValueError("Posición inválida. Usa el formato 'e2'.")
+     col = ord(pos[0]) - ord('a')
+     row = 8 - int(pos[1])
+     return row, col
 
     def move(self, from_input, to_input):
      try:
-        # Convertir las posiciones en notación de ajedrez a coordenadas de fila y columna
-         from_row, from_col = self.parse_position(from_input)
-         to_row, to_col = self.parse_position(to_input)
+        from_row, from_col = self.parse_position(from_input)
+        to_row, to_col = self.parse_position(to_input)
 
-        # Obtener la pieza en la posición de origen
-         piece = self.__board__.get_piece(from_row, from_col)
+        piece = self.__board__.get_piece(from_row, from_col)
         
-         if piece is None:
-            raise InvalidMoveNoPiece("No hay ninguna pieza en la posición de origen.")
+        if piece is None:
+            raise PieceNotFound("No hay ninguna pieza en la posición de origen.")
         
-         if piece.get_color() != self.__turn__:
+        if piece.get_color() != self.__turn__:
             raise InvalidMove("No es tu turno para mover esta pieza.")
         
-        # Verificar si el movimiento es válido
-         is_valid, message = self.__board__.is_valid_move(from_row, from_col, to_row, to_col, piece)
+        is_valid, message = self.__board__.is_valid_move(from_row, from_col, to_row, to_col, piece)
         
-         if not is_valid:
+        if not is_valid:
             raise InvalidMove(message)
         
-        # Realizar el movimiento
-         self.__board__.mover_pieza(from_row, from_col, to_row, to_col)
-         self.__history__.append((from_input, to_input))  # Guardar el historial usando notación ajedrecística
-         self.change_turn()
+        self.__board__.mover_pieza(from_row, from_col, to_row, to_col)
+        self.__history__.append((from_input, to_input))
+        self.change_turn()
 
-     except (InvalidMoveNoPiece, InvalidMove) as e:
+     except (PieceNotFound, InvalidMove, ValueError) as e:
         print(f"Error: {e}")
+     except Exception as e:
+        print(f"Un error inesperado ocurrió: {e}")
 
 
     def validate_coords(self, from_row, from_col, to_row, to_col):
@@ -89,3 +88,13 @@ class Chess:
         if decision_white == 's' and decision_black == 's':
             print("La partida ha terminado en empate por mutuo acuerdo.")
             self.__game_over__ = True
+        
+    
+    def save_game(self, filename):
+        with open(filename, 'wb') as f:
+            pickle.dump(self, f)  # Guarda la instancia de Chess
+    
+    @classmethod
+    def load_game(cls, filename):
+        with open(filename, 'rb') as f:
+            return pickle.load(f)  # Carga la instancia de Chess

@@ -23,6 +23,9 @@ class Piece:
     def valid_positions(self, from_row, from_col, to_row, to_col):
         possible_positions = self.get_possible_positions(from_row, from_col)
         return (to_row, to_col) in possible_positions
+    
+    def get_possible_positions(self, from_row, from_col):
+        return self.possible_orthogonal_positions(from_row, from_col)
 
     # Diagonales
     def possible_diagonal_positions(self, from_row, from_col):
