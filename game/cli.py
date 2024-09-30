@@ -117,6 +117,6 @@ class Cli:
         return str(e)  # Devuelve el mensaje de error específico
      except Exception as e:
         return f"Ocurrió un error inesperado: {e}"  # Devuelve el mensaje de error general
-
+        
     def clear_terminal(self):
         os.system('cls' if os.name == 'nt' else 'clear')

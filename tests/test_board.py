@@ -31,7 +31,31 @@ class TestBoard(unittest.TestCase):
         for row in range(2, 6):
             for col in range(8):
                 self.assertIsNone(self.__board__.get_piece(row, col))
+    
+    def test_is_valid_move(self):
+    # Colocar una torre blanca en la posición (0, 0)
+     rook = Rook("WHITE", self.__board__)
+     self.__board__.set_piece(0, 0, rook)
+     
+     self.__board__.set_piece(0, 1, None)  
+     self.__board__.set_piece(0, 2, None)  
+     self.__board__.set_piece(0, 3, None)  
+     self.__board__.set_piece(0, 4, None)  
+     self.__board__.set_piece(0, 5, None)
 
+    #Movimiento válido
+     valid_move_result, message = self.__board__.is_valid_move(0, 0, 0, 5, rook)
+     self.assertTrue(valid_move_result, message)  
+
+    #Movimiento fuera de rango
+     invalid_move_result, message = self.__board__.is_valid_move(0, 0, 0, 8, rook)
+     self.assertFalse(invalid_move_result, message)  
+
+    #intento de capturar propia pieza
+     self.__board__.set_piece(0, 5, rook)  
+     invalid_move_result, message = self.__board__.is_valid_move(0, 0, 0, 5, rook)
+     self.assertFalse(invalid_move_result, message)  
+     
     def test_out_of_board(self):
         with self.assertRaises(OutOfBoard):
             self.__board__.get_piece(8, 0)

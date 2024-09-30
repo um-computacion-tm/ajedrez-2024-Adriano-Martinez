@@ -62,13 +62,15 @@ class Board:
         return board_str
 
 
+
 # Devuelve la pieza en la posicion segun cada pieza
     def get_piece(self, row, col):
-        if not (
-            0 <= row < 8 and 0 <= col < 8
-        ):
-            raise OutOfBoard()
-        return self.__positions__[row][col]
+     if not (0 <= row < 8 and 0 <= col < 8):
+        raise OutOfBoard()
+    
+     piece = self.__positions__[row][col]
+     return piece
+
 
     def set_piece(self, row, col, piece):
         self.__positions__[row][col] = piece
@@ -111,3 +113,15 @@ class Board:
             if piece is not None and piece.get_color() == color:
                 pieces.append(piece)
      return pieces
+    
+    def validate_coords(self, from_row, from_col, to_row, to_col):
+        if not (0 <= from_row < 8 and 0 <= from_col < 8 and 0 <= to_row < 8 and 0 <= to_col < 8):
+            raise ValueError("Coordenadas fuera del rango. Deben estar entre 0 y 7.")
+
+    def remove_all_pieces(self, color):
+    #Elimina todas las piezas de un color del tablero.
+     for row in range(8):
+        for col in range(8):
+            piece = self.get_piece(row, col)
+            if piece and piece.get_color() == color:
+                self.set_piece(row, col, None)

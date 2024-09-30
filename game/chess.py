@@ -31,12 +31,12 @@ class Chess:
         
         if piece.get_color() != self.__turn__:
             raise InvalidMove("No es tu turno para mover esta pieza.")
-        
+
         is_valid, message = self.__board__.is_valid_move(from_row, from_col, to_row, to_col, piece)
-        
+
         if not is_valid:
             raise InvalidMove(message)
-        
+
         self.__board__.mover_pieza(from_row, from_col, to_row, to_col)
         self.__history__.append((from_input, to_input))
         self.change_turn()
@@ -45,7 +45,8 @@ class Chess:
         print(f"Error: {e}")
      except Exception as e:
         print(f"Un error inesperado ocurrió: {e}")
-
+    
+    
 
     def validate_coords(self, from_row, from_col, to_row, to_col):
         if not (0 <= from_row < 8 and 0 <= from_col < 8 and 0 <= to_row < 8 and 0 <= to_col < 8):
