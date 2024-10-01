@@ -1,5 +1,5 @@
 from .piece import Piece
-from game.exceptions import InvalidMoveQueenMove
+from game.exceptions import InvalidPieceMove
 
 class Queen(Piece):
 
@@ -9,13 +9,12 @@ class Queen(Piece):
     def __str__(self):
         return "♕" if self.__color__ == "WHITE" else "♛"
 
-
     def mov_correcto(self, from_x, from_y, to_x, to_y):
         if not (from_x == to_x or from_y == to_y or abs(from_x - to_x) == abs(from_y - to_y)):
-            raise InvalidMoveQueenMove("Movimiento no válido para la reina.")
+            raise InvalidPieceMove("Movimiento no válido para la reina.")
         
         if not self.is_path_clear(from_x, from_y, to_x, to_y):
-            raise InvalidMoveQueenMove("Camino bloqueado por otra pieza.")
+            raise InvalidPieceMove("Camino bloqueado por otra pieza.")
 
         return True
 

@@ -1,5 +1,5 @@
 from .piece import Piece
-from game.exceptions import InvalidMoveKingMove
+from game.exceptions import InvalidPieceMove
 
 class King(Piece):
 
@@ -11,10 +11,10 @@ class King(Piece):
 
     def mov_correcto(self, from_x, from_y, to_x, to_y):
         if abs(from_x - to_x) > 1 or abs(from_y - to_y) > 1:
-            raise InvalidMoveKingMove("Movimiento no válido para el rey.")
+            raise InvalidPieceMove("Movimiento no válido para el rey.")
         
         if self.__is_blocked_by_own_piece(to_x, to_y):
-            raise InvalidMoveKingMove("Movimiento bloqueado por una pieza propia.")
+            raise InvalidPieceMove("Movimiento bloqueado por una pieza propia.")
         
         return True
 

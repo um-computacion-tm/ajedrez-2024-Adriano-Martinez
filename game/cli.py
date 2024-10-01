@@ -7,37 +7,36 @@ class Cli:
         self.__chess__ = Chess()
 
     def mostrar_menu(self):
-     while True:
-        self.clear_terminal()
-        print("\nBienvenido al Juego de Ajedrez")
-        print("------------------------------")
-        print("1. Iniciar Partida")
-        print("2. Ver Instrucciones")
-        print("3. Salir")
-        print("4. Guardar Partida")
-        print("5. Cargar Partida")
-        opcion = input("\nSelecciona una opción (1-5): ")
+        while True:
+            self.clear_terminal()
+            print("\nBienvenido al Juego de Ajedrez")
+            print("------------------------------")
+            print("1. Iniciar Partida")
+            print("2. Ver Instrucciones")
+            print("3. Salir")
+            print("4. Guardar Partida")
+            print("5. Cargar Partida")
+            opcion = input("\nSelecciona una opción (1-5): ")
 
-        if opcion == '1':
-            print("\nIniciando partida...\n")
-            self.iniciar_partida()
-        elif opcion == '2':
-            self.mostrar_instrucciones()
-        elif opcion == '3':
-            print("\nSaliendo del juego... ¡Hasta luego!")
-            break
-        elif opcion == '4':
-            self.guardar_partida()
-        elif opcion == '5':
-            self.cargar_partida()
-        else:
-            print("\nOpción no válida. Por favor, intenta de nuevo.")
+            if opcion == '1':
+                print("\nIniciando partida...\n")
+                self.iniciar_partida()
+            elif opcion == '2':
+                self.mostrar_instrucciones()
+            elif opcion == '3':
+                print("\nSaliendo del juego... ¡Hasta luego!")
+                break
+            elif opcion == '4':
+                self.guardar_partida()
+            elif opcion == '5':
+                self.cargar_partida()
+            else:
+                print("\nOpción no válida. Por favor, intenta de nuevo.")
 
-    
     def iniciar_partida(self):
-     print("Partida iniciada...\n")
-     print("Las blancas comienzan el juego.\n")
-     self.play()  # Llama a la función que maneja la partida
+        print("Partida iniciada...\n")
+        print("Las blancas comienzan el juego.\n")
+        self.play()  # Llama a la función que maneja la partida
 
     def guardar_partida(self):
         filename = input("Introduce el nombre del archivo para guardar la partida (partida.pkl): ")
@@ -58,27 +57,26 @@ class Cli:
         print("4. Para mover una pieza, selecciona primero la posición de origen y luego la de destino.")
         input("\nPresiona Enter para volver al menú...")  
 
-    
     def play(self):
-     while self.__chess__.is_playing():
-        self.display_board_and_turn()
-        print("Escribe 'draw' para solicitar un empate, 'menu' para volver al menú o realiza un movimiento.")
-        
-        from_input, to_input = self.get_move_input()
+        while self.__chess__.is_playing():
+            self.display_board_and_turn()
+            print("Escribe 'draw' para solicitar un empate, 'menu' para volver al menú o realiza un movimiento.")
+            
+            from_input, to_input = self.get_move_input()
 
-        if from_input == 'draw':
-            self.__chess__.request_draw()
-            continue
-        elif from_input == 'menu':
-            print("\nVolviendo al menú...")
-            return  # Regresa al menú principal
+            if from_input == 'draw':
+                self.__chess__.request_draw()
+                continue
+            elif from_input == 'menu':
+                print("\nVolviendo al menú...")
+                return  # Regresa al menú principal
 
-        result = self.attempt_move(from_input, to_input)
-        if result:
-            print(f'\nError: {result}')
-        elif self.__chess__.end_game():
-            print("\n¡Fin del juego!")
-            break
+            result = self.attempt_move(from_input, to_input)
+            if result:
+                print(f'\nError: {result}')
+            elif self.__chess__.end_game():
+                print("\n¡Fin del juego!")
+                break
 
     def display_board_and_turn(self):
         self.clear_terminal()
@@ -86,26 +84,25 @@ class Cli:
         print(self.__chess__.show_board())  # Muestra el tablero
 
     def get_move_input(self):
-     while True:
-        print('\nIntroduce tu movimiento')
-        from_input = input('Desde (e.g. e2 o draw o menu): ').strip().lower()
-        
-        if from_input == 'draw':
-            return 'draw', None  # Retorna 'draw' si se solicita un empate
-        elif from_input == 'menu':
-            return 'menu', None  # Retorna 'menu' si se solicita volver al menú
+        while True:
+            print('\nIntroduce tu movimiento')
+            from_input = input('Desde (e.g. e2 o draw o menu): ').strip().lower()
+            
+            if from_input == 'draw':
+                return 'draw', None  # Retorna 'draw' si se solicita un empate
+            elif from_input == 'menu':
+                return 'menu', None  # Retorna 'menu' si se solicita volver al menú
 
-        to_input = input('Hasta (e.g. e4): ').strip().lower()
-        
-        try:
-            self.__chess__.parse_position(from_input)  # Verifica formato de entrada
-            self.__chess__.parse_position(to_input)  # Verifica formato de entrada
-            return from_input, to_input
-        except InvalidMove as e:  
-            print(f'\nError en la entrada: {e}\nPor favor, ingresa una posición válida.')
-        except Exception as e:  # Captura errores inesperados
-            print(f'\nError inesperado en la entrada: {e}\nPor favor, intenta de nuevo.')
-
+            to_input = input('Hasta (e.g. e4): ').strip().lower()
+            
+            try:
+                self.__chess__.parse_position(from_input)  # Verifica formato de entrada
+                self.__chess__.parse_position(to_input)  # Verifica formato de entrada
+                return from_input, to_input
+            except InvalidMove as e:  
+                print(f'\nError en la entrada: {e}\nPor favor, ingresa una posición válida.')
+            except Exception as e:  # Captura errores inesperados
+                print(f'\nError inesperado en la entrada: {e}\nPor favor, intenta de nuevo.')
 
     def attempt_move(self, from_input, to_input):
      try:
@@ -115,8 +112,10 @@ class Cli:
         return str(e)  # Devuelve el mensaje de error específico
      except InvalidMove as e:
         return str(e)  # Devuelve el mensaje de error específico
+     except OutOfBoard as e:
+      return str(e)  # Devuelve el mensaje de error específico
      except Exception as e:
         return f"Ocurrió un error inesperado: {e}"  # Devuelve el mensaje de error general
-        
+
     def clear_terminal(self):
         os.system('cls' if os.name == 'nt' else 'clear')

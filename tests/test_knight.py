@@ -1,6 +1,6 @@
 import unittest
 from game.pieces.knight import Knight
-from game.exceptions import InvalidMoveKnightMove
+from game.exceptions import InvalidPieceMove
 from game.board import Board
 
 class TestKnight(unittest.TestCase):
@@ -22,13 +22,13 @@ class TestKnight(unittest.TestCase):
             self.assertTrue(self.knight_white.mov_correcto(4, 4, 5, 6))
             self.assertTrue(self.knight_white.mov_correcto(4, 4, 3, 2))
             self.assertTrue(self.knight_white.mov_correcto(4, 4, 2, 3))
-        except InvalidMoveKnightMove:
-            self.fail("mov_correcto levantó InvalidMoveKnightMove inesperadamente!")
+        except InvalidPieceMove:
+            self.fail("mov_correcto levantó InvalidPieceMove inesperadamente!")
 
     def test_invalid_move(self):
-        with self.assertRaises(InvalidMoveKnightMove):
+        with self.assertRaises(InvalidPieceMove):
             self.knight_white.mov_correcto(4, 4, 5, 5)
-        with self.assertRaises(InvalidMoveKnightMove):
+        with self.assertRaises(InvalidPieceMove):
             self.knight_white.mov_correcto(4, 4, 7, 8)
 
     def test_capture_opponent(self):
@@ -37,7 +37,7 @@ class TestKnight(unittest.TestCase):
 
     def test_capture_own_piece(self):
         self.board.set_piece(6, 5, self.knight_white)
-        with self.assertRaises(InvalidMoveKnightMove):
+        with self.assertRaises(InvalidPieceMove):
             self.knight_white.mov_correcto(4, 4, 6, 5)
 
     def test_get_possible_positions(self):
@@ -53,15 +53,15 @@ class TestKnight(unittest.TestCase):
         try:
             self.assertTrue(self.knight_white.mov_correcto(0, 0, 2, 1))
             self.assertTrue(self.knight_white.mov_correcto(7, 7, 5, 6))
-        except InvalidMoveKnightMove:
-            self.fail("mov_correcto levantó InvalidMoveKnightMove inesperadamente!")
+        except InvalidPieceMove:
+            self.fail("mov_correcto levantó InvalidPieceMove inesperadamente!")
 
         # Prueba movimientos inválidos en los bordes del tablero
-        with self.assertRaises(InvalidMoveKnightMove):
+        with self.assertRaises(InvalidPieceMove):
             self.knight_white.mov_correcto(0, 0, 0, 1)  # Movimiento no en forma de L
 
     def test_invalid_move_out_of_bounds(self):
-        with self.assertRaises(InvalidMoveKnightMove):
+        with self.assertRaises(InvalidPieceMove):
             self.knight_white.mov_correcto(0, 0, -1, -1)
 
 if __name__ == '__main__':

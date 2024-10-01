@@ -1,7 +1,7 @@
 import unittest
 from game.board import Board
 from game.pieces.queen import Queen
-from game.exceptions import InvalidMoveQueenMove
+from game.exceptions import InvalidPieceMove
 
 class TestQueen(unittest.TestCase):
     def setUp(self):
@@ -43,7 +43,7 @@ class TestQueen(unittest.TestCase):
      self.board.set_piece(7, 3, friendly_piece)
 
     # La reina blanca no debería poder moverse a la posición de su propia pieza
-     with self.assertRaises(InvalidMoveQueenMove):
+     with self.assertRaises(InvalidPieceMove):
         self.queen_white.mov_correcto(3, 3, 7, 3)  
 
 if __name__ == "__main__":

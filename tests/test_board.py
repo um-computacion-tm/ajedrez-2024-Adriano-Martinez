@@ -32,11 +32,26 @@ class TestBoard(unittest.TestCase):
             for col in range(8):
                 self.assertIsNone(self.__board__.get_piece(row, col))
     
+    def test_remove_piece(self):
+    # Verifica que la torre negra esté presente
+     self.assertIsInstance(self.__board__.get_piece(0, 0), Rook)  
+     self.__board__.remove_piece(0, 0)  # Elimina la torre negra
+     self.assertIsNone(self.__board__.get_piece(0, 0))  # Verifica que la torre haya sido eliminada
+
+    # Intenta eliminar una pieza que no existe
+     with self.assertRaises(PieceNotFound):
+        self.__board__.remove_piece(0, 0)  # Debe lanzar PieceNotFound
+
+    # Intenta eliminar fuera del tablero
+     with self.assertRaises(OutOfBoard):
+        self.__board__.remove_piece(8, 0)  # Debe lanzar OutOfBoard
+
+
     def test_is_valid_move(self):
     # Colocar una torre blanca en la posición (0, 0)
      rook = Rook("WHITE", self.__board__)
      self.__board__.set_piece(0, 0, rook)
-     
+
      self.__board__.set_piece(0, 1, None)  
      self.__board__.set_piece(0, 2, None)  
      self.__board__.set_piece(0, 3, None)  
