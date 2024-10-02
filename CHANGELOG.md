@@ -5,7 +5,14 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-## ## [0.3.4] - 2024-09-30
+## ## [0.3.5] - 2024-10-01
+### Agregando
+- Metodo para contar piezas negras y blancas para mayor eficiencia en el codigo
+
+## Cambios
+- Eliminando metodo get_all_pieces y reorganizando codigo.
+
+## [0.3.4] - 2024-09-30
 ### Agregando
 - Metodo para remover pieza.
 - Implementado metodo para testear las excepciones.
