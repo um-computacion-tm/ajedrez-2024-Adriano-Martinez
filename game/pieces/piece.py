@@ -5,7 +5,7 @@ class Piece:
 
     def get_color(self):
         return self.__color__
-
+        
     def __str__(self):
         return ""
 

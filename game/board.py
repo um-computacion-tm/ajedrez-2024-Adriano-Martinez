@@ -121,14 +121,19 @@ class Board:
 
         return True, "Movimiento válido."
 
-    def get_all_pieces(self, color):
-        pieces = []
+
+    def count_pieces(self):
+        white_count = 0
+        black_count = 0
         for row in self.__positions__:
             for piece in row:
-                if piece is not None and piece.get_color() == color:
-                    pieces.append(piece)
-        return pieces
-
+                if piece is not None:
+                    if piece.get_color() == "WHITE":
+                        white_count += 1
+                    elif piece.get_color() == "BLACK":
+                        black_count += 1
+        return white_count, black_count
+    
     def remove_all_pieces(self, color):
         # Elimina todas las piezas de un color del tablero.
         for row in range(8):
