@@ -1,7 +1,7 @@
 import unittest
-from pieces.bishop import Bishop
-from board import Board
-from exceptions import InvalidMoveBishopMove
+from game.pieces.bishop import Bishop
+from game.board import Board
+from game.exceptions import InvalidPieceMove
 
 class TestBishop(unittest.TestCase):
 
@@ -29,17 +29,17 @@ class TestBishop(unittest.TestCase):
         self.assertTrue(self.white_bishop.mov_correcto(4, 4, 2, 6))
 
         # Movimiento no válido 
-        with self.assertRaises(InvalidMoveBishopMove):
+        with self.assertRaises(InvalidPieceMove):
             self.white_bishop.mov_correcto(4, 4, 4, 5)  # Movimiento no diagonal
 
         # Movimiento bloqueado por pieza rival
         self.board.set_piece(5, 5, Bishop("BLACK", self.board))  
-        with self.assertRaises(InvalidMoveBishopMove):
+        with self.assertRaises(InvalidPieceMove):
             self.white_bishop.mov_correcto(4, 4, 6, 6)
 
         # Movimiento bloqueado por pieza propia
         self.board.set_piece(5, 5, Bishop("WHITE", self.board))  
-        with self.assertRaises(InvalidMoveBishopMove):
+        with self.assertRaises(InvalidPieceMove):
             self.white_bishop.mov_correcto(4, 4, 6, 6)
 
     def test_get_possible_positions(self):
@@ -53,9 +53,9 @@ class TestBishop(unittest.TestCase):
 
     def test_invalid_moves(self):
         # Intenta moverce a posiciones no válidas
-        with self.assertRaises(InvalidMoveBishopMove):
+        with self.assertRaises(InvalidPieceMove):
             self.white_bishop.mov_correcto(4, 4, 5, 4)  # Movimiento no diagonal
-        with self.assertRaises(InvalidMoveBishopMove):
+        with self.assertRaises(InvalidPieceMove):
             self.white_bishop.mov_correcto(4, 4, 4, 5)  # Movimiento no diagonal
 
 if __name__ == "__main__":

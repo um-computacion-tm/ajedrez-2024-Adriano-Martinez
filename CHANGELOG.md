@@ -5,6 +5,43 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## ## [0.3.4] - 2024-09-30
+### Agregando
+- Metodo para remover pieza.
+- Implementado metodo para testear las excepciones.
+- Metodo para validar turno
+
+## [0.3.3] - 2024-09-29
+### Agregando
+- Implementado metodo para Testear Chess
+
+## [0.3.2] - 2024-09-28
+### Agregando
+- Implementado metodo para guardar y cargar partida en chess
+- Agregando nuevos metodos para testear el archivo board
+
+## [0.3.1] - 2024-09-26
+### Cambios
+- Modificacion para el movimiento en el metodo Move de chess
+
+## [0.3.0] - 2024-09-25
+### Cambios
+- Reorganizando archivos
+- Implementado metodo para rendirce en el ajedres
+
+## [0.2.9] - 2024-09-22
+### Agregando
+- Implementando Tests para cli.py
+
+## [0.2.8] - 2024-09-21
+### Cambios
+- Arreglando error en cli.py
+- Arreglando movimiento en queen.py
+
+## [0.2.7] - 2024-09-18
+### Agregando
+- Implementando mejoras para cli.py 
+
 ## [0.2.6] - 2024-09-17
 ### Cambios
 - Refactorizando codigo en piece y board
@@ -16,7 +53,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [0.2.4] - 2024-09-14
 ### Agregando
-- Implementando moetodo para testear la pieza pawn
+- Implementando metodo para testear la pieza pawn
 
 ## [0.2.3] - 2024-09-9
 ### Agregando

@@ -1,13 +1,17 @@
 from .piece import Piece
-from exceptions import InvalidMovePawnMove
+from game.exceptions import InvalidPieceMove
 
 class Pawn(Piece):
+
+    def __init__(self, color, board):
+        super().__init__(color, board) 
+        
     def __str__(self):
         return "♙" if self.get_color() == "WHITE" else "♟"
     
     def mov_correcto(self, from_x, from_y, to_x, to_y):
         if not (self.is_position_valid(from_x, from_y) and self.is_position_valid(to_x, to_y)):
-            raise InvalidMovePawnMove("Posición inválida.")
+            raise InvalidPieceMove("Posición inválida.")
 
         direction = -1 if self.get_color() == "WHITE" else 1
         start_row = 6 if self.get_color() == "WHITE" else 1
@@ -17,7 +21,7 @@ class Pawn(Piece):
         if self.is_diagonal_capture(from_x, from_y, to_x, to_y, direction):
             return True
 
-        raise InvalidMovePawnMove("Movimiento no válido para el peón.")
+        raise InvalidPieceMove("Movimiento no válido para el peón.")
     
     def is_forward_move(self, from_x, from_y, to_x, to_y, direction, start_row):
         if to_y == from_y:

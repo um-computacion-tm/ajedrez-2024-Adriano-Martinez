@@ -1,64 +1,107 @@
 import unittest
-from board import Board
-from pieces.rook import Rook
-from pieces.knight import Knight
-from pieces.bishop import Bishop
-from pieces.queen import Queen
-from pieces.king import King
-from pieces.pawn import Pawn
+from game.board import Board
+from game.pieces.rook import Rook
+from game.pieces.pawn import Pawn
+from game.exceptions import PieceNotFound, InvalidMove, OutOfBoard
 
 class TestBoard(unittest.TestCase):
+
     def setUp(self):
         self.__board__ = Board()
 
     def test_str_board(self):
-        board = Board()
-        self.assertEqual(str(board),
+        expected_str = (
             "  a b c d e f g h\n"
-            "8 ♜ ♞ ♝ ♛ ♚ ♝ ♞ ♜ \n"  # Espacio después del último símbolo
+            "8 ♜ ♞ ♝ ♛ ♚ ♝ ♞ ♜ \n"
             "7 ♟ ♟ ♟ ♟ ♟ ♟ ♟ ♟ \n"
             "6 . . . . . . . . \n"
             "5 . . . . . . . . \n"
             "4 . . . . . . . . \n"
             "3 . . . . . . . . \n"
             "2 ♙ ♙ ♙ ♙ ♙ ♙ ♙ ♙ \n"
-            "1 ♖ ♘ ♗ ♕ ♔ ♗ ♘ ♖ \n"  # Espacio después del último símbolo
+            "1 ♖ ♘ ♗ ♕ ♔ ♗ ♘ ♖ \n"
         )
+        self.assertEqual(str(self.__board__), expected_str)
 
-# Verifica las piezas negras en la fila 0
     def test_initialization(self):
+        # Verifica las piezas en las filas iniciales
         self.assertIsInstance(self.__board__.get_piece(0, 0), Rook)
-        self.assertIsInstance(self.__board__.get_piece(0, 1), Knight)
-        self.assertIsInstance(self.__board__.get_piece(0, 2), Bishop)
-        self.assertIsInstance(self.__board__.get_piece(0, 3), Queen)
-        self.assertIsInstance(self.__board__.get_piece(0, 4), King)
-        self.assertIsInstance(self.__board__.get_piece(0, 5), Bishop)
-        self.assertIsInstance(self.__board__.get_piece(0, 6), Knight)
-        self.assertIsInstance(self.__board__.get_piece(0, 7), Rook)
-
-# Verifica los peones negros en la fila 1
-        for col in range(8):
-            self.assertIsInstance(self.__board__.get_piece(1, col), Pawn)
-
-# Verifica las piezas blancas en la fila 7
-        self.assertIsInstance(self.__board__.get_piece(7, 0), Rook)
-        self.assertIsInstance(self.__board__.get_piece(7, 1), Knight)
-        self.assertIsInstance(self.__board__.get_piece(7, 2), Bishop)
-        self.assertIsInstance(self.__board__.get_piece(7, 3), Queen)
-        self.assertIsInstance(self.__board__.get_piece(7, 4), King)
-        self.assertIsInstance(self.__board__.get_piece(7, 5), Bishop)
-        self.assertIsInstance(self.__board__.get_piece(7, 6), Knight)
-        self.assertIsInstance(self.__board__.get_piece(7, 7), Rook)
-
-# Verifica los peones blancos en la fila 6
-        for col in range(8):
-            self.assertIsInstance(self.__board__.get_piece(6, col), Pawn)
-
-# Verifica que las posiciones intermedias están vacías
+        self.assertIsInstance(self.__board__.get_piece(1, 0), Pawn)
+        # Verifica que las posiciones intermedias estén vacías
         for row in range(2, 6):
             for col in range(8):
                 self.assertIsNone(self.__board__.get_piece(row, col))
+    
+    def test_remove_piece(self):
+    # Verifica que la torre negra esté presente
+     self.assertIsInstance(self.__board__.get_piece(0, 0), Rook)  
+     self.__board__.remove_piece(0, 0)  # Elimina la torre negra
+     self.assertIsNone(self.__board__.get_piece(0, 0))  # Verifica que la torre haya sido eliminada
 
+    # Intenta eliminar una pieza que no existe
+     with self.assertRaises(PieceNotFound):
+        self.__board__.remove_piece(0, 0)  # Debe lanzar PieceNotFound
+
+    # Intenta eliminar fuera del tablero
+     with self.assertRaises(OutOfBoard):
+        self.__board__.remove_piece(8, 0)  # Debe lanzar OutOfBoard
+
+
+    def test_is_valid_move(self):
+    # Colocar una torre blanca en la posición (0, 0)
+     rook = Rook("WHITE", self.__board__)
+     self.__board__.set_piece(0, 0, rook)
+
+     self.__board__.set_piece(0, 1, None)  
+     self.__board__.set_piece(0, 2, None)  
+     self.__board__.set_piece(0, 3, None)  
+     self.__board__.set_piece(0, 4, None)  
+     self.__board__.set_piece(0, 5, None)
+
+    #Movimiento válido
+     valid_move_result, message = self.__board__.is_valid_move(0, 0, 0, 5, rook)
+     self.assertTrue(valid_move_result, message)  
+
+    #Movimiento fuera de rango
+     invalid_move_result, message = self.__board__.is_valid_move(0, 0, 0, 8, rook)
+     self.assertFalse(invalid_move_result, message)  
+
+    #intento de capturar propia pieza
+     self.__board__.set_piece(0, 5, rook)  
+     invalid_move_result, message = self.__board__.is_valid_move(0, 0, 0, 5, rook)
+     self.assertFalse(invalid_move_result, message)  
+     
+    def test_out_of_board(self):
+        with self.assertRaises(OutOfBoard):
+            self.__board__.get_piece(8, 0)
+
+    def test_move_piece_out_of_board(self):
+        with self.assertRaises(OutOfBoard):
+            self.__board__.mover_pieza(8, 0, 3, 0)  # Origen fuera del tablero
+        with self.assertRaises(OutOfBoard):
+            self.__board__.mover_pieza(0, 8, 3, 0)  # Origen fuera del tablero
+
+    def test_move_piece(self):
+        self.__board__.mover_pieza(1, 0, 3, 0)
+        self.assertIsInstance(self.__board__.get_piece(3, 0), Pawn)
+        self.assertIsNone(self.__board__.get_piece(1, 0))
+
+        with self.assertRaises(PieceNotFound):
+            self.__board__.mover_pieza(1, 0, 3, 0)  # Intenta mover un peón que no existe
+
+        self.__board__.set_piece(2, 0, Pawn("WHITE", self.__board__))  # Coloca un peón blanco en (2, 0)
+        with self.assertRaises(InvalidMove):
+            self.__board__.mover_pieza(3, 0, 2, 0)  # Intenta capturar su propio peón
+
+    def test_get_piece(self):
+        piece = self.__board__.get_piece(0, 0)  # Debe ser una torre negra
+        self.assertIsInstance(piece, Rook)
+        self.assertEqual(piece.get_color(), "BLACK")
+
+        with self.assertRaises(OutOfBoard):
+            self.__board__.get_piece(-1, 0)  # Fila fuera de rango
+        with self.assertRaises(OutOfBoard):
+            self.__board__.get_piece(8, 0)  # Fila fuera de rango
 
 if __name__ == "__main__":
     unittest.main()

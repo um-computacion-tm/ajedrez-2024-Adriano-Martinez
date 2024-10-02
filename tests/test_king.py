@@ -1,7 +1,7 @@
 import unittest
-from pieces.king import King
-from board import Board
-from exceptions import InvalidMoveKingMove
+from game.pieces.king import King
+from game.board import Board
+from game.exceptions import InvalidPieceMove
 
 class TestKing(unittest.TestCase): 
 
@@ -27,19 +27,19 @@ class TestKing(unittest.TestCase):
 
     def test_invalid_moves(self):
         # Verifica que se lancen excepciones para movimientos inválidos
-        with self.assertRaises(InvalidMoveKingMove):
+        with self.assertRaises(InvalidPieceMove):
             self.white_king.mov_correcto(4, 4, 6, 4)  # Movimiento vertical de dos casillas
         
-        with self.assertRaises(InvalidMoveKingMove):
+        with self.assertRaises(InvalidPieceMove):
             self.white_king.mov_correcto(4, 4, 4, 6)  # Movimiento horizontal de dos casillas
         
-        with self.assertRaises(InvalidMoveKingMove):
+        with self.assertRaises(InvalidPieceMove):
             self.white_king.mov_correcto(4, 4, 6, 6)  # Movimiento diagonal de dos casillas
 
     def test_blocked_by_own_piece(self):
         # Verifica que el rey no pueda moverse a una casilla ocupada por una pieza propia
         self.board.set_piece(5, 4, King("WHITE", self.board))  
-        with self.assertRaises(InvalidMoveKingMove):
+        with self.assertRaises(InvalidPieceMove):
             self.white_king.mov_correcto(4, 4, 5, 4)  
 
 if __name__ == "__main__":
