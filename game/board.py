@@ -57,33 +57,36 @@ class Board:
             board_str += row_str + "\n"
         return board_str
 
+    def is_position_valid(self, row, col):
+        return 0 <= row < 8 and 0 <= col < 8
+
     def get_piece(self, row, col):
-        if not (0 <= row < 8 and 0 <= col < 8):
+        if not self.is_position_valid(row, col):
             raise OutOfBoard()
         
         piece = self.__positions__[row][col]
         return piece
 
     def set_piece(self, row, col, piece):
-        if not (0 <= row < 8 and 0 <= col < 8):
+        if not self.is_position_valid(row, col):
             raise OutOfBoard()
         self.__positions__[row][col] = piece
 
     def remove_piece(self, row, col):
-    # Verifica si la posición está fuera del tablero
-     if not (0 <= row < 8 and 0 <= col < 8):
-        raise OutOfBoard()  # Lanza la excepción si está fuera del tablero
-    
-     piece = self.get_piece(row, col)
-     if piece is None:
-        raise PieceNotFound()  # Lanza la excepción si no hay pieza en esa posición
-    
-    # Si todo es correcto, elimina la pieza
-     self.set_piece(row, col, None)
+        # Verifica si la posición está fuera del tablero
+        if not self.is_position_valid(row, col):
+            raise OutOfBoard()  # Lanza la excepción si está fuera del tablero
+        
+        piece = self.get_piece(row, col)
+        if piece is None:
+            raise PieceNotFound()  # Lanza la excepción si no hay pieza en esa posición
+        
+        # Si todo es correcto, elimina la pieza
+        self.set_piece(row, col, None)
 
     def mover_pieza(self, from_row, from_col, to_row, to_col):
         # Verifica si la posición de origen está fuera del tablero
-        if not (0 <= from_row < 8 and 0 <= from_col < 8):
+        if not self.is_position_valid(from_row, from_col):
             raise OutOfBoard()
 
         piece = self.get_piece(from_row, from_col)
@@ -91,8 +94,8 @@ class Board:
             raise PieceNotFound()
 
         # Verifica si la posición de destino está fuera del tablero
-        if not (0 <= to_row < 8 and 0 <= to_col < 8):
-            raise OutOfBoard(message)
+        if not self.is_position_valid(to_row, to_col):
+            raise OutOfBoard()
 
         # Verifica si hay una pieza propia en la posición de destino
         target_piece = self.get_piece(to_row, to_col)
@@ -120,7 +123,6 @@ class Board:
             return False, "Movimiento no válido para esta pieza."
 
         return True, "Movimiento válido."
-
 
     def count_pieces(self):
         white_count = 0

@@ -32,77 +32,33 @@ class Piece:
         possibles = []
         directions = [(-1, -1), (-1, 1), (1, -1), (1, 1)]  # Diagonales
         for step_row, step_col in directions:
-            row, col = from_row + step_row, from_col + step_col
-            while 0 <= row < 8 and 0 <= col < 8:
-                piece = self.__board__.get_piece(row, col)
-                if piece is None:
-                    possibles.append((row, col))  # Casilla vacía
-                elif piece.get_color() != self.get_color():
-                    possibles.append((row, col))  # Captura posible
-                    break  # Detener después de capturar
-                else:
-                    break  # Bloqueado por pieza propia
-                row += step_row
-                col += step_col
+            possibles += self.scan_direction(from_row, from_col, step_row, step_col)
         return possibles
 
     # Ortogonales
     def possible_orthogonal_positions(self, from_row, from_col):
-        return (
-            self.possible_positions_vertical(from_row, from_col) +
-            self.possible_positions_horizontal(from_row, from_col)
-        )
-
-    def possible_positions_vertical(self, row, col):
+        directions = [(1, 0), (-1, 0), (0, 1), (0, -1)]  # Arriba, abajo, derecha, izquierda
         possibles = []
+        for step_row, step_col in directions:
+            possibles += self.scan_direction(from_row, from_col, step_row, step_col)
+        return possibles
 
-        # Movimiento hacia abajo
-        for next_row in range(row + 1, 8):
-            piece = self.__board__.get_piece(next_row, col)
+    # Generalización para explorar en cualquier dirección
+    def scan_direction(self, from_row, from_col, row_increment, col_increment):
+        possibles = []
+        row, col = from_row + row_increment, from_col + col_increment
+
+        while self.is_position_valid(row, col):
+            piece = self.__board__.get_piece(row, col)
             if piece is None:
-                possibles.append((next_row, col))  # Casilla vacía
+                possibles.append((row, col))  # Casilla vacía
             elif piece.get_color() != self.get_color():
-                possibles.append((next_row, col))  # Captura posible
+                possibles.append((row, col))  # Captura posible
                 break  # Detener después de capturar
             else:
                 break  # Bloqueado por pieza propia
-
-        # Movimiento hacia arriba
-        for next_row in range(row - 1, -1, -1):
-            piece = self.__board__.get_piece(next_row, col)
-            if piece is None:
-                possibles.append((next_row, col))  # Casilla vacía
-            elif piece.get_color() != self.get_color():
-                possibles.append((next_row, col))  # Captura posible
-                break  # Detener después de capturar
-            else:
-                break  # Bloqueado por pieza propia
+            row += row_increment
+            col += col_increment
 
         return possibles
 
-    def possible_positions_horizontal(self, row, col):
-        possibles = []
-
-        # Movimiento hacia la derecha
-        for next_col in range(col + 1, 8):
-            piece = self.__board__.get_piece(row, next_col)
-            if piece is None:
-                possibles.append((row, next_col))  # Casilla vacía
-            elif piece.get_color() != self.get_color():
-                possibles.append((row, next_col))  # Captura posible
-                break  # Detener después de capturar
-            else:
-                break  # Bloqueado por pieza propia
-
-        # Movimiento hacia la izquierda
-        for next_col in range(col - 1, -1, -1):
-            piece = self.__board__.get_piece(row, next_col)
-            if piece is None:
-                possibles.append((row, next_col))  # Casilla vacía
-            elif piece.get_color() != self.get_color():
-                possibles.append((row, next_col))  # Captura posible
-                break  # Detener después de capturar
-            else:
-                break  # Bloqueado por pieza propia
-
-        return possibles

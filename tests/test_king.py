@@ -6,41 +6,47 @@ from game.exceptions import InvalidPieceMove
 class TestKing(unittest.TestCase): 
 
     def setUp(self):
-        self.board = Board()  
-        self.white_king = King("WHITE", self.board)  
-        self.black_king = King("BLACK", self.board)  
-        self.board.set_piece(4, 4, self.white_king)  
+        self.__board__ = Board()  
+        self.__white_king__ = King("WHITE", self.__board__)  
+        self.__black_king__ = King("BLACK", self.__board__)  
+        self.__board__.set_piece(4, 4, self.__white_king__)  
 
     def test_str(self):
         # Verifica la representación en cadena del rey blanco y negro
-        self.assertEqual(str(self.white_king), "♔")
-        self.assertEqual(str(self.black_king), "♚")
+        self.assertEqual(str(self.__white_king__), "♔")
+        self.assertEqual(str(self.__black_king__), "♚")
 
     def test_valid_moves(self):
         # Verifica movimientos válidos
-        self.assertTrue(self.white_king.mov_correcto(4, 4, 4, 5))  # Movimiento vertical hacia arriba
-        self.assertTrue(self.white_king.mov_correcto(4, 4, 4, 3))  # Movimiento vertical hacia abajo
-        self.assertTrue(self.white_king.mov_correcto(4, 4, 5, 4))  # Movimiento horizontal hacia la derecha
-        self.assertTrue(self.white_king.mov_correcto(4, 4, 3, 4))  # Movimiento horizontal hacia la izquierda
-        self.assertTrue(self.white_king.mov_correcto(4, 4, 5, 5))  # Movimiento diagonal hacia abajo derecha
-        self.assertTrue(self.white_king.mov_correcto(4, 4, 3, 3))  # Movimiento diagonal hacia arriba izquierda
+        self.assertTrue(self.__white_king__.mov_correcto(4, 4, 4, 5))  # Movimiento vertical hacia arriba
+        self.assertTrue(self.__white_king__.mov_correcto(4, 4, 4, 3))  # Movimiento vertical hacia abajo
+        self.assertTrue(self.__white_king__.mov_correcto(4, 4, 5, 4))  # Movimiento horizontal hacia la derecha
+        self.assertTrue(self.__white_king__.mov_correcto(4, 4, 3, 4))  # Movimiento horizontal hacia la izquierda
+        self.assertTrue(self.__white_king__.mov_correcto(4, 4, 5, 5))  # Movimiento diagonal hacia abajo derecha
+        self.assertTrue(self.__white_king__.mov_correcto(4, 4, 3, 3))  # Movimiento diagonal hacia arriba izquierda
 
     def test_invalid_moves(self):
         # Verifica que se lancen excepciones para movimientos inválidos
         with self.assertRaises(InvalidPieceMove):
-            self.white_king.mov_correcto(4, 4, 6, 4)  # Movimiento vertical de dos casillas
+            self.__white_king__.mov_correcto(4, 4, 6, 4)  # Movimiento vertical de dos casillas
         
         with self.assertRaises(InvalidPieceMove):
-            self.white_king.mov_correcto(4, 4, 4, 6)  # Movimiento horizontal de dos casillas
+            self.__white_king__.mov_correcto(4, 4, 4, 6)  # Movimiento horizontal de dos casillas
         
         with self.assertRaises(InvalidPieceMove):
-            self.white_king.mov_correcto(4, 4, 6, 6)  # Movimiento diagonal de dos casillas
+            self.__white_king__.mov_correcto(4, 4, 6, 6)  # Movimiento diagonal de dos casillas
 
     def test_blocked_by_own_piece(self):
         # Verifica que el rey no pueda moverse a una casilla ocupada por una pieza propia
-        self.board.set_piece(5, 4, King("WHITE", self.board))  
+        self.__board__.set_piece(5, 4, King("WHITE", self.__board__))  
         with self.assertRaises(InvalidPieceMove):
-            self.white_king.mov_correcto(4, 4, 5, 4)  
+            self.__white_king__.mov_correcto(4, 4, 5, 4)  
+
+    def test_can_capture_opponent_piece(self):
+        # Coloca una pieza del oponente en una posición adyacente
+        self.__board__.set_piece(5, 5, King("BLACK", self.__board__))  
+        # Verifica que el rey pueda moverse a una posición ocupada por una pieza del oponente
+        self.assertTrue(self.__white_king__.mov_correcto(4, 4, 5, 5))  # Movimiento diagonal hacia abajo derecha
 
 if __name__ == "__main__":
     unittest.main()

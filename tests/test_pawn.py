@@ -26,6 +26,14 @@ class TestPawn(unittest.TestCase):
         possibles = pawn.get_possible_positions(2, 5)  # Peón negro en 2,5
         self.assertEqual(possibles, [(3, 5), (3, 6)])  # Puede avanzar o capturar
 
+    def test_eat_right_black(self):
+        board = Board()
+        pawn = Pawn("BLACK", board)
+        board.set_piece(3, 4, Pawn("WHITE", board))  # Coloca un peón blanco en 3,4
+
+        possibles = pawn.get_possible_positions(2, 5)  # Peón negro en 2,5
+        self.assertEqual(possibles, [(3, 5), (3, 4)])  # Puede avanzar o capturar
+
     def test_initial_white(self):
         board = Board()
         pawn = Pawn("WHITE", board)

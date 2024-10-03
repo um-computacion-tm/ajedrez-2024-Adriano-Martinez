@@ -5,18 +5,18 @@ from game.board import Board
 class TestPiece(unittest.TestCase):
     
     def setUp(self):
-        self.board = Board()  
-        self.piece = Piece("white", self.board)  
+        self.__board__ = Board()  
+        self.__piece__ = Piece("white", self.__board__)  
 
     def test_get_color(self):
-        self.assertEqual(self.piece.get_color(), "white")
+        self.assertEqual(self.__piece__.get_color(), "white")
     
     def test_str(self):
-        self.assertEqual(str(self.piece), "")
+        self.assertEqual(str(self.__piece__), "")
     
     def test_mov_correcto(self):
         with self.assertRaises(NotImplementedError):
-            self.piece.mov_correcto(0, 0, 1, 1)
+            self.__piece__.mov_correcto(0, 0, 1, 1)
 
 if __name__ == "__main__":
     unittest.main()
