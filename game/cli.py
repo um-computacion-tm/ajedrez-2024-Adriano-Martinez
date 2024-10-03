@@ -105,17 +105,19 @@ class Cli:
                 print(f'\nError inesperado en la entrada: {e}\nPor favor, intenta de nuevo.')
 
     def attempt_move(self, from_input, to_input):
-     try:
-        self.__chess__.move(from_input, to_input)
-        return None
-     except PieceNotFound as e:
-        return str(e)  # Devuelve el mensaje de error específico
-     except InvalidMove as e:
-        return str(e)  # Devuelve el mensaje de error específico
-     except OutOfBoard as e:
-      return str(e)  # Devuelve el mensaje de error específico
-     except Exception as e:
-        return f"Ocurrió un error inesperado: {e}"  # Devuelve el mensaje de error general
+        error_message = "No se produjo ningún error."
+        try:
+            self.__chess__.move(from_input, to_input)
+        except PieceNotFound as e:
+            error_message = str(e)  # Devuelve el mensaje de error específico
+        except InvalidMove as e:
+            error_message = str(e) 
+        except OutOfBoard as e:
+            error_message = str(e)  
+        except Exception as e:
+            error_message = f"Ocurrió un error inesperado: {e}"  # Devuelve el mensaje de error general
+
+        return error_message if error_message != "No se produjo ningún error." else None
 
     def clear_terminal(self):
         os.system('cls' if os.name == 'nt' else 'clear')

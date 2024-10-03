@@ -10,8 +10,13 @@ class Pawn(Piece):
         return "♙" if self.get_color() == "WHITE" else "♟"
     
     def mov_correcto(self, from_x, from_y, to_x, to_y):
+        # Verifica si las posiciones son válidas
         if not (self.is_position_valid(from_x, from_y) and self.is_position_valid(to_x, to_y)):
             raise InvalidPieceMove("Posición inválida.")
+        
+        # Verifica si el movimiento es válido
+        if not self.valid_positions(from_x, from_y, to_x, to_y):
+            raise InvalidPieceMove("Movimiento no válido a una posición no válida.")
 
         direction = -1 if self.get_color() == "WHITE" else 1
         start_row = 6 if self.get_color() == "WHITE" else 1
