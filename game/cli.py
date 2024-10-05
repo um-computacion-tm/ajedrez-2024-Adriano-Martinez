@@ -58,10 +58,18 @@ class Cli:
         input("\nPresiona Enter para volver al menú...")  
 
     def play(self):
+        error_message = None  # Variable para almacenar el mensaje de error temporalmente
+
         while self.__chess__.is_playing():
+            # Mostrar el tablero y el turno actual
             self.display_board_and_turn()
+
+            # Si hay un error previo, mostrarlo ahora
+            if error_message:
+                print(f'\nError: {error_message}')
+                error_message = None  # Restablecer el mensaje de error
+
             print("Escribe 'draw' para solicitar un empate, 'menu' para volver al menú o realiza un movimiento.")
-            
             from_input, to_input = self.get_move_input()
 
             if from_input == 'draw':
@@ -73,7 +81,7 @@ class Cli:
 
             result = self.attempt_move(from_input, to_input)
             if result:
-                print(f'\nError: {result}')
+                error_message = result  # Almacenar el mensaje de error temporalmente
             elif self.__chess__.end_game():
                 print("\n¡Fin del juego!")
                 break
@@ -110,6 +118,10 @@ class Cli:
             self.__chess__.move(from_input, to_input)
         except PieceNotFound as e:
             error_message = str(e)  # Devuelve el mensaje de error específico
+        except InvalidTurn as e:
+            error_message = str(e) 
+        except InvalidPieceMove as e:
+            error_message = str(e)
         except InvalidMove as e:
             error_message = str(e) 
         except OutOfBoard as e:

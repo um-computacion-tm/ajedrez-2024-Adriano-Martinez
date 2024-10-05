@@ -53,8 +53,8 @@ class Chess:
             # Mostrar conteo de piezas después de cada movimiento
             self.show_piece_count()
 
-        except (PieceNotFound, InvalidMove, InvalidTurn, ValueError) as e:
-            print(f"Error: {str(e)}")  
+        except (PieceNotFound, InvalidMove, InvalidTurn, ValueError, InvalidPieceMove) as e:
+            raise 
 
     # Obtiene turno actual
     def get_turn(self):
