@@ -12,7 +12,7 @@ class Queen(Piece):
     def mov_correcto(self, from_x, from_y, to_x, to_y):
         # La Reina puede moverse en cualquier dirección: horizontal, vertical o diagonal.
         if not (from_x == to_x or from_y == to_y or abs(from_x - to_x) == abs(from_y - to_y)):
-            raise InvalidPieceMove("Movimiento no válido para la reina.")
+            raise InvalidPieceMove(piece_name="Reina")
         
         # Verificar si la posición de destino está en las posiciones posibles.
         possible_positions = (

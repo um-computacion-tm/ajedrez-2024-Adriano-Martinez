@@ -11,7 +11,7 @@ class King(Piece):
 
     def mov_correcto(self, from_x, from_y, to_x, to_y):
      if not self.valid_positions(from_x, from_y, to_x, to_y):
-        raise InvalidPieceMove("Movimiento no válido para el rey.")
+        raise InvalidPieceMove(piece_name="Rey")
 
      target_piece = self.__board__.get_piece(to_x, to_y)
      if target_piece is not None and target_piece.get_color() == self.get_color():

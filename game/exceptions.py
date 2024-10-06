@@ -10,6 +10,9 @@ class InvalidTurn(ErrorChess):
     def __init__(self, message="No es tu turno para mover esta pieza."):
         super().__init__(message)
 
+class InvalidFormat(ErrorChess):
+    def __init__(self, message="Formato de entrada inválido, Usa el formato 'e2'."):
+        super().__init__(message)
 
 class PieceNotFound(ErrorChess):
     def __init__(self, message="No hay pieza en la posición de origen."):
@@ -18,9 +21,9 @@ class PieceNotFound(ErrorChess):
 class InvalidPieceMove(InvalidMove):
     def __init__(self, piece_name, message=None):
         if message is None:
-            message = f"Movimiento no válido para la pieza seleccionada."
-        super().__init__(message)  
-
+            message = f"Movimiento no válido para {piece_name}."
+        super().__init__(message)
+        
 class OutOfBoard(ErrorChess):
     def __init__(self, message="La posición indicada se encuentra fuera del tablero"):
         super().__init__(message)  

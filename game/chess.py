@@ -1,5 +1,5 @@
 from game.board import Board
-from game.exceptions import PieceNotFound, InvalidMove, InvalidTurn, ErrorChess, InvalidPieceMove
+from game.exceptions import OutOfBoard, PieceNotFound, InvalidMove, InvalidTurn, ErrorChess, InvalidPieceMove, InvalidFormat
 import pickle
 
 class Chess:
@@ -9,6 +9,14 @@ class Chess:
         self.__turn__ = "WHITE"
         self.__history__ = []  # lista de movimientos 
         self.__game_over__ = False
+
+    #Permite al jugador rendirse
+    def rendirse(self):
+        if self.__turn__ == "WHITE":
+            print("Las blancas se han rendido. Las negras ganan la partida.")
+        else:
+            print("Las negras se han rendido. Las blancas ganan la partida.")
+        self.__game_over__ = True  # Marcar que el juego ha terminado
     
     # Verifica si el juego está activo o ha terminado
     def is_playing(self):
@@ -17,7 +25,7 @@ class Chess:
     # Convierte una posición en notación ajedrecística (e.g., 'e2') a coordenadas en el tablero
     def parse_position(self, pos):
         if len(pos) != 2 or pos[0] not in 'abcdefgh' or pos[1] not in '12345678':
-            raise ValueError("Posición inválida. Usa el formato 'e2'.")
+            raise InvalidFormat()
         col = ord(pos[0]) - ord('a') # Convierte la letra a una columna (0-7)
         row = 8 - int(pos[1]) # Convierte el número a una fila (0-7)
         return row, col
@@ -71,7 +79,7 @@ class Chess:
 
     def validate_coords(self, from_row, from_col, to_row, to_col):
         if not (0 <= from_row < 8 and 0 <= from_col < 8 and 0 <= to_row < 8 and 0 <= to_col < 8):
-            raise ValueError("Coordenadas fuera del rango. Deben estar entre 0 y 7.")
+            raise OutOfBoard("Coordenadas fuera del rango. Deben estar entre 0 y 7.")
         
     # Muestra el tablero actual
     def show_board(self):

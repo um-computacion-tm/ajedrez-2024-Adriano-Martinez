@@ -12,11 +12,11 @@ class Pawn(Piece):
     def mov_correcto(self, from_x, from_y, to_x, to_y):
         # Verifica si las posiciones son válidas
         if not (self.is_position_valid(from_x, from_y) and self.is_position_valid(to_x, to_y)):
-            raise InvalidPieceMove("Posición inválida.")
+            raise InvalidPieceMove(piece_name="Peón")
         
         # Verifica si el movimiento es válido
         if not self.valid_positions(from_x, from_y, to_x, to_y):
-            raise InvalidPieceMove("Movimiento no válido a una posición no válida.")
+            raise InvalidPieceMove(piece_name="Peón")
 
         direction = -1 if self.get_color() == "WHITE" else 1
         start_row = 6 if self.get_color() == "WHITE" else 1
@@ -26,7 +26,7 @@ class Pawn(Piece):
         if self.is_diagonal_capture(from_x, from_y, to_x, to_y, direction):
             return True
 
-        raise InvalidPieceMove("Movimiento no válido para el peón.")
+        raise InvalidPieceMove(piece_name="Peón")
     
     def is_forward_move(self, from_x, from_y, to_x, to_y, direction, start_row):
         if to_y == from_y:
