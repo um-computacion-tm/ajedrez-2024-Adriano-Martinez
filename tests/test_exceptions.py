@@ -5,6 +5,7 @@ from game.exceptions import (
     OutOfBoard,
     InvalidTurn,
     InvalidPieceMove,
+    InvalidFormat
 )
 
 class TestChessExceptions(unittest.TestCase):
@@ -28,6 +29,12 @@ class TestChessExceptions(unittest.TestCase):
         with self.assertRaises(InvalidTurn) as context:
             raise InvalidTurn()
         self.assertEqual(str(context.exception), "No es tu turno para mover esta pieza.")
+    
+    def test_invalid_format(self):
+        with self.assertRaises(InvalidFormat) as context:
+            raise InvalidFormat()
+        self.assertEqual(str(context.exception), "Formato de entrada inválido, Usa el formato 'e2'.")
+
 
     def test_invalid_piece_move(self):
      piece_name = "Reina"

@@ -12,16 +12,16 @@ class Rook(Piece):
     def mov_correcto(self, from_x, from_y, to_x, to_y):
         # Verificar que el movimiento es horizontal o vertical
         if from_x != to_x and from_y != to_y:
-            raise InvalidPieceMove("El movimiento debe ser horizontal o vertical.")
+            raise InvalidPieceMove(piece_name="Torre")
 
         # Verificar si el movimiento es a la misma posición
         if from_x == to_x and from_y == to_y:
-            raise InvalidPieceMove("El movimiento no puede ser a la misma posición.")
+            raise InvalidPieceMove(piece_name="Torre")
 
         # Utilizar la lógica centralizada para calcular las posiciones posibles ortogonales
         possible_positions = self.possible_orthogonal_positions(from_x, from_y)
         
         if (to_x, to_y) not in possible_positions:
-            raise InvalidPieceMove("Camino bloqueado o movimiento inválido.")
+            raise InvalidPieceMove(piece_name="Torre")
 
         return True
