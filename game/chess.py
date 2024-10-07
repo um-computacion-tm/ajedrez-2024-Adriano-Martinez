@@ -1,3 +1,4 @@
+import os
 import redis
 import pickle
 from game.board import Board
@@ -11,7 +12,8 @@ class Chess:
         self.__turn__ = "WHITE"
         self.__history__ = []  # lista de movimientos 
         self.__game_over__ = False
-        self.__redis__ = redis.StrictRedis(host='localhost', port=6379, db=0)
+        redis_host = os.getenv('REDIS_HOST', 'localhost')  # Obtiene el host de Redis desde la variable de entorno
+        self.__redis__ = redis.StrictRedis(host=redis_host, port=6379, db=0)
         
 
     #Permite al jugador rendirse
