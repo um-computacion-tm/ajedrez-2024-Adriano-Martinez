@@ -4,7 +4,7 @@ import os
 
 class Cli:
     def __init__(self):
-        self.__chess__ = Chess()
+        self.__chess__ = None
 
     def mostrar_menu(self):
         while True:
@@ -19,7 +19,6 @@ class Cli:
             opcion = input("\nSelecciona una opción (1-5): ")
 
             if opcion == '1':
-                print("\nIniciando partida...\n")
                 self.iniciar_partida()
             elif opcion == '2':
                 self.mostrar_instrucciones()
@@ -34,21 +33,54 @@ class Cli:
                 print("\nOpción no válida. Por favor, intenta de nuevo.")
 
     def iniciar_partida(self):
-        # Reiniciar el estado del juego
-        self.__chess__ = Chess()  # Crea un nuevo objeto de Chess para la nueva partida
+     if self.__chess__ is None:  # Crea un nuevo objeto solo si no hay una partida activa
+        self.__chess__ = Chess()
         print("Partida iniciada...\n")
         print("Las blancas comienzan el juego.\n")
-        self.play()  # Llama a la función que maneja la partida
+        self.play()
+     else:
+        continuar = input("Ya hay una partida activa. ¿Quieres continuar con la partida actual? (s/n): ").strip().lower()
+        if continuar == 's':
+            self.play()
+        else:
+            # Reiniciar la partida
+            self.__chess__ = Chess()  # Reinicia la partida
+            print("Se ha iniciado una nueva partida...\n")
+            print("Las blancas comienzan el juego.\n")
+            self.play()
+
 
     def guardar_partida(self):
-        filename = input("Introduce el nombre del archivo para guardar la partida (partida.pkl): ")
-        self.__chess__.save_game(filename)
-        print(f"Partida guardada en {filename}.")
+     if self.__chess__ is None:
+            print("No hay ninguna partida activa para guardar.")
+            return
+     game_id = input("Introduce un identificador para guardar la partida: ").strip()
+     if not game_id:
+        print("El ID de la partida no puede estar vacío.")
+        return
+     try:
+        self.__chess__.save_game(game_id)
+        print(f"Partida guardada con ID {game_id}.")
+     except Exception as e:
+        print(f"Error al guardar la partida: {e}")
 
     def cargar_partida(self):
-        filename = input("Introduce el nombre del archivo para cargar la partida (partida.pkl): ")
-        self.__chess__ = Chess.load_game(filename)
-        print(f"Partida cargada desde {filename}.")
+     game_id = input("Introduce el ID de la partida que deseas cargar: ").strip()
+     if not game_id:
+        print("El ID de la partida no puede estar vacío.")
+        return
+     try:
+        self.__chess__ = Chess()  # Asegurarse de que se crea una nueva instancia
+        self.__chess__.load_game(game_id)
+        if self.__chess__.is_playing():  # Verifica si la partida se cargó correctamente
+            print(f"Partida cargada desde {game_id}.")
+            print("Estado actual del juego:")
+            print(self.__chess__.show_board())
+            self.play()  # Comenzar el juego inmediatamente
+        else:
+            print(f"No se pudo cargar la partida con ID {game_id}.")
+     except Exception as e:
+        print(f"Error al cargar la partida: {e}")
 
     def mostrar_instrucciones(self):
         self.clear_terminal()  # Limpia la pantalla para mostrar las instrucciones
@@ -60,40 +92,44 @@ class Cli:
         input("\nPresiona Enter para volver al menú...")  
 
     def play(self):
-        error_message = None  # Variable para almacenar el mensaje de error temporalmente
+     error_message = None  # Variable para almacenar el mensaje de error temporalmente
 
-        while self.__chess__.is_playing():  # Mientras el juego no haya terminado
-            self.display_board_and_turn()
+     while self.__chess__.is_playing():  # Mientras el juego no haya terminado
+        self.display_board_and_turn()
 
-            # Mostrar cualquier mensaje de error que se haya producido
-            if error_message:
-                print(f'\nError: {error_message}')
-                error_message = None  # Restablecer el mensaje de error
+        # Mostrar cualquier mensaje de error que se haya producido
+        if error_message:
+            print(f'\nError: {error_message}')
+            error_message = None  # Restablecer el mensaje de error
 
-            print("Escribe 'draw' para solicitar un empate, 'rendirse' para rendirte, 'menu' para volver al menú o realiza un movimiento.")
-            from_input, to_input = self.get_move_input()
+        print("Escribe 'draw' para solicitar un empate, 'rendirse' para rendirte, 'menu' para volver al menú o realiza un movimiento.")
+        from_input, to_input = self.get_move_input()
 
-            if from_input == 'draw':
-                self.__chess__.request_draw()
-                continue
-            elif from_input == 'rendirse':
-                self.__chess__.rendirse()  # Llamar al método rendirse
-                break  # Terminar el bucle ya que el juego ha finalizado
-            elif from_input == 'menu':
-                print("\nVolviendo al menú...")
-                return  # Salir del juego y volver al menú
+        if from_input == 'draw':
+            self.__chess__.request_draw()
+            print("\n¡Empate solicitado! Fin de la partida.")
+            break
+        elif from_input == 'rendirse':
+            self.__chess__.rendirse()  # Llamar al método rendirse
+            print("\n¡Te has rendido! Fin de la partida.")
+            break  # Terminar el bucle ya que el juego ha finalizado
+        elif from_input == 'menu':
+            print("\nVolviendo al menú...")
+            return  # Salir del juego y volver al menú
 
-            result = self.attempt_move(from_input, to_input)
-            if result:
-                error_message = result
-            elif self.__chess__.end_game():  # Verificar si el juego ha terminado después de cada movimiento
-                print("\n¡Fin del juego!")
-                break
+        result = self.attempt_move(from_input, to_input)
+        if result:
+            error_message = result
+        elif self.__chess__.end_game():  # Verificar si el juego ha terminado después de cada movimiento
+            print("\n¡Fin del juego!")
+            break
 
-        # Mensaje de finalización y espera por 'menu'
-        self.wait_for_menu()
+    # Reiniciar el objeto Chess para permitir una nueva partida
+     self.__chess__ = None  # Resetea para que no haya partida activa
 
-    
+    # Mensaje de finalización y espera por 'menu'
+     self.wait_for_menu()
+
     def wait_for_menu(self):
         while True:
             option = input("\nEscribe 'menu' para volver al inicio: ").strip().lower()

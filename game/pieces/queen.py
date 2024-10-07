@@ -21,7 +21,7 @@ class Queen(Piece):
         )
         
         if (to_x, to_y) not in possible_positions:
-            raise InvalidPieceMove("Camino bloqueado o movimiento inválido.")
+            raise InvalidPieceMove(piece_name="Reina")
         
         return True
 

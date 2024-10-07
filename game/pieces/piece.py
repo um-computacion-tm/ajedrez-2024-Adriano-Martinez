@@ -61,4 +61,3 @@ class Piece:
             col += col_increment
 
         return possibles
-

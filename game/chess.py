@@ -1,6 +1,8 @@
+import redis
+import pickle
 from game.board import Board
 from game.exceptions import OutOfBoard, PieceNotFound, InvalidMove, InvalidTurn, ErrorChess, InvalidPieceMove, InvalidFormat
-import pickle
+
 
 class Chess:
     def __init__(self):
@@ -9,6 +11,8 @@ class Chess:
         self.__turn__ = "WHITE"
         self.__history__ = []  # lista de movimientos 
         self.__game_over__ = False
+        self.__redis__ = redis.StrictRedis(host='localhost', port=6379, db=0)
+        
 
     #Permite al jugador rendirse
     def rendirse(self):
@@ -119,12 +123,43 @@ class Chess:
             print("La partida ha terminado en empate por mutuo acuerdo.")
             self.__game_over__ = True
 
-    # Guarda el estado actual del juego en un archivo usando pickle
-    def save_game(self, filename):
-        with open(filename, 'wb') as f:
-            pickle.dump(self, f)
+    def create_piece(self, color, piece_type):
+     piece_class = Board.get_piece_class(piece_type)
+     if piece_class:
+        return piece_class(color, self.__board__)
+     raise ValueError(f"Tipo de pieza desconocido: {piece_type}")
 
-    @classmethod
-    def load_game(cls, filename):
-        with open(filename, 'rb') as f:
-            return pickle.load(f)
+    def save_game(self, game_id):
+     try:
+        game_data = {
+            'turn': self.__turn__,
+            'history': self.__history__,
+            'board': [[(piece.get_color(), piece.__class__.__name__) if piece else None for piece in row] for row in self.__board__.__positions__]
+        }
+        print(f"Guardando datos de la partida: {game_data}")
+        self.__redis__.set(game_id, pickle.dumps(game_data))
+     except Exception as e:
+        print(f"Error al guardar la partida: {e}")
+
+    def load_game(self, game_id):
+     game_data = self.__redis__.get(game_id)
+     if game_data:
+        try:
+            game_data = pickle.loads(game_data)
+            self.__turn__ = game_data['turn']
+            self.__history__ = game_data['history']
+            
+            # Reconstruye el tablero a partir de la información guardada
+            for row in range(8):
+                for col in range(8):
+                    piece_data = game_data['board'][row][col]
+                    if piece_data:
+                        color, piece_type = piece_data
+                        piece_type = piece_type.lower()  # Convertir a minúsculas
+                        self.__board__.__positions__[row][col] = self.create_piece(color, piece_type)
+                    else:
+                        self.__board__.__positions__[row][col] = None
+        except Exception as e:
+            print(f"Error al deserializar los datos: {e}")
+     else:
+        print(f"No se encontró la partida con ID: {game_id}")

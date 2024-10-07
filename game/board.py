@@ -147,3 +147,15 @@ class Board:
                 piece = self.get_piece(row, col)
                 if piece and piece.get_color() == color:
                     self.remove_piece(row, col)  # Usa el nuevo método para eliminar piezas
+    
+    @staticmethod
+    def get_piece_class(piece_type):
+        piece_classes = {
+            'rook': Rook,
+            'knight': Knight,
+            'bishop': Bishop,
+            'queen': Queen,
+            'king': King,
+            'pawn': Pawn,
+        }
+        return piece_classes.get(piece_type.lower(), None)

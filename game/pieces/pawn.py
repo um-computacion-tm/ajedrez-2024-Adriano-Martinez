@@ -21,14 +21,23 @@ class Pawn(Piece):
         direction = -1 if self.get_color() == "WHITE" else 1
         start_row = 6 if self.get_color() == "WHITE" else 1
 
-        if self.is_forward_move(from_x, from_y, to_x, to_y, direction, start_row):
+        # Crear diccionarios para las posiciones
+        from_position = {'x': from_x, 'y': from_y}
+        to_position = {'x': to_x, 'y': to_y}
+
+        if self.is_forward_move(from_position, to_position, direction, start_row):
             return True
         if self.is_diagonal_capture(from_x, from_y, to_x, to_y, direction):
             return True
 
         raise InvalidPieceMove(piece_name="Peón")
     
-    def is_forward_move(self, from_x, from_y, to_x, to_y, direction, start_row):
+    def is_forward_move(self, from_pos, to_pos, direction, start_row):
+        from_x = from_pos['x']
+        from_y = from_pos['y']
+        to_x = to_pos['x']
+        to_y = to_pos['y']
+
         if to_y == from_y:
             if to_x == from_x + direction and self.__board__.get_piece(to_x, to_y) is None:
                 return True
