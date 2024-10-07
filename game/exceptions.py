@@ -21,7 +21,7 @@ class PieceNotFound(ErrorChess):
 class InvalidPieceMove(InvalidMove):
     def __init__(self, piece_name, message=None):
         if message is None:
-            message = f"Movimiento no válido para {piece_name}."
+            message = f"Movimiento no válido para el {piece_name}."
         super().__init__(message)
         
 class OutOfBoard(ErrorChess):
