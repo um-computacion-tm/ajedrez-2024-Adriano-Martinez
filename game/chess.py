@@ -116,15 +116,6 @@ class Chess:
 
      return False
     
-    # Solicita a ambos jugadores si están de acuerdo en un empate
-    def request_draw(self):
-        decision_white = input("¿Blancas quieren terminar la partida en empate? (s/n): ").lower()
-        decision_black = input("¿Negras quieren terminar la partida en empate? (s/n): ").lower()
-
-        if decision_white == 's' and decision_black == 's':
-            print("La partida ha terminado en empate por mutuo acuerdo.")
-            self.__game_over__ = True
-
     def create_piece(self, color, piece_type):
      piece_class = Board.get_piece_class(piece_type)
      if piece_class:

@@ -39,7 +39,12 @@ class Cli:
         print("Las blancas comienzan el juego.\n")
         self.play()
      else:
-        continuar = input("Ya hay una partida activa. ¿Quieres continuar con la partida actual? (s/n): ").strip().lower()
+        while True:
+            continuar = input("Ya hay una partida activa. ¿Quieres continuar con la partida actual? (s/n): ").strip().lower()
+            if continuar in ['s', 'n']:
+                break
+            print("Entrada no válida. Por favor, ingresa 's' o 'n'.")
+
         if continuar == 's':
             self.play()
         else:
@@ -48,6 +53,20 @@ class Cli:
             print("Se ha iniciado una nueva partida...\n")
             print("Las blancas comienzan el juego.\n")
             self.play()
+
+    def request_draw(self):
+     if self.__chess__ is None:
+        print("No hay ninguna partida activa.")
+        return
+    
+     decision_white = input("¿Blancas quieren terminar la partida en empate? (s/n): ").lower()
+     decision_black = input("¿Negras quieren terminar la partida en empate? (s/n): ").lower()
+
+     if decision_white == 's' and decision_black == 's':
+        print("La partida ha terminado en empate por mutuo acuerdo.")
+        self.__chess__.__game_over__ = True  # Marcar que el juego ha terminado
+     elif decision_white == 'n' or decision_black == 'n':
+        print("La solicitud de empate ha sido rechazada.")
 
 
     def guardar_partida(self):
@@ -106,17 +125,21 @@ class Cli:
         from_input, to_input = self.get_move_input()
 
         if from_input == 'draw':
-            self.__chess__.request_draw()
-            print("\n¡Empate solicitado! Fin de la partida.")
-            break
+            self.request_draw()  # Llama al método para solicitar un empate
+            if not self.__chess__.is_playing():  # Verifica si el juego ha terminado
+                break  # Si el juego terminó, salir del bucle
+            continue  # Continuar al siguiente ciclo para pedir otro movimiento
+
         elif from_input == 'rendirse':
             self.__chess__.rendirse()  # Llamar al método rendirse
             print("\n¡Te has rendido! Fin de la partida.")
             break  # Terminar el bucle ya que el juego ha finalizado
+            
         elif from_input == 'menu':
             print("\nVolviendo al menú...")
             return  # Salir del juego y volver al menú
 
+        # Aquí es donde intentas realizar un movimiento
         result = self.attempt_move(from_input, to_input)
         if result:
             error_message = result
@@ -130,12 +153,15 @@ class Cli:
     # Mensaje de finalización y espera por 'menu'
      self.wait_for_menu()
 
+
     def wait_for_menu(self):
         while True:
             option = input("\nEscribe 'menu' para volver al inicio: ").strip().lower()
             if option == 'menu':
                 print("\nVolviendo al menú principal...")
                 return
+            
+    
 
     def display_board_and_turn(self):
         self.clear_terminal()
