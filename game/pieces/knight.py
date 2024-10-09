@@ -14,10 +14,6 @@ class Knight(Piece):
         if not self.valid_positions(from_x, from_y, to_x, to_y):
             raise InvalidPieceMove(piece_name="Caballo")
 
-        # Verifica si el movimiento sigue el patrón en forma de L
-        if (abs(to_x - from_x), abs(to_y - from_y)) not in [(2, 1), (1, 2)]:
-            raise InvalidPieceMove(piece_name="Caballo")
-
         # Verifica si hay una pieza del mismo color en la posición de destino
         pieza_destino = self.__board__.get_piece(to_x, to_y)
         if pieza_destino and pieza_destino.get_color() == self.get_color():
