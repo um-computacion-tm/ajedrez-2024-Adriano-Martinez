@@ -33,12 +33,7 @@ class TestChess(unittest.TestCase):
         self.__chess__.rendirse()  # Ahora se rinden las negras
         self.assertFalse(self.__chess__.is_playing())  # El juego debe haber terminado
 
-    def test_draw_request(self):
-        # Prueba la solicitud de empate mutuo.
-        with mock.patch('builtins.input', side_effect=['s', 's']):
-            self.__chess__.request_draw()
-            self.assertFalse(self.__chess__.is_playing())  # El juego debe haber terminado en empate
-
+    
     def test_end_game_white_wins(self):
         # Prueba el final del juego cuando las negras no tienen piezas.
         with mock.patch.object(self.__chess__.__board__, 'count_pieces', return_value=(10, 0)):

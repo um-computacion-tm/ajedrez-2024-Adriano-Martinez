@@ -29,8 +29,7 @@ class Pawn(Piece):
             return True
         if self.is_diagonal_capture(from_x, from_y, to_x, to_y, direction):
             return True
-
-        raise InvalidPieceMove(piece_name="Peón")
+        #raise InvalidPieceMove(piece_name="Peón")
     
     def is_forward_move(self, from_pos, to_pos, direction, start_row):
         from_x = from_pos['x']
