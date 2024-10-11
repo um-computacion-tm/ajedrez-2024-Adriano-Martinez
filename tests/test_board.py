@@ -33,53 +33,18 @@ class TestBoard(unittest.TestCase):
                 self.assertIsNone(self.__board__.get_piece(row, col))
     
     def test_remove_piece(self):
-    # Verifica que la torre negra esté presente
-     self.assertIsInstance(self.__board__.get_piece(0, 0), Rook)  
-     self.__board__.remove_piece(0, 0)  # Elimina la torre negra
-     self.assertIsNone(self.__board__.get_piece(0, 0))  # Verifica que la torre haya sido eliminada
+        # Verifica que la torre negra esté presente
+        self.assertIsInstance(self.__board__.get_piece(0, 0), Rook)  
+        self.__board__.remove_piece(0, 0)  # Elimina la torre negra
+        self.assertIsNone(self.__board__.get_piece(0, 0))  # Verifica que la torre haya sido eliminada
 
-    # Intenta eliminar una pieza que no existe
-     with self.assertRaises(PieceNotFound):
-        self.__board__.remove_piece(0, 0)  # Debe lanzar PieceNotFound
+        # Intenta eliminar una pieza que no existe
+        with self.assertRaises(PieceNotFound):
+            self.__board__.remove_piece(0, 0)  # Debe lanzar PieceNotFound
 
-    # Intenta eliminar fuera del tablero
-     with self.assertRaises(OutOfBoard):
-        self.__board__.remove_piece(8, 0)  # Debe lanzar OutOfBoard
-
-
-    def test_is_valid_move(self):
-    # Colocar una torre blanca en la posición (0, 0)
-     rook = Rook("WHITE", self.__board__)
-     self.__board__.set_piece(0, 0, rook)
-
-     self.__board__.set_piece(0, 1, None)  
-     self.__board__.set_piece(0, 2, None)  
-     self.__board__.set_piece(0, 3, None)  
-     self.__board__.set_piece(0, 4, None)  
-     self.__board__.set_piece(0, 5, None)
-
-    #Movimiento válido
-     valid_move_result, message = self.__board__.is_valid_move(0, 0, 0, 5, rook)
-     self.assertTrue(valid_move_result, message)  
-
-    #Movimiento fuera de rango
-     invalid_move_result, message = self.__board__.is_valid_move(0, 0, 0, 8, rook)
-     self.assertFalse(invalid_move_result, message)  
-
-    #intento de capturar propia pieza
-     self.__board__.set_piece(0, 5, rook)  
-     invalid_move_result, message = self.__board__.is_valid_move(0, 0, 0, 5, rook)
-     self.assertFalse(invalid_move_result, message)  
-     
-    def test_out_of_board(self):
+        # Intenta eliminar fuera del tablero
         with self.assertRaises(OutOfBoard):
-            self.__board__.get_piece(8, 0)
-
-    def test_move_piece_out_of_board(self):
-        with self.assertRaises(OutOfBoard):
-            self.__board__.mover_pieza(8, 0, 3, 0)  # Origen fuera del tablero
-        with self.assertRaises(OutOfBoard):
-            self.__board__.mover_pieza(0, 8, 3, 0)  # Origen fuera del tablero
+            self.__board__.remove_piece(8, 0)  # Debe lanzar OutOfBoard
 
     def test_move_piece(self):
         self.__board__.mover_pieza(1, 0, 3, 0)
@@ -92,6 +57,12 @@ class TestBoard(unittest.TestCase):
         self.__board__.set_piece(2, 0, Pawn("WHITE", self.__board__))  # Coloca un peón blanco en (2, 0)
         with self.assertRaises(InvalidMove):
             self.__board__.mover_pieza(3, 0, 2, 0)  # Intenta capturar su propio peón
+
+    def test_move_piece_out_of_board(self):
+        with self.assertRaises(OutOfBoard):
+            self.__board__.mover_pieza(8, 0, 3, 0)  # Origen fuera del tablero
+        with self.assertRaises(OutOfBoard):
+            self.__board__.mover_pieza(0, 8, 3, 0)  # Origen fuera del tablero
 
     def test_get_piece(self):
         piece = self.__board__.get_piece(0, 0)  # Debe ser una torre negra

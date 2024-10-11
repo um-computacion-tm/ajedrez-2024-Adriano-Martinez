@@ -47,6 +47,14 @@ class TestKing(unittest.TestCase):
         self.__board__.set_piece(5, 5, King("BLACK", self.__board__))  
         # Verifica que el rey pueda moverse a una posición ocupada por una pieza del oponente
         self.assertTrue(self.__white_king__.mov_correcto(4, 4, 5, 5))  # Movimiento diagonal hacia abajo derecha
+    
+    def test_move_to_same_color_piece(self):
+        # Coloca otra pieza blanca en una posición adyacente
+        self.__board__.set_piece(5, 5, King("WHITE", self.__board__))  
+        # Verifica que el rey no pueda moverse a una casilla ocupada por otra pieza blanca
+        with self.assertRaises(InvalidPieceMove):
+            self.__white_king__.mov_correcto(4, 4, 5, 5)  # Movimiento inválido (misma pieza)
+
 
 if __name__ == "__main__":
     unittest.main()

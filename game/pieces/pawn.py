@@ -4,40 +4,32 @@ from game.exceptions import InvalidPieceMove
 class Pawn(Piece):
 
     def __init__(self, color, board):
-        super().__init__(color, board) 
+        super().__init__(color, board)
         
     def __str__(self):
         return "♙" if self.get_color() == "WHITE" else "♟"
     
     def mov_correcto(self, from_x, from_y, to_x, to_y):
-        # Verifica si las posiciones son válidas
+        # Verificar que las posiciones son válidas
         if not (self.is_position_valid(from_x, from_y) and self.is_position_valid(to_x, to_y)):
             raise InvalidPieceMove(piece_name="Peón")
         
-        # Verifica si el movimiento es válido
-        if not self.valid_positions(from_x, from_y, to_x, to_y):
-            raise InvalidPieceMove(piece_name="Peón")
-
         direction = -1 if self.get_color() == "WHITE" else 1
         start_row = 6 if self.get_color() == "WHITE" else 1
 
-        # Crear diccionarios para las posiciones
-        from_position = {'x': from_x, 'y': from_y}
-        to_position = {'x': to_x, 'y': to_y}
-
-        if self.is_forward_move(from_position, to_position, direction, start_row):
+        # Movimiento hacia adelante
+        if self.is_forward_move(from_x, from_y, to_x, to_y, direction, start_row):
             return True
+        
+        # Captura diagonal
         if self.is_diagonal_capture(from_x, from_y, to_x, to_y, direction):
             return True
-        #raise InvalidPieceMove(piece_name="Peón")
-    
-    def is_forward_move(self, from_pos, to_pos, direction, start_row):
-        from_x = from_pos['x']
-        from_y = from_pos['y']
-        to_x = to_pos['x']
-        to_y = to_pos['y']
 
-        if to_y == from_y:
+        # Si el movimiento no es válido
+        raise InvalidPieceMove(piece_name="Peón")
+    
+    def is_forward_move(self, from_x, from_y, to_x, to_y, direction, start_row):
+        if to_y == from_y:  # Movimiento vertical
             if to_x == from_x + direction and self.__board__.get_piece(to_x, to_y) is None:
                 return True
             if from_x == start_row and to_x == from_x + 2 * direction and self.__board__.get_piece(from_x + direction, from_y) is None:

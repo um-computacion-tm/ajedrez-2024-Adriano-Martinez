@@ -85,48 +85,29 @@ class Board:
         self.set_piece(row, col, None)
 
     def mover_pieza(self, from_row, from_col, to_row, to_col):
-        # Verifica si la posición de origen está fuera del tablero
-        if not self.is_position_valid(from_row, from_col):
-            raise OutOfBoard()
+    # Verifica si las posiciones de origen y destino están dentro del tablero
+     if not self.is_position_valid(from_row, from_col) or not self.is_position_valid(to_row, to_col):
+        raise OutOfBoard()
 
-        piece = self.get_piece(from_row, from_col)
-        if piece is None:
-            raise PieceNotFound()
+    # Verifica que haya una pieza en la posición de origen
+     piece = self.get_piece(from_row, from_col)
+     if piece is None:
+        raise PieceNotFound()
 
-        # Verifica si la posición de destino está fuera del tablero
-        if not self.is_position_valid(to_row, to_col):
-            raise OutOfBoard()
+    # Verifica si hay una pieza del mismo color en la posición de destino
+     target_piece = self.get_piece(to_row, to_col)
+     if target_piece is not None and target_piece.get_color() == piece.get_color():
+        raise InvalidMove("No puedes mover a una posición ocupada por tu propia pieza.")
 
-        # Verifica si hay una pieza propia en la posición de destino
-        target_piece = self.get_piece(to_row, to_col)
-        if target_piece is not None and target_piece.get_color() == piece.get_color():
-            raise InvalidMove("No puedes mover a una posición ocupada por tu propia pieza.")
+    # Intenta verificar si el movimiento es válido para la pieza
+     try:
+        piece.mov_correcto(from_row, from_col, to_row, to_col)
+     except InvalidPieceMove as e:
+        raise InvalidMove(str(e))
 
-        # Verifica si el movimiento es válido
-        try:
-            is_valid, message = self.is_valid_move(from_row, from_col, to_row, to_col, piece)
-        except InvalidPieceMove as e:
-            raise
-
-        if not is_valid:
-            raise InvalidMove(message)
-
-        # Mueve la pieza
-        self.set_piece(to_row, to_col, piece)
-        self.set_piece(from_row, from_col, None)
-
-    def is_valid_move(self, from_row, from_col, to_row, to_col, piece):
-        if not Piece.is_position_valid(from_row, from_col) or not Piece.is_position_valid(to_row, to_col):
-            return False, "Coordenadas fuera del rango del tablero."
-        
-        destination_piece = self.get_piece(to_row, to_col)
-        if destination_piece is not None and destination_piece.get_color() == piece.get_color():
-            return False, "No puedes capturar tu propia pieza."
-        
-        if not piece.mov_correcto(from_row, from_col, to_row, to_col):
-            return False, "Movimiento no válido para esta pieza."
-
-        return True, "Movimiento válido."
+    # Realiza el movimiento: coloca la pieza en la nueva posición y elimina la antigua
+     self.set_piece(to_row, to_col, piece)
+     self.set_piece(from_row, from_col, None)
 
     def count_pieces(self):
         white_count = 0

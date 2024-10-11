@@ -36,39 +36,38 @@ class Chess:
         row = 8 - int(pos[1]) # Convierte el número a una fila (0-7)
         return row, col
 
-    # Mueve una pieza de una posición a otra
     def move(self, from_input, to_input):
-        try:
-            # Convierte las entradas de posiciones en coordenadas
-            from_row, from_col = self.parse_position(from_input)
-            to_row, to_col = self.parse_position(to_input)
+     try:
+        # Convierte las entradas de posiciones en coordenadas
+        from_row, from_col = self.parse_position(from_input)
+        to_row, to_col = self.parse_position(to_input)
 
-            # Valida que las coordenadas estén dentro del tablero
-            self.validate_coords(from_row, from_col, to_row, to_col)
+        # Valida que las coordenadas estén dentro del tablero
+        self.validate_coords(from_row, from_col, to_row, to_col)
 
-            # Obtiene la pieza de la posición inicial
-            piece = self.__board__.get_piece(from_row, from_col)
+        # Obtiene la pieza de la posición inicial
+        piece = self.__board__.get_piece(from_row, from_col)
 
-            # Si no hay una pieza en la posición inicial, lanza un error
-            if piece is None:
-                raise PieceNotFound()
+        # Si no hay una pieza en la posición inicial, lanza un error
+        if piece is None:
+            raise PieceNotFound()
 
-            self.validate_turn(piece)
+        # Validación del turno
+        self.validate_turn(piece)
 
-            is_valid, message = self.__board__.is_valid_move(from_row, from_col, to_row, to_col, piece)
+        # Mueve la pieza (la validación del movimiento se hace internamente)
+        self.__board__.mover_pieza(from_row, from_col, to_row, to_col)
+        
+        # Guarda el movimiento en el historial y cambia el turno
+        self.__history__.append((from_input, to_input))
+        self.change_turn()
 
-            if not is_valid:
-                raise InvalidMove(message)
+        # Mostrar conteo de piezas después de cada movimiento
+        self.show_piece_count()
 
-            self.__board__.mover_pieza(from_row, from_col, to_row, to_col)
-            self.__history__.append((from_input, to_input))
-            self.change_turn()
+     except (PieceNotFound, InvalidMove, InvalidTurn, ValueError, InvalidPieceMove) as e:
+        raise
 
-            # Mostrar conteo de piezas después de cada movimiento
-            self.show_piece_count()
-
-        except (PieceNotFound, InvalidMove, InvalidTurn, ValueError, InvalidPieceMove) as e:
-            raise 
 
     # Obtiene turno actual
     def get_turn(self):

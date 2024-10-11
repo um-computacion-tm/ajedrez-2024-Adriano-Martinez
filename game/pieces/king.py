@@ -10,15 +10,12 @@ class King(Piece):
         return "♔" if self.get_color() == "WHITE" else "♚"
 
     def mov_correcto(self, from_x, from_y, to_x, to_y):
+    # Verificar si el movimiento está dentro de las posiciones válidas
      if not self.valid_positions(from_x, from_y, to_x, to_y):
         raise InvalidPieceMove(piece_name="Rey")
 
-     target_piece = self.__board__.get_piece(to_x, to_y)
-     if target_piece is not None and target_piece.get_color() == self.get_color():
-        raise InvalidPieceMove("No puedes mover a una posición ocupada por tu propia pieza.")
-
+    # Si el movimiento es válido, devuelve True
      return True
-
 
     def get_possible_positions(self, from_row, from_col):
         possibles = []
