@@ -17,18 +17,24 @@ class Pawn(Piece):
         direction = -1 if self.get_color() == "WHITE" else 1
         start_row = 6 if self.get_color() == "WHITE" else 1
 
+        # Agrupar posiciones en tuplas
+        from_pos = (from_x, from_y)
+        to_pos = (to_x, to_y)
+
         # Movimiento hacia adelante
-        if self.is_forward_move(from_x, from_y, to_x, to_y, direction, start_row):
+        if self.is_forward_move(from_pos, to_pos, direction, start_row):
             return True
         
         # Captura diagonal
-        if self.is_diagonal_capture(from_x, from_y, to_x, to_y, direction):
+        if self.is_diagonal_capture(from_pos, to_pos, direction):
             return True
 
         # Si el movimiento no es válido
         raise InvalidPieceMove(piece_name="Peón")
-    
-    def is_forward_move(self, from_x, from_y, to_x, to_y, direction, start_row):
+
+    def is_forward_move(self, from_pos, to_pos, direction, start_row):
+        from_x, from_y = from_pos
+        to_x, to_y = to_pos
         if to_y == from_y:  # Movimiento vertical
             if to_x == from_x + direction and self.__board__.get_piece(to_x, to_y) is None:
                 return True
@@ -36,7 +42,9 @@ class Pawn(Piece):
                 return True
         return False
 
-    def is_diagonal_capture(self, from_x, from_y, to_x, to_y, direction):
+    def is_diagonal_capture(self, from_pos, to_pos, direction):
+        from_x, from_y = from_pos
+        to_x, to_y = to_pos
         if abs(to_y - from_y) == 1 and to_x == from_x + direction:
             other_piece = self.__board__.get_piece(to_x, to_y)
             return other_piece is not None and other_piece.get_color() != self.get_color()

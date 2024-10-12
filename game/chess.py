@@ -112,7 +112,6 @@ class Chess:
         print("¡Las blancas han ganado! Las negras no tienen piezas.")
         self.__game_over__ = True
         return True
-
      return False
     
     def create_piece(self, color, piece_type):
