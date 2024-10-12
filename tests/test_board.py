@@ -73,6 +73,45 @@ class TestBoard(unittest.TestCase):
             self.__board__.get_piece(-1, 0)  # Fila fuera de rango
         with self.assertRaises(OutOfBoard):
             self.__board__.get_piece(8, 0)  # Fila fuera de rango
+    
+    def test_remove_all_pieces(self):
+    # Colocar algunas piezas en el tablero
+     self.__board__.set_piece(0, 0, Rook("WHITE", self.__board__))  # Coloca una torre blanca en (0, 0)
+     self.__board__.set_piece(1, 0, Pawn("WHITE", self.__board__))  # Coloca un peón blanco en (1, 0)
+     self.__board__.set_piece(6, 0, Pawn("BLACK", self.__board__))  # Coloca un peón negro en (6, 0)
+ 
+    # Verifica que las piezas blancas están en el tablero
+     self.assertIsInstance(self.__board__.get_piece(0, 0), Rook)
+     self.assertIsInstance(self.__board__.get_piece(1, 0), Pawn)
+
+    # Eliminar todas las piezas blancas
+     self.__board__.remove_all_pieces("WHITE")
+
+    # Verificar que las piezas blancas han sido eliminadas
+     self.assertIsNone(self.__board__.get_piece(0, 0))
+     self.assertIsNone(self.__board__.get_piece(1, 0))
+
+    # Verificar que la pieza negra no ha sido eliminada
+     self.assertIsInstance(self.__board__.get_piece(6, 0), Pawn)
+     self.assertEqual(self.__board__.get_piece(6, 0).get_color(), "BLACK")
+    
+    def test_set_piece_out_of_board(self):
+    # Intenta colocar una pieza fuera del tablero
+     with self.assertRaises(OutOfBoard):
+        self.__board__.set_piece(8, 0, Rook("WHITE", self.__board__))  # Fila fuera de rango
+     with self.assertRaises(OutOfBoard):
+        self.__board__.set_piece(0, 8, Rook("WHITE", self.__board__))  # Columna fuera de rango
+     with self.assertRaises(OutOfBoard):
+        self.__board__.set_piece(-1, 0, Rook("WHITE", self.__board__))  # Fila negativa
+
+    def test_move_piece_invalid_move(self):
+    # Coloca una torre blanca en (0, 0) y un peón blanco en (1, 0)
+     self.__board__.set_piece(0, 0, Rook("WHITE", self.__board__))
+     self.__board__.set_piece(1, 0, Pawn("WHITE", self.__board__))
+
+    # Intenta mover la torre a una posición ocupada por el peón blanco
+     with self.assertRaises(InvalidMove):
+        self.__board__.mover_pieza(0, 0, 1, 0)  # Misma columna, pero con una pieza del mismo color en el destino
 
 if __name__ == "__main__":
     unittest.main()

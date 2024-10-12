@@ -1,12 +1,14 @@
 import unittest
 from unittest import mock
 from game.chess import Chess
-from game.exceptions import PieceNotFound, InvalidMove, InvalidTurn, InvalidPieceMove
+from game.exceptions import PieceNotFound, InvalidMove, InvalidTurn, InvalidPieceMove, InvalidFormat
 
 class TestChess(unittest.TestCase):
 
     def setUp(self):
-        self.__chess__ = Chess()
+     self.__chess__ = Chess()
+    # Limpia cualquier estado anterior en Redis antes de iniciar el test
+     self.__chess__.__redis__.delete("test_game")
 
     def test_initial_turn_is_white(self):
         # Comprueba que el turno inicial sea de las blancas.
@@ -69,6 +71,87 @@ class TestChess(unittest.TestCase):
     def tearDown(self):
         # Limpia el juego guardado en Redis
         self.__chess__.__redis__.delete("test_game")
+    
+    def test_move_piece_not_found(self):
+     with self.assertRaises(PieceNotFound):
+        self.__chess__.move("a3", "a4")  # No hay una pieza en a3
+    
+    def test_invalid_format(self):
+     with self.assertRaises(InvalidFormat):
+        self.__chess__.move("zz", "e4")  # Formato inválido
+    
+    def test_initial_board_setup(self):
+     board = self.__chess__.__board__
+     self.assertEqual(board.get_piece(0, 0).get_color(), "BLACK")  # Torre negra en a8
+     self.assertEqual(board.get_piece(7, 4).get_color(), "WHITE")  # Rey blanco en e1
+    
+    def test_invalid_turn(self):
+     self.__chess__.move("e2", "e4")  # Las blancas mueven primero
+     with self.assertRaises(InvalidTurn):
+        self.__chess__.move("d2", "d4")  # Intentan mover de nuevo las blancas en lugar de las negras
+    
+    def test_show_board(self):
+    # Muestra el tablero inicial
+     initial_board = self.__chess__.show_board()
+
+    # Verifica que algunas piezas clave estén en las posiciones correctas
+     self.assertIn("♖", initial_board)  # Torre blanca
+     self.assertIn("♔", initial_board)  # Rey blanco
+     self.assertIn("♙", initial_board)  # Peón blanco
+     self.assertIn("♚", initial_board)  # Rey negro
+     self.assertIn("♜", initial_board)  # Torre negra
+
+    # Realiza un movimiento y vuelve a verificar el tablero
+     self.__chess__.move("e2", "e4")  # Mueve un peón blanco
+     updated_board = self.__chess__.show_board()
+
+    # El tablero actualizado debe reflejar el cambio
+     self.assertNotEqual(initial_board, updated_board)  # Deben ser diferentes tras el movimiento
+     self.assertIn("♙", updated_board)  # El peón debe estar en la nueva posición
+
+    def test_turn_property(self):
+    # Verifica que el turno inicial sea "WHITE"
+     self.assertEqual(self.__chess__.turn, "WHITE")
+
+    # Realiza un movimiento y verifica que el turno cambie a "BLACK"
+     self.__chess__.move("e2", "e4")
+     self.assertEqual(self.__chess__.turn, "BLACK")
+
+    # Realiza un movimiento de las negras y verifica que el turno cambie de nuevo a "WHITE"
+     self.__chess__.move("e7", "e5")
+     self.assertEqual(self.__chess__.turn, "WHITE")
+
+    def test_end_game_no_white_pieces(self):
+    # Simula un estado donde no quedan piezas blancas
+     with mock.patch.object(self.__chess__.__board__, 'count_pieces', return_value=(0, 10)):
+        self.assertTrue(self.__chess__.end_game())  # El juego debe terminar, negras ganan
+        self.assertTrue(self.__chess__.__game_over__)  # El juego está marcado como terminado
+
+    def test_end_game_no_black_pieces(self):
+    # Simula un estado donde no quedan piezas negras
+     with mock.patch.object(self.__chess__.__board__, 'count_pieces', return_value=(10, 0)):
+        self.assertTrue(self.__chess__.end_game())  # El juego debe terminar, blancas ganan
+        self.assertTrue(self.__chess__.__game_over__)  # El juego está marcado como terminado
+
+    def test_end_game_still_playing(self):
+    # Simula un estado donde ambos jugadores aún tienen piezas
+     with mock.patch.object(self.__chess__.__board__, 'count_pieces', return_value=(10, 10)):
+        self.assertFalse(self.__chess__.end_game())  # El juego no debería terminar
+        self.assertFalse(self.__chess__.__game_over__)  # El juego sigue en curso
+    
+    def test_create_valid_piece(self):
+    # Crea una pieza válida (por ejemplo, un peón blanco)
+     piece = self.__chess__.create_piece("WHITE", "Pawn")
+     self.assertEqual(type(piece).__name__, "Pawn")  # Verifica que se ha creado un peón
+     self.assertEqual(piece.get_color(), "WHITE")  # Verifica que es blanco
+
+
+    def test_create_invalid_piece(self):
+    # Intenta crear una pieza con un tipo desconocido
+     with self.assertRaises(ValueError) as context:
+        self.__chess__.create_piece("WHITE", "UnknownPiece")
+     self.assertEqual(str(context.exception), "Tipo de pieza desconocido: UnknownPiece")
+    
 
 if __name__ == "__main__":
     unittest.main()
