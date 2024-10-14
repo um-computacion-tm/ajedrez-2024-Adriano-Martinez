@@ -47,6 +47,21 @@ class TestQueen(unittest.TestCase):
         # La reina blanca no debería poder moverse a la posición de su propia pieza
         with self.assertRaises(InvalidPieceMove):
             self.__queen_white__.mov_correcto(3, 3, 7, 3)  # d4 a h4, no debería permitir mover
+    
+    def test_out_of_bounds_move(self):
+        # La Reina intenta moverse fuera de los límites del tablero
+        with self.assertRaises(InvalidPieceMove):
+            self.__queen_white__.mov_correcto(3, 3, 8, 3)  # Movimiento fuera del tablero (d4 a d9 no es válido)
+    
+    def test_blocked_move(self):
+        # Coloca una pieza en el camino de la Reina en d5 (4, 3)
+        blocking_piece = Queen("BLACK", self.__board__)
+        self.__board__.set_piece(4, 3, blocking_piece)
+
+        # La Reina no debería poder moverse a d6 (5, 3) porque está bloqueada en d5
+        with self.assertRaises(InvalidPieceMove):
+            self.__queen_white__.mov_correcto(3, 3, 5, 3)  # d4 a d6 está bloqueado
+
 
 if __name__ == "__main__":
     unittest.main()
