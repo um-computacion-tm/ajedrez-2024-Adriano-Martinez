@@ -114,7 +114,7 @@ class Board:
         black_count = 0
         for row in self.__positions__:
             for piece in row:
-                if piece is not None:
+                if piece:
                     if piece.get_color() == "WHITE":
                         white_count += 1
                     elif piece.get_color() == "BLACK":

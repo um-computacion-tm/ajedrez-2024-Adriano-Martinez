@@ -24,6 +24,16 @@ class Chess:
             print("Las negras se han rendido. Las blancas ganan la partida.")
         self.__game_over__ = True  # Marcar que el juego ha terminado
     
+    def offer_draw(self, white_accepts: bool, black_accepts: bool):
+        # Verificamos directamente los valores booleanos en lugar de convertirlos desde texto
+        if white_accepts and black_accepts:
+            print("La partida ha terminado en empate por mutuo acuerdo.")
+            self.__game_over__ = True
+            return True
+        else:
+            print("El empate ha sido rechazado. La partida continúa.")
+            return False
+    
     # Verifica si el juego está activo o ha terminado
     def is_playing(self):
         return not self.__game_over__
@@ -65,9 +75,12 @@ class Chess:
         # Mostrar conteo de piezas después de cada movimiento
         self.show_piece_count()
 
+        # Verificar si alguien ha ganado después de cada movimiento
+        if self.end_game():
+            return  # Si el juego ha terminado, no sigue el siguiente turno
+
      except (PieceNotFound, InvalidMove, InvalidTurn, ValueError, InvalidPieceMove) as e:
         raise
-
 
     # Obtiene turno actual
     def get_turn(self):
