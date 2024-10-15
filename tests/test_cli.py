@@ -1,126 +1,94 @@
-'''import unittest
-from unittest.mock import patch
-from game.chess import Chess
+import unittest
+from unittest.mock import patch, MagicMock
 from game.cli import Cli
-from game.exceptions import InvalidMove
+from game.chess import Chess
+from game.exceptions import *
 
 class TestCli(unittest.TestCase):
-    @patch('builtins.input', side_effect=['1', '2', '3', '4', '5', 's' , 'n', 'menu', 'rendirse', ''
-    ])
-    @patch('builtins.print')
-    @patch.object(Chess, 'move')
-    def test_happy_path(self, mock_chess_move, mock_print, mock_input):
-        cli = Cli()
-        
-        # Llamamos al método para iniciar una nueva partida
-        cli.iniciar_partida()
-
-        # Verifica que se llamaron los métodos esperados
-        self.assertEqual(mock_input.call_count, 4)  # Asegúrate de contar todas las llamadas
-        self.assertEqual(mock_print.call_count, 3)  # Ajusta según el número de prints esperados en el flujo
-        self.assertEqual(mock_chess_move.call_count, 1)  # Asegúrate de contar los movimientos esperados
-
-# Ejecutar pruebas
-
-    @patch('builtins.input', side_effect=['hola', '1', '2', '2'])
-    @patch('builtins.print')
-    @patch.object(Chess, 'move')
-    def test_not_happy_path(self, mock_chess_move, mock_print, mock_input):
-        cli = Cli()
-        cli.iniciar_partida()
-        self.assertEqual(mock_input.call_count, 1)
-        self.assertEqual(mock_print.call_count, 3)
-        self.assertEqual(mock_chess_move.call_count, 0)
-
-    @patch('builtins.input', side_effect=['1', '1', '2', 'hola'])
-    @patch('builtins.print')
-    @patch.object(Chess, 'move')
-    def test_more_not_happy_path(self, mock_chess_move, mock_print, mock_input):
-        cli = Cli()
-        cli.iniciar_partida()
-        self.assertEqual(mock_input.call_count, 4)
-        self.assertEqual(mock_print.call_count, 3)
-        self.assertEqual(mock_chess_move.call_count, 0)
-
-    @patch('builtins.input', side_effect=['1', 'n', '1'])
-    @patch('builtins.print')
-    def test_continue_active_game(self, mock_print, mock_input):
-        cli = Cli()
-        cli.iniciar_partida()  # Inicia la partida
-        cli.iniciar_partida()  # Intenta iniciar otra vez
-        self.assertEqual(mock_print.call_count, 3)  # Asegúrate de que se imprima el mensaje para continuar
-
-    @patch('builtins.input', side_effect=['1', 's'])
-    @patch('builtins.print')
-    def test_restart_game(self, mock_print, mock_input):
-        cli = Cli()
-        cli.iniciar_partida()  # Inicia la partida
-        cli.iniciar_partida()  # Intenta iniciar otra vez
-        self.assertIsInstance(cli._Cli__chess__, Chess)  # Verifica que se reinicie
-        self.assertEqual(mock_print.call_count, 3)  # Verifica el conteo de prints
-
-    @patch('builtins.input', side_effect=['mi_partida'])
-    @patch('builtins.print')
-    @patch.object(Chess, 'save_game')
-    def test_guardar_partida(self, mock_save_game, mock_print, mock_input):
-        cli = Cli()
-        cli.iniciar_partida()  # Inicia la partida
-        cli.guardar_partida()  # Guarda la partida
-        self.assertTrue(mock_save_game.called)  # Verifica que se llame a save_game
-        self.assertEqual(mock_print.call_count, 2)  # Verifica el conteo de prints
-
-    @patch('builtins.input', side_effect=['mi_partida'])
-    @patch('builtins.print')
-    @patch.object(Chess, 'load_game')
-    def test_cargar_partida(self, mock_load_game, mock_print, mock_input):
-        cli = Cli()
-        cli.cargar_partida()  # Intenta cargar la partida
-        self.assertTrue(mock_load_game.called)  # Verifica que se llame a load_game
-        self.assertEqual(mock_print.call_count, 2)  # Verifica el conteo de prints
-
-    @patch('builtins.print')
-    def test_mostrar_instrucciones(self, mock_print):
-        cli = Cli()
-        cli.mostrar_instrucciones()  # Muestra las instrucciones
-        self.assertEqual(mock_print.call_count, 6)  # Verifica el conteo de prints de instrucciones
-
-    @patch('builtins.input', side_effect=['menu'])
-    @patch('builtins.print')
-    def test_wait_for_menu(self, mock_print, mock_input):
-        cli = Cli()
-        cli.wait_for_menu()  # Intenta esperar al menú
-        self.assertEqual(mock_print.call_count, 1)  # Verifica el conteo de prints
-
-    @patch('builtins.input', side_effect=['1', '2'])
-    @patch('builtins.print')
-    @patch.object(Chess, 'move', side_effect=InvalidMove())
-    def test_attempt_move_invalid(self, mock_move, mock_print, mock_input):
-        cli = Cli()
-        cli.iniciar_partida()
-        result = cli.attempt_move('e2', 'e4')
-        self.assertEqual(mock_print.call_count, 1)  # Verifica que se imprima el error
-
     
-    @patch('builtins.input', side_effect=['1', 'draw'])  # Inicia partida y solicita empate
-    @patch('builtins.print')
-    @patch.object(Chess, 'request_draw')
-    def test_handle_draw(self, mock_request_draw, mock_print, mock_input):
+    @patch('builtins.input', side_effect=['1', 'e2', 'e4'])
+    @patch('game.chess.Chess.move')  # Mockea el método 'move' de Chess
+    def test_iniciar_partida(self, mock_move, mock_input):
         cli = Cli()
-        
-        # Simula iniciar la partida
+        cli.__chess__ = Chess()  # Inicializa el objeto Chess
         cli.iniciar_partida()
-
-        # Simula la solicitud de empate
-        cli.play()  # Llama a play() que procesará 'draw'
-
-        # Verifica que se haya llamado al método para solicitar un empate
-        self.assertTrue(mock_request_draw.called)  # Verifica que request_draw fue llamado
+        mock_move.assert_called_once_with('e2', 'e4')
         
-        # Verifica que se imprime el mensaje de empate
-        mock_print.assert_called_with("\n¡Empate solicitado! Fin de la partida.")
+    @patch('builtins.input')
+    def test_mostrar_menu(self, mock_input):
+     mock_input.side_effect = ['menu']  # Simula la entrada para volver al menú
+    cli = Cli()
+    cli.mostrar_menu()  # Llama a mostrar_menu y asegura que no falla
 
-        # Verifica que la entrada fue llamada dos veces
-        self.assertEqual(mock_input.call_count, 2)  # 1 para iniciar partida, 1 para solicitar empate
+
+    @patch('builtins.input')
+    def test_mostrar_instrucciones(self, mock_input):
+     mock_input.side_effect = ['2', '']  # '2' para elegir mostrar instrucciones, luego '' para simular presionar "Enter"
+    cli = Cli()
+    cli.mostrar_menu()  # Ejecuta el menú
+
+
+    @patch('builtins.input', side_effect=['4', 'test_id', '3'])  # Simula que el usuario guarda la partida y luego sale
+    @patch('builtins.print')
+    def test_guardar_partida(self, mock_print, mock_input):
+        cli = Cli()
+        cli.__chess__ = MagicMock()  # Simula el objeto Chess
+        cli.mostrar_menu()
+        # Verifica que la partida se haya guardado con el ID correcto
+        cli.__chess__.save_game.assert_called_with('test_id')
+        mock_print.assert_any_call("Partida guardada con ID test_id.")
+
+
+    @patch('builtins.input', side_effect=['5', 'partida_guardada'])
+    @patch('game.chess.Chess')  # Mockea la clase Chess completa
+    def test_cargar_partida(self, mock_chess, mock_input):
+     cli = Cli()
+     cli.__chess__ = mock_chess.return_value  # Usa el mock de la clase Chess
+     cli.mostrar_menu()  # Ejecuta el menú
+    
+    # Verifica que la partida fue cargada con el ID 'partida_guardada'
+     cli.__chess__.load_game.assert_called_with('partida_guardada')
+
+
+    @patch('builtins.input')
+    @patch('game.chess.Chess')  # Mockea la clase Chess
+    def test_play(self, mock_chess, mock_input):
+     mock_input.side_effect = ['e2', 'e4', 'menu']  # Simula el input para mover e2 a e4 y luego volver al menú
+     cli = Cli()
+     cli.__chess__ = mock_chess.return_value  # Asegura que __chess__ no es None
+     cli.__chess__.is_playing.return_value = True  # Simula que el juego está activo
+     cli.__chess__.end_game.return_value = False  # Simula que no ha terminado el juego
+     cli.play()  # Ejecuta la partida
+    # Verifica que se llamó al método 'move' con las posiciones correctas
+     cli.__chess__.move.assert_called_with('e2', 'e4')
+
+
+    @patch('builtins.input', side_effect=['e2', 'e4', 'menu'])
+    @patch('builtins.print')
+    def test_attempt_invalid_move(self, mock_print, mock_input):
+        cli = Cli()
+        cli.__chess__ = MagicMock()
+        cli.__chess__.move.side_effect = InvalidMove("Movimiento inválido")
+        cli.play()
+        # Verifica que el error de movimiento inválido se haya manejado correctamente
+        mock_print.assert_any_call("\nError: Movimiento inválido")
+
+
+    @patch('builtins.input', side_effect=['s', 's'])  # Ambos jugadores aceptan el empate
+    @patch('builtins.print')
+    def test_request_draw(self, mock_print, mock_input):
+        cli = Cli()
+        cli.__chess__ = Chess()  # Usamos una instancia real de Chess
+
+        cli.request_draw()
+
+        # Verificamos que se imprimió el mensaje de empate
+        mock_print.assert_any_call("La partida ha terminado en empate por mutuo acuerdo.")
+
+        # Verificamos que el juego ha terminado
+        self.assertFalse(cli.__chess__.is_playing())
+    
+    
 
 if __name__ == '__main__':
-    unittest.main()'''
+    unittest.main()

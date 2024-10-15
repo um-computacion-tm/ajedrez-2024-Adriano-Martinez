@@ -17,7 +17,7 @@ class Chess:
         
 
     #Permite al jugador rendirse
-    def rendirse(self):
+    def surrender(self):
         if self.__turn__ == "WHITE":
             print("Las blancas se han rendido. Las negras ganan la partida.")
         else:
@@ -25,7 +25,6 @@ class Chess:
         self.__game_over__ = True  # Marcar que el juego ha terminado
     
     def offer_draw(self, white_accepts: bool, black_accepts: bool):
-        # Verificamos directamente los valores booleanos en lugar de convertirlos desde texto
         if white_accepts and black_accepts:
             print("La partida ha terminado en empate por mutuo acuerdo.")
             self.__game_over__ = True

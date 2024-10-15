@@ -26,14 +26,24 @@ El juego sigue las reglas básicas del ajedrez con algunas modificaciones:
 - `Reglas originales del ajedrez`: Consultarlas [aquí](https://es.wikipedia.org/wiki/Leyes_del_ajedrez)
 - `Reglas de este juego`: En este ajedrez se respetan los movimientos de las piezas como en el ajedrez tradicional. Sin embargo, no se implementan reglas como jaque, jaque mate, ni movimientos especiales.
 ## Cómo Jugar
-- El juego se basa en turnos alternos, donde cada jugador mueve una pieza según las reglas del ajedrez tradicional. A continuación se describe la interfaz del juego:
-
-- La interfaz ofrece un menú con las opciones de `Move piece`, `Draw` y `Resign`.
-    - `Move piece`: 
-    Permite mover una pieza. Se solicita la posición actual de la pieza y la posición a la que se desea mover, ambas utilizando notación algebraica (Ej: A1, B3).
-        - Si el movimiento es válido, se efectúa; si no, se cancela y vuelve a pedirle al jugador que haga el movimiento. Después, se verifica si un jugador ha ganado.
-    - `Draw`: Permite ofrecer tablas (empate). Si el oponente acepta, el juego termina en empate. Si no, el jugador que ofreció las tablas vuelve a su turno.
-    - `Resign`: Permite rendirse, lo que otorga la victoria al oponente.
+- El juego sigue las reglas del ajedrez tradicional y se desarrolla por turnos alternos entre los jugadores.A continuacion, se detalla la interacción en las dos fases principales: el **menú principal** y el menu de la **fase de juego**:
+## Menú Principal
+- Al iniciar el juego, los jugadores verán las siguientes opciones:
+- `Iniciar Partida`: Comienza una nueva partida de ajedrez.
+- `Ver Instrucciones`: Muestra las reglas básicas del juego.
+- `Salir del Juego`: Cierra el juego.
+- `Guardar Partida`: Guarda el estado actual de la partida usando un identificador.
+- `Cargar Partida`: Carga una partida guardada previamente.
+## Fase de Juego
+- Una vez que la partida comienza, los jugadores alternan turnos y tienen las siguientes opciones disponibles:
+- `Mover una pieza`: Mueve una pieza en el tablero. Debes ingresar la posición inicial y final de la pieza usando notación algebraica (Ej: a2 a a4).
+  - Si el movimiento es válido, se actualizará el tablero.
+  - Si el movimiento no es válido, se te pedirá ingresar nuevamente una posición válida.
+- `Solicitar empate` (Pedir Tablas): Puedes ofrecer un empate al oponente escribiendo `draw` en la terminal. Si ambos jugadores aceptan, el juego termina en tablas. Si el oponente rechaza, la partida continúa.
+- `Rendirse`: Puedes rendirte escribiendo "3" en la terminal, lo que otorga la victoria a tu oponente.
+- `Volver al menu principal`: Puedes escribir `4` en la terminal en cualquier momento para volver al menú principal sin terminar la partida.
+- Si selecionaste una opcion que no querias puedes cancelarla escribiendo `back` en la terminal.
+`Guardado de Partidas`: El juego utiliza Redis para permitir a los jugadores guardar sus partidas y reanudarlas más tarde desde el mismo punto. Si estás en una partida, puedes escribir `4` en la terminal para regresar al inicio. Luego, selecciona la opción `"Guardar Partida"` e introduce un ID para la misma. Cuando vuelvas al juego, puedes introducir ese ID en `"Cargar Partida"` para reanudar desde el punto donde guardaste.
 
 ## Cómo Ganar
 Para ganar, tu oponente debe quedar solo con el Rey, mientras que tú con el Rey y al menos una pieza adicional. Es decir, que el primero que se quede sin piezas (exceptuando al Rey), pierde.
