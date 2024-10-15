@@ -26,13 +26,13 @@ class TestChess(unittest.TestCase):
 
     def test_resign_white(self):
         # Prueba la función de rendición para las blancas.
-        self.__chess__.rendirse()  # Las blancas se rinden
+        self.__chess__.surrender()  # Las blancas se rinden
         self.assertFalse(self.__chess__.is_playing())  # El juego debe haber terminado
 
     def test_resign_black(self):
         # Prueba la función de rendición para las negras.
         self.__chess__.move("e2", "e4")  # Las blancas mueven primero
-        self.__chess__.rendirse()  # Ahora se rinden las negras
+        self.__chess__.surrender()  # Ahora se rinden las negras
         self.assertFalse(self.__chess__.is_playing())  # El juego debe haber terminado
 
     def test_end_game_white_wins(self):
