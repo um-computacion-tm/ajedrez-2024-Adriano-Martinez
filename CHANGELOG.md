@@ -5,14 +5,23 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-##  [0.4.5] - 2024-10-12
+##  [0.4.6] - 2024-10-15
+### Cambios
+- **game/cli.py**:
+  - Solucionando problemas de duplicación.
+- **test_cli.py**:
+  - Solucionando pruebas.
+- **CHANGELOG.md**:
+  - Mejorando **changelog.md**
+
+##  [0.4.5] - 2024-10-14
 ### Agregando
 - **game/cli.py**:
-  - Agregando metodo `menu_partida_activa` para mostrar opciones durante la partida.
+  - Añadido el método `menu_partida_activa` para mostrar opciones durante la partida.
 
 ### Cambios
 - **game/cli.py**:
-  - Mejorando codigo.
+  - Mejoras en el código.
 - **test_cli.py**:
   - Se han añadido pruebas.
 - **README.py**:
@@ -21,100 +30,101 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ##  [0.4.4] - 2024-10-12
 ### Agregando
 - **README.py**:
-  - Agregando presentaciones e instrucciones para iniciar el juego.
+  - Añadiendo presentaciones e instrucciones para iniciar el juego.
 - **test_queen.py**:
-  - Agregando mas pruebas.
+  - Subiendo más pruebas.
 - **game/cli.py**:
-  - Funcion `mostrar_opciones_menu` print para mostrar las opciones.
-  - Funcion `confirmar_accion`.
+  - Funcion `mostrar_opciones_menu` para imprimir las opciones disponibles..
+  - Funcion `confirmar_accion` para confirmar acciones del usuario.
 
 ### Cambios
 - **CHANGELOG.md**:
-  - Corrigiendo changelog.
+  - Corrección en el formato del changelog
 - **game/chess.py**
   - Moviendo metodo para pedir empate a **chess.py**
-  - Reorganizando codigo.
+  - Reorganización del código.
 - **test_chess.py**:
-  - Corrigiendo tests.
+  - Corrección en las pruebas.
 - **game/cli.py**:
-  - Refactorizando codigo en **cli.py**
+  - Refactorizacion del codigo.
 
 ##  [0.4.3] - 2024-10-11
 ### Cambios
 - **test**:
   - Completando cobertura en board y chess.
 - **pawn**:
-  - Solucionando issues.
+  - Solucionando problemas de duplicación.
 
 ##  [0.4.2] - 2024-10-10
 ### Cambios
 - **game/board.py**:
-  - Refactorizando funcion `mover_pieza` y `is_valid_move` en un solo metodo.
+  - Refactorización de `mover_pieza` y `is_valid_move` en un solo método.
 - **pieces**:
-  - Refactorizando codigo en las piezas king, pawn, queen y rook
+  - Refactorización del código para king, pawn, queen y rook.
 
 ##  [0.4.1] - 2024-10-08
 ### Cambios
 - **test**:
-- Completando cobertura de codigo en piece, knight y pawn
+- Cobertura completa de código para piece, knight y pawn.
 
 ##  [0.4.0] - 2024-10-07
 ### Agregando:
 - **test_cli.py**:
   - Se ha añadido metodos de prueba.
+
 ### Cambios
-- Ajustando codigo en **config.yml**
+- Ajustes en **config.yml**.
 - Cambiando logica para solicitar empate de **chess** a **cli**
 
 ##  [0.3.9] - 2024-10-06
 ### Agregando
 - **game/chess.py**:
-- Importando `redis` 
-- Metodo para guardar partidas en redis
+- Importacion de`redis` 
+- Metodo para guardar partidas usando redis.
 
 ### Cambios
 - **game/chess.py**:
-  - Modificando funcion `save_game`y `load_game` para usarlo con redis
+  - Modificados `save_game`y `load_game` para usar redis.
 - **game/cli.py**:
   - Modificando `iniciar_partida` para que que se pueda reiniciar una partida o volver a la misma.
-  - Modificando `guardar_partida`y `cargar_partida` para redis
+  - Actualizados `guardar_partida` y `cargar_partida` para funcionar con Redis.
 - **test_pawn.py**:
-  - Logrando 100% de cobertura de codigo en el test para la pieza pawn 
+  - Logrando 100% de cobertura de codigo en el test para la pieza pawn.
 - **test_chess.py**:
-  - Solucionando errores.
+  - Corrección de errores.
 
 ##  [0.3.8] - 2024-10-05
 ### Agregando
 - **game/chess.py**:
-  - Funcion `rendirse`metodo para que el jugador pueda rendirce si no queire continuar.
+  - Funcion `rendirse`metodo para que el jugador pueda rendirce si no quiere continuar la partida.
 - **game/chess.py**:
   - Funcion `wait_for_menu` si estas en la partida si escribes "menu" puedes volver al inicio.
 
 ### Cambios
 - **game/cli.py**:
-  - Modificando logica en `get_move_input`.
+  - Modificacion de la logica en `get_move_input`.
 - **test_exceptions.py**:
-  - Arreglando error en tests.
+  - Corrección de errores en las pruebas.
 - **test_chess.py**:
-  - Arreglando error en tests
+  - Corrección de errores en las pruebas.
 
 ##  [0.3.7] - 2024-10-04
 ### Cambios
-- Arreglando problema para mostrar el mensaje de error de las expeciones en el juego en **cli** 
+- Corrección de la visualización de mensajes de error para excepciones en **cli**.
 - **game/exceptions**:
-  - Refactorizando codigo.
+  - Refactorizacion del codigo.
 
 ##  [0.3.6] - 2024-10-03
 ### Agregando
 - **game/board.py**:
-  - Funcion `is_position_valid`
-  - Refactorizando codigo.
+  - Funcion `is_position_valid` para validar si una posición es correcta.
+  - Refactorización del código.
 - **game/pieces/piece**:
   - Funcion `scan_direction` generalización para explorar en cualquier dirección.
 
 ### Cambios
 - **game/board.py**:
-  - Refactorizando codigo.
+  - Refactorizacion del codigo.
 - **game/cli.py**:
   - Arreglando error en `attempt_move` que no se mostraban el mensaje de las excepciones.
 - **pieces**:
@@ -141,7 +151,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - **game/board.py**:
   - Funcion `remove_piece` verifica la pieza.
 - **game/chess.py**:
-  - Funcion `get_turn`
+  - Funcion `get_turn` para obtener el turno.
   - Funcion `validate_turn` metodo para validar el turno.
 - **game/exceptions**:
   - Funcion `ErrorChess` para errores generales del ajedres.
@@ -150,7 +160,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Cambios
 - **game/board.py**:
-  - Modificando codigo para simplificar en `get_all_pieces`, `remove_all_pieces`, `is_valid_move` y `mover_pieza`
+  - Modificando codigo para simplificar en `get_all_pieces`, `remove_all_pieces`, `is_valid_move` y `mover_pieza`.
 -  **pieces**:
   - Modificando y arreglando movimiento para todas las piezas.
 -  **tests**:
@@ -207,9 +217,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Cambios
 - Reorganizando para todas las importaciones de los archivos con **game** incluidos test.
 - **game/cli**:
-  - Refactorizando todo el codigo.
+  - Refactorizacion del codigo.
 - **game/chess.py**:
-  -Refactorizando todo el codigo.
+  - Refactorizacion del codigo.
 
 ## [0.2.9] - 2024-09-22
 ### Agregando
@@ -224,7 +234,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [0.2.8] - 2024-09-21
 ### Agregando
 - **pieces/queen.py**
-  - Funcion `get_possible_positions`
+  - Funcion `get_possible_positions`obtiene las posiciones ortogonales posibles para la pieza.
 
 ### Cambios
 - **chess.py**:
@@ -238,25 +248,23 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - **test_queen.py**:
   - Corrigiendo pruebas.
 
-
 ## [0.2.7] - 2024-09-18
 ### Agregando
 - **chess.py**:
-  - Funcion `parce_position` 
+  - Funcion `parce_position` Convierte una posición en notación ajedrecística.
 - **cli.py**:
-  - Funcion `__init__`
-  - Funcion `mostrar_menu`
-  - Funcion `iniciar_partida`
-  - Funcion `mostrar instrucciones`
-  - Funcion `play_game`
-  - Funcion `display_board_and_turn`
-  - Funcion `get_move_input`
-  - Funcion `attempt_move`
-  - Funcion `clear_terminal`
-  - Importando os
+  - Funcion `__init__` permite incializar.
+  - Funcion `mostrar_menu` muestra el menú principal.
+  - Funcion `iniciar_partida` inicia una partida de ajedrez.
+  - Funcion `mostrar instrucciones` muestra las instruccio nes del juego.
+  - Funcion `play_game` maneja las opciones del juego.
+  - Funcion `display_board_and_turn` Muestra el tablero y el turno actual.
+  - Funcion `get_move_input` obtiene las entradas para mover una pieza.
+  - Funcion `attempt_move` se encarga de mover la pieza.
+  - Funcion `clear_terminal` que permite limpiar la terminal.
+  - Importando `os`
 - **main.py**:
   -
-
 
 ## [0.2.6] - 2024-09-17
 ### Cambios
@@ -275,6 +283,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   - Agregando funcion `get_possible_positions` y `is_in_check_after_move`
 - **pieces/knight.py**:
   - Agregando funcion `get_possible_positions` y `__is_valid_position`
+  
 ### Cambios
 - **pieces/bishop.py**:
   - Corrigiendo errores en `mov_correcto` para los movimientos y agregando excepciones.
@@ -346,10 +355,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   - Mejorando funcion `mov_correcto` para el movimiento del caballo.
 
 ### Cambios
-
 - **queen.py**:
   - Modificando y mejorando movimiento en la pieza queen.
-
 
 ## [0.1.7] - 2024-08-31
 ### Agregando
@@ -357,7 +364,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   - Añadiendo funcion `InvalidMoveQueenMove`.
 - **pieces/queen.py**:
   - Implementando funcion `_is_path_clear`, `_check_diagonal_path`, `_check_horizontal_path`, `_check_vertical_path`, `_check_path` para los movimientos validos e invalidos para la reina. 
-
 - **test_queen.py**: Creado archivo para testear la pieza de la reina
   - Se han añadido pruebas. 
 
@@ -384,7 +390,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [0.1.4] - 2024-08-28
 ### Agregando
-
 - **pieces/rook.py**:
   - Implementado en el metodo `mov_correcto` para que la  pieza rook no pueda moverse en caso de que haya una pieza en su camino.
 - **pieces/piece.py**:
@@ -404,11 +409,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - **test_rook.py**:
   - Se han añadido mas pruebas
 
-
-
 ## [0.1.2] - 2024-08-23
 ### Agregando
-
 - **test_piece.py**: Archivo para testear y comprobar los metodos en `piece.py`
   - Se han agregado pruebas. 
 - **test_rook.py**: Archivo para testear y comprobar los metodos de movimiento de la pieza `rook.py`
@@ -458,9 +460,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Cambios
 - **board.py**:
   - Metodo `move-piece` simplificando logica
-- Arreglado un error en la validación de movimientos 
-- Reformulando codigo en piezas 
-
 
 ## [0.0.9] - 2024-08-19
 ### Agregando
@@ -470,7 +469,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Cambios
 - **chess.py**:
   - Modificando validacion de movimiento en `move`
-
 
 ## [0.0.8] - 2024-08-17
 ### Agregando
@@ -490,23 +488,22 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   - Metodo `play` que gestiona la interacción del usuario para mover piezas en el tablero.
   - Función `main` que inicializa el juego
 
-
 ## [0.0.5] - 2024-08-14
 ### Agregando
 - Carpeta piece, con todas las piezas del ajedres.
 
 ### Cambios
-- En el archivo board.py me falto agregar a los peones en el tablero. 
+- En el archivo **board.py* me falto agregar los peones en el tablero. 
 
 ## [0.0.4] - 2024-08-13
 ### Agregando
 - Archivo Dockerfile
-- Archivo chess.py clase que sirve para gestionar el tablero  
-- Archivo board.py creacion del tablero de ajedres
+- Archivo **chess.py** clase que sirve para gestionar la logica del juego.
+- Archivo **board.py** creacion del tablero de ajedres
 
 ## [0.0.3] - 2024-08-12
 ### Agregando
-- Archivo CHANGELOG.md para registrar cambios.
+- Archivo **CHANGELOG.md** para registrar cambios.
 
 ## [0.0.2] - 2024-08-11
 ### Agregando
@@ -515,11 +512,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [0.0.1] - 2024-08-10
 ### Agregando
 - Archivo README con información básica.
-- Archivo main.py con función suma() para probar la funcionalidad.
-- Archivo test.py con pruebas unitarias que verifican la correcta implementación de la función suma.
+- Archivo **main.py** con función suma() para probar la funcionalidad.
+- Archivo **test.py** con pruebas unitarias que verifican la correcta implementación de la función suma.
 - Archivo .gitignore para excluir archivos innecesarios.
 - Archivo .coveragerc
-- Archivo requirements.txt con las dependencias del proyecto.
+- Archivo **requirements.txt** con las dependencias del proyecto.
 - Integracion con CircleCI.
 - Archivo .circleci/config.yml para configurar el pipeline de CircleCI
-- Archivo .coveragerc creado
+- Archivo **.coveragerc** creado
