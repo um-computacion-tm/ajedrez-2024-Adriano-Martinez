@@ -40,7 +40,7 @@ class TestChessExceptions(unittest.TestCase):
      piece_name = "Reina"
      with self.assertRaises(InvalidPieceMove) as context:
         raise InvalidPieceMove(piece_name)
-     self.assertEqual(str(context.exception), f"Movimiento no válido para el {piece_name}.")
+     self.assertEqual(str(context.exception), f"Movimiento no válido para {piece_name}.")
 
 if __name__ == "__main__":
     unittest.main()

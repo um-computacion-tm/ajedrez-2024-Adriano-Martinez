@@ -11,7 +11,7 @@ class Bishop(Piece):
     def mov_correcto(self, from_x, from_y, to_x, to_y):
         # Verificar que el movimiento sea diagonal y dentro de las posiciones posibles
         if (to_x, to_y) not in self.possible_diagonal_positions(from_x, from_y):
-            raise InvalidPieceMove(piece_name="Alfil")
+            raise InvalidPieceMove(piece_name="el Alfil")
 
         return True
 

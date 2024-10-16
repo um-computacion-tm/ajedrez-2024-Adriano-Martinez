@@ -26,7 +26,7 @@ class InvalidPieceMove(InvalidMove):
     """Excepción cuando un movimiento no es válido para cierta pieza."""
     def __init__(self, piece_name, message=None):
         if message is None:
-            message = f"Movimiento no válido para el {piece_name}."
+            message = f"Movimiento no válido para {piece_name}."
         super().__init__(message)
         
 class OutOfBoard(ErrorChess):

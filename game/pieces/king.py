@@ -12,7 +12,7 @@ class King(Piece):
     def mov_correcto(self, from_x, from_y, to_x, to_y):
     # Verificar si el movimiento está dentro de las posiciones válidas
      if not self.valid_positions(from_x, from_y, to_x, to_y):
-        raise InvalidPieceMove(piece_name="Rey")
+        raise InvalidPieceMove(piece_name="el Rey")
 
     # Si el movimiento es válido, devuelve True
      return True

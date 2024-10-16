@@ -68,11 +68,13 @@ class Cli:
      black_accepts = black_accepts_input == 's'
 
     # Llamamos al método offer_draw con valores booleanos
-     if self.__chess__.offer_draw(white_accepts, black_accepts):
+     draw= self.__chess__.offer_draw(white_accepts, black_accepts)
+     if draw:
         print("\n¡El juego ha terminado en empate!")  # Mensaje cuando ambos aceptan
      else:
         print("\nEl empate ha sido rechazado. La partida continúa.")  # Mensaje cuando se rechaza
-
+     return draw
+    
     def guardar_partida(self):
         if self.__chess__ is None:
             print("No hay ninguna partida activa para guardar.")
@@ -116,6 +118,25 @@ class Cli:
         print("3. El objetivo es hacer jaque mate al rey del oponente.")
         print("4. Para mover una pieza, selecciona primero la posición de origen y luego la de destino esto en forma algebraica(a2 a a4).")
         input("\nPresiona Enter para volver al menú...")
+    
+    def aplicar_accion(self, opcion):
+        should_break = False
+        should_return = False
+        error_message = None
+        if opcion == '1':
+            error_message = self.handle_move()  # Maneja el movimiento de la pieza
+        elif opcion == '2':
+            if self.request_draw():  # Solicita un empate
+             should_break = True
+        elif opcion == '3':
+            if self.confirmar_accion("¿Estás seguro de que quieres rendirte? (s/n): "):
+                self.__chess__.surrender()  # Rinde al jugador
+                print("\n¡Te has rendido! Fin de la partida.")
+                should_break = True
+        elif opcion == '4':
+            if self.confirmar_accion("¿Estás seguro de que quieres volver al menú principal? (s/n): "):
+                should_return = True
+        return error_message, should_return, should_break
 
     def play(self):
      error_message = None
@@ -127,25 +148,15 @@ class Cli:
             error_message = None  # Reinicia mensaje de error
 
         opcion = self.menu_partida_activa()  # Obtiene la opción del menú
-
-        if opcion == '1':
-            error_message = self.handle_move()  # Maneja el movimiento de la pieza
-        elif opcion == '2':
-            self.request_draw()  # Solicita un empate
-            if not self.__chess__.is_playing():
-                break
-        elif opcion == '3':
-            if self.confirmar_accion("¿Estás seguro de que quieres rendirte? (s/n): "):
-                self.__chess__.surrender()  # Rinde al jugador
-                print("\n¡Te has rendido! Fin de la partida.")
-                break
-        elif opcion == '4':
-            if self.confirmar_accion("¿Estás seguro de que quieres volver al menú principal? (s/n): "):
-                print("\nVolviendo al menú principal...")
-                return
-
+        error_message, should_return, should_break = self.aplicar_accion(opcion)
+        if should_break:
+            break
+        if should_return:
+            return
+        
      self.__chess__ = None  # Reinicia el objeto Chess
      print("\nVolviendo al menú principal...")  # Mensaje de retorno al menú
+     input("\nPresiona Enter para volver al menu principal...")
 
     def handle_move(self):
      from_input, to_input = self.get_move_input()  # Obtiene las entradas del movimiento
