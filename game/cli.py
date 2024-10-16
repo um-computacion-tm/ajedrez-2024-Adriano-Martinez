@@ -120,47 +120,40 @@ class Cli:
     def play(self):
      error_message = None
      while self.__chess__.is_playing():
-        self.display_board_and_turn()
+        self.display_board_and_turn()  # Muestra el tablero y el turno
 
         if error_message:
-            print(f'\nError: {error_message}')
-            error_message = None
+            print(f'\nError: {error_message}')  # Muestra mensaje de error si existe
+            error_message = None  # Reinicia mensaje de error
 
-        # Mostrar menú de opciones en cada turno
-        opcion = self.menu_partida_activa()
+        opcion = self.menu_partida_activa()  # Obtiene la opción del menú
 
-        if opcion == '1':  # Mover pieza
-            from_input, to_input = self.get_move_input()
-
-            # Si el jugador elige 'back', vuelve al menú de opciones
-            if from_input == 'back':
-                continue  # Vuelve al menú sin mover pieza
-
-            # Intentar mover la pieza si no se eligió 'back'
-            result = self.attempt_move(from_input, to_input)
-            if result:
-                error_message = result
-            elif self.__chess__.end_game():
-                print("\n¡Fin del juego!")
-                break
-        elif opcion == '2':  # Solicitar empate
-            self.request_draw()
+        if opcion == '1':
+            error_message = self.handle_move()  # Maneja el movimiento de la pieza
+        elif opcion == '2':
+            self.request_draw()  # Solicita un empate
             if not self.__chess__.is_playing():
                 break
-        elif opcion == '3':  # Rendirse
+        elif opcion == '3':
             if self.confirmar_accion("¿Estás seguro de que quieres rendirte? (s/n): "):
-                self.__chess__.surrender()
+                self.__chess__.surrender()  # Rinde al jugador
                 print("\n¡Te has rendido! Fin de la partida.")
                 break
-        elif opcion == '4':  # Volver al menú principal
+        elif opcion == '4':
             if self.confirmar_accion("¿Estás seguro de que quieres volver al menú principal? (s/n): "):
                 print("\nVolviendo al menú principal...")
-                self.__chess__ = None  # Reinicia el estado del juego
-                return  # Regresa al método mostrar_menu
+                return
 
-     self.__chess__ = None  # Reinicia el estado del juego
+     self.__chess__ = None  # Reinicia el objeto Chess
+     print("\nVolviendo al menú principal...")  # Mensaje de retorno al menú
 
+    def handle_move(self):
+     from_input, to_input = self.get_move_input()  # Obtiene las entradas del movimiento
 
+     if from_input == 'back':
+        return None  # Vuelve al menú de opciones sin errores
+
+     return self.attempt_move(from_input, to_input)  # Intenta mover la pieza
 
     def menu_partida_activa(self):
      #Muestra las opciones disponibles durante la partida. 
