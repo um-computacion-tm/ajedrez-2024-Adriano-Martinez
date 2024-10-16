@@ -63,7 +63,7 @@ class TestCli(unittest.TestCase):
      cli.__chess__.move.assert_called_with('e2', 'e4')
 
 
-    @patch('builtins.input', side_effect=['e2', 'e4', 'menu'])
+    @patch('builtins.input', side_effect=['1', 'e2', 'e5', '4', 's'])
     @patch('builtins.print')
     def test_attempt_invalid_move(self, mock_print, mock_input):
         cli = Cli()

@@ -155,10 +155,11 @@ class Cli:
         elif opcion == '4':  # Volver al menú principal
             if self.confirmar_accion("¿Estás seguro de que quieres volver al menú principal? (s/n): "):
                 print("\nVolviendo al menú principal...")
-                return
+                self.__chess__ = None  # Reinicia el estado del juego
+                return  # Regresa al método mostrar_menu
 
-     self.__chess__ = None
-     self.wait_for_menu()
+     self.__chess__ = None  # Reinicia el estado del juego
+
 
 
     def menu_partida_activa(self):
@@ -176,12 +177,7 @@ class Cli:
         else:
             print("\nOpción no válida. Intenta de nuevo.")
 
-    def wait_for_menu(self):
-        while input("\nEscribe 'menu' para volver al inicio: ").strip().lower() != 'menu':
-            pass
-        print("\nVolviendo al menú principal...")
-
-
+    
     def display_board_and_turn(self):
         self.clear_terminal()
         print("\nEs el turno de las", "blancas" if self.__chess__.turn == "WHITE" else "negras")
