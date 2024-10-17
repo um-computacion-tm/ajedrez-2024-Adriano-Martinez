@@ -25,8 +25,11 @@ class Cli:
                 self.cargar_partida()
             else:
                 print("\nOpción no válida. Por favor, intenta de nuevo.")
+     except EOFError:
+        print("Error: No se recibió entrada. Finalizando.")
      except KeyboardInterrupt:
-        print("\nSaliendo del menú...")
+        print("\nInterrupción detectada, saliendo del menú.")
+
 
 
     def mostrar_opciones_menu(self):
