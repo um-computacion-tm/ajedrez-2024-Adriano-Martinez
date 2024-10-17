@@ -14,7 +14,7 @@ class InvalidTurn(ErrorChess):
 
 class InvalidFormat(ErrorChess):
     """Excepción cuando se ingresa una entrada no válida."""
-    def __init__(self, message="Formato de entrada inválido, Usa el formato 'e2'."):
+    def __init__(self, message="Formato de entrada inválido o fuera del tablero, Usa el formato 'e2'."):
         super().__init__(message)
 
 class PieceNotFound(ErrorChess):

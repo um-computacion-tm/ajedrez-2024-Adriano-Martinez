@@ -1,7 +1,7 @@
 import unittest
 from unittest import mock
 from game.chess import Chess
-from game.exceptions import PieceNotFound, InvalidMove, InvalidTurn, InvalidPieceMove, InvalidFormat
+from game.exceptions import PieceNotFound, InvalidMove, InvalidTurn, InvalidFormat
 
 class TestChess(unittest.TestCase):
 
@@ -148,6 +148,30 @@ class TestChess(unittest.TestCase):
         result = self.__chess__.offer_draw(white_accepts=True, black_accepts=False)
         self.assertFalse(result)  # No se debe aceptar el empate
         self.assertTrue(self.__chess__.is_playing())  # El juego debe continuar
+    
+    def test_move_after_game_ends(self):
+    # Simula un estado donde no quedan piezas negras
+     with mock.patch.object(self.__chess__.__board__, 'count_pieces', return_value=(0, 10)):
+        self.__chess__.end_game()  # Se termina el juego
+        result = self.__chess__.move("e2", "e4")  # Intenta hacer un movimiento
+        self.assertIsNone(result)  # Verifica que el resultado sea None o el valor que has decidido retornar
 
+    def test_create_piece_with_unknown_type(self):
+    # Intenta crear una pieza con un tipo desconocido
+     with self.assertRaises(ValueError) as context:
+        self.__chess__.create_piece("WHITE", "UNKNOWN_TYPE")  # Reemplaza con el método correcto para acceder a create_piece
+
+    # Verifica que el mensaje de error sea el esperado
+     self.assertEqual(str(context.exception), "Tipo de pieza desconocido: UNKNOWN_TYPE")
+    
+    def test_save_game_raises_exception(self):
+    # Simula un error al intentar guardar en Redis
+     with mock.patch.object(self.__chess__.__redis__, 'set', side_effect=Exception("Simulated error")):
+        with self.assertRaises(Exception) as context:
+            self.__chess__.save_game("test_game")  # Intenta guardar la partida
+
+        # Verifica que el mensaje de error sea el esperado
+        self.assertIn("Simulated error", str(context.exception))
+    
 if __name__ == "__main__":
     unittest.main()

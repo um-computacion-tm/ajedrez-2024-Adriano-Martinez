@@ -6,9 +6,18 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ##  [0.4.7] - 2024-10-16
+### Agregando
+- **game/cli.py**:
+  - Añadiendo método `aplicar_accion` para aplicar acciones en el menú principal.
+- **test_chess.py**:
+  - Se han añadido pruebas para completar cobertura de codigo.
 ### Cambios
 - **game/cli.py**:
-  - Solucionando problemas de duplicación.
+  - Solucionando problemas de duplicación en `play`.
+  - Refactorizando código.
+- **test_cli.py**:
+  - Solucionando pruebas.
+
 
 ##  [0.4.6] - 2024-10-15
 ### Cambios

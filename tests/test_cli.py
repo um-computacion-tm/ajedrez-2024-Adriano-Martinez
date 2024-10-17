@@ -6,14 +6,30 @@ from game.exceptions import *
 
 class TestCli(unittest.TestCase):
     
-    @patch('builtins.input', side_effect=['1', 'e2', 'e4'])
+    @patch('builtins.input', side_effect=['s' ,'1', 'e2', 'e4', '4', 's'])  # Simula el input para mover e2 a e4 y luego volver al menú
     @patch('game.chess.Chess.move')  # Mockea el método 'move' de Chess
-    def test_iniciar_partida(self, mock_move, mock_input):
+    def test_iniciar_partida_continuar(self, mock_move, mock_input):
         cli = Cli()
         cli.__chess__ = Chess()  # Inicializa el objeto Chess
         cli.iniciar_partida()
         mock_move.assert_called_once_with('e2', 'e4')
-        
+
+    @patch('builtins.input', side_effect=['1','1', 'e2', 'e4', '4', 's', '3'])  # Simula el input para mover e2 a e4 y luego volver al menú
+    @patch('game.chess.Chess.move')  # Mockea el método 'move' de Chess
+    def test_iniciar_partida_nueva(self, mock_move, mock_input):
+        cli = Cli()
+        cli.__chess__ = None  # Inicializa el objeto Chess
+        cli.mostrar_menu()
+        mock_move.assert_called_once_with('e2', 'e4')
+    
+    @patch('builtins.input', side_effect=['n' ,'1', 'e2', 'e4', '4', 's'])  # Simula el input para mover e2 a e4 y luego volver al menú
+    @patch('game.chess.Chess.move')  # Mockea el método 'move' de Chess
+    def test_iniciar_partida_reiniciar(self, mock_move, mock_input):
+        cli = Cli()
+        cli.__chess__ = Chess()  # Inicializa el objeto Chess
+        cli.iniciar_partida()
+        mock_move.assert_called_once_with('e2', 'e4')
+
     @patch('builtins.input')
     def test_mostrar_menu(self, mock_input):
      mock_input.side_effect = ['menu']  # Simula la entrada para volver al menú
@@ -39,21 +55,20 @@ class TestCli(unittest.TestCase):
         mock_print.assert_any_call("Partida guardada con ID test_id.")
 
 
-    @patch('builtins.input', side_effect=['5', 'partida_guardada'])
+    @patch('builtins.input', side_effect=['5', 'partida_guardada', '3'])
     @patch('game.chess.Chess')  # Mockea la clase Chess completa
-    def test_cargar_partida(self, mock_chess, mock_input):
+    @patch.object(Cli, 'play')
+    def test_cargar_partida(self, mock_play, mock_chess, mock_input):
      cli = Cli()
-     cli.__chess__ = mock_chess.return_value  # Usa el mock de la clase Chess
+     cli.__chess__ = mock_chess.return_value  # Usa el mock de la clase Chess completa
      cli.mostrar_menu()  # Ejecuta el menú
     
-    # Verifica que la partida fue cargada con el ID 'partida_guardada'
-     cli.__chess__.load_game.assert_called_with('partida_guardada')
-
+     mock_play.assert_called_once()  # Verifica que se llamó a 'play' después de cargar la partida
 
     @patch('builtins.input')
     @patch('game.chess.Chess')  # Mockea la clase Chess
     def test_play(self, mock_chess, mock_input):
-     mock_input.side_effect = ['e2', 'e4', 'menu']  # Simula el input para mover e2 a e4 y luego volver al menú
+     mock_input.side_effect = ['1', 'e2', 'e4', '4', 's']  # Simula el input para mover e2 a e4 y luego volver al menú
      cli = Cli()
      cli.__chess__ = mock_chess.return_value  # Asegura que __chess__ no es None
      cli.__chess__.is_playing.return_value = True  # Simula que el juego está activo

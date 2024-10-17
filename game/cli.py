@@ -190,12 +190,11 @@ class Cli:
     def get_move_input(self):
      while True:
         from_input = input('Desde (e.g. e2, escribe "back" para cancelar accion): ').strip().lower()
-        if from_input in ['draw', 'menu', 'surrender', 'back']:
+        if from_input in ['back']:
             return from_input, None
         to_input = input('Hasta (e.g. e4 o back para regresar): ').strip().lower()
         if to_input == 'back':
             return 'back', None  # Vuelve al menú de opciones
-
         try:
             self.__chess__.parse_position(from_input)
             self.__chess__.parse_position(to_input)
