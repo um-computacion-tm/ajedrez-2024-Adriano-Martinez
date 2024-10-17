@@ -7,6 +7,7 @@ class Cli:
         self.__chess__ = None
 
     def mostrar_menu(self):
+     try:
         while True:
             self.clear_terminal()
             self.mostrar_opciones_menu()
@@ -24,6 +25,12 @@ class Cli:
                 self.cargar_partida()
             else:
                 print("\nOpción no válida. Por favor, intenta de nuevo.")
+     except EOFError:
+        print("Error: No se recibió entrada. Finalizando.")
+     except KeyboardInterrupt:
+        print("\nInterrupción detectada, saliendo del menú.")
+
+
 
     def mostrar_opciones_menu(self):
         print("\nBienvenido al Juego de Ajedrez")
