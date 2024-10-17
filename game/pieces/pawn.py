@@ -12,7 +12,7 @@ class Pawn(Piece):
     def mov_correcto(self, from_x, from_y, to_x, to_y):
         # Verificar que las posiciones son válidas
         if not (self.is_position_valid(from_x, from_y) and self.is_position_valid(to_x, to_y)):
-            raise InvalidPieceMove(piece_name="Peón")
+            raise InvalidPieceMove(piece_name="el Peón")
         
         direction = -1 if self.get_color() == "WHITE" else 1
         start_row = 6 if self.get_color() == "WHITE" else 1
@@ -30,7 +30,7 @@ class Pawn(Piece):
             return True
 
         # Si el movimiento no es válido
-        raise InvalidPieceMove(piece_name="Peón")
+        raise InvalidPieceMove(piece_name="el Peón")
 
     def is_forward_move(self, from_pos, to_pos, direction, start_row):
         from_x, from_y = from_pos

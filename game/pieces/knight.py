@@ -12,7 +12,7 @@ class Knight(Piece):
     def mov_correcto(self, from_x, from_y, to_x, to_y):
         # Verifica si el movimiento es a una posición válida
         if not self.valid_positions(from_x, from_y, to_x, to_y):
-            raise InvalidPieceMove(piece_name="Caballo")
+            raise InvalidPieceMove(piece_name="el Caballo")
 
         # Verifica si hay una pieza del mismo color en la posición de destino
         pieza_destino = self.__board__.get_piece(to_x, to_y)

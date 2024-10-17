@@ -33,14 +33,13 @@ class TestChessExceptions(unittest.TestCase):
     def test_invalid_format(self):
         with self.assertRaises(InvalidFormat) as context:
             raise InvalidFormat()
-        self.assertEqual(str(context.exception), "Formato de entrada inválido, Usa el formato 'e2'.")
-
+        self.assertEqual(str(context.exception), "Formato de entrada inválido o fuera del tablero, Usa el formato 'e2'.")
 
     def test_invalid_piece_move(self):
      piece_name = "Reina"
      with self.assertRaises(InvalidPieceMove) as context:
         raise InvalidPieceMove(piece_name)
-     self.assertEqual(str(context.exception), f"Movimiento no válido para el {piece_name}.")
+     self.assertEqual(str(context.exception), f"Movimiento no válido para {piece_name}.")
 
 if __name__ == "__main__":
     unittest.main()

@@ -18,7 +18,7 @@ class Queen(Piece):
 
         # Verifica si el destino está dentro de las posiciones válidas
         if (to_x, to_y) not in possible_positions:
-            raise InvalidPieceMove(piece_name="Reina")
+            raise InvalidPieceMove(piece_name="laReina")
 
         return True
 
