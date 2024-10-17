@@ -4,9 +4,10 @@ import os
 
 class Cli:
     def __init__(self):
-        self.__chess__ = None
+        self.__chess__ = None # Inicializa el objeto Cli sin una partida de ajedrez activa
 
     def mostrar_menu(self):
+     """Muestra el menú principal del juego de ajedrez y procesa la selección del jugador."""
      try:
         while True:
             self.clear_terminal()
@@ -30,9 +31,8 @@ class Cli:
      except KeyboardInterrupt:
         print("\nInterrupción detectada, saliendo del menú.")
 
-
-
     def mostrar_opciones_menu(self):
+        """Muestra las opciones del menú principal del juego de ajedrez."""
         print("\nBienvenido al Juego de Ajedrez")
         print("------------------------------")
         print("1. Iniciar Partida")
@@ -42,6 +42,7 @@ class Cli:
         print("5. Cargar Partida")
 
     def iniciar_partida(self):
+        """Inicia una nueva partida o continúa una partida activa."""
         if self.__chess__ is None:
             self.__chess__ = Chess()
             print("Partida iniciada...\n")
@@ -57,6 +58,9 @@ class Cli:
                 self.play()
 
     def confirmar_accion(self, mensaje):
+        """Solicita confirmación del usuario para realizar una acción.
+        Devuelve True si la respuesta es 's', False si es 'n'.
+        """
         while True:
             respuesta = input(mensaje).strip().lower()
             if respuesta in ['s', 'n']:
@@ -64,6 +68,7 @@ class Cli:
             print("Entrada no válida. Por favor, ingresa 's' o 'n'.")
 
     def request_draw(self):
+     """Solicita un empate a ambos jugadores. Devuelve True si ambos aceptan el empate."""
     # Pregunta a las blancas si aceptan el empate
      white_accepts_input = input("¿Blancas quieren terminar la partida en empate? (s/n): ").lower().strip()
 
@@ -83,6 +88,7 @@ class Cli:
      return draw
     
     def guardar_partida(self):
+        """Guarda la partida activa en Redis con un identificador proporcionado por el usuario."""
         if self.__chess__ is None:
             print("No hay ninguna partida activa para guardar.")
             return
@@ -95,6 +101,7 @@ class Cli:
                 print(f"Error al guardar la partida: {e}")
 
     def cargar_partida(self):
+        """Carga una partida guardada desde Redis utilizando un identificador."""
         game_id = self.solicitar_id_partida("Introduce el ID de la partida que deseas cargar: ")
         if game_id:
             try:
@@ -111,6 +118,7 @@ class Cli:
                 print(f"Error al cargar la partida: {e}")
 
     def solicitar_id_partida(self, mensaje):
+        """Solicita al usuario un identificador de partida y valida que no esté vacío."""
         game_id = input(mensaje).strip()
         if not game_id:
             print("El ID de la partida no puede estar vacío.")
@@ -118,15 +126,19 @@ class Cli:
         return game_id
     
     def mostrar_instrucciones(self):
+        """Muestra las instrucciones básicas del juego de ajedrez."""
         self.clear_terminal()
         print("\nInstrucciones del Juego:")
         print("1. El juego de ajedrez se juega en un tablero de 8x8.")
         print("2. Cada jugador mueve una pieza por turno.")
-        print("3. El objetivo es hacer jaque mate al rey del oponente.")
+        print("3. El objetivo es capturar todas las piezas del oponente para ganar.")
         print("4. Para mover una pieza, selecciona primero la posición de origen y luego la de destino esto en forma algebraica(a2 a a4).")
         input("\nPresiona Enter para volver al menú...")
     
     def aplicar_accion(self, opcion):
+        """Ejecuta la acción seleccionada en el menú de partida activa. 
+        Devuelve un mensaje de error, si hay, y si debe salir o volver al menú.
+        """
         should_break = False
         should_return = False
         error_message = None
@@ -146,6 +158,7 @@ class Cli:
         return error_message, should_return, should_break
 
     def play(self):
+     """Ejecuta el bucle principal de la partida, permitiendo al jugador mover piezas, solicitar empate, rendirse o volver al menú."""
      error_message = None
      while self.__chess__.is_playing():
         self.display_board_and_turn()  # Muestra el tablero y el turno
@@ -166,6 +179,7 @@ class Cli:
      input("\nPresiona Enter para volver al menu principal...")
 
     def handle_move(self):
+     """Obtiene y procesa las entradas para mover una pieza. Devuelve un mensaje de error si el movimiento no es válido."""
      from_input, to_input = self.get_move_input()  # Obtiene las entradas del movimiento
 
      if from_input == 'back':
@@ -174,7 +188,7 @@ class Cli:
      return self.attempt_move(from_input, to_input)  # Intenta mover la pieza
 
     def menu_partida_activa(self):
-     #Muestra las opciones disponibles durante la partida. 
+     """Muestra las opciones disponibles durante una partida activa."""
      print("\nOpciones de la partida:")
      print("1. Mover una pieza")
      print("2. Solicitar empate")
@@ -188,13 +202,14 @@ class Cli:
         else:
             print("\nOpción no válida. Intenta de nuevo.")
 
-    
     def display_board_and_turn(self):
+        """Muestra el tablero de ajedrez y el turno actual."""
         self.clear_terminal()
         print("\nEs el turno de las", "blancas" if self.__chess__.turn == "WHITE" else "negras")
         print(self.__chess__.show_board())
 
     def get_move_input(self):
+     """Solicita al jugador las posiciones de origen y destino de una pieza. Devuelve las posiciones ingresadas."""
      while True:
         from_input = input('Desde (e.g. e2, escribe "back" para cancelar accion): ').strip().lower()
         if from_input in ['back']:
@@ -212,6 +227,9 @@ class Cli:
             print(f'\nError inesperado en la entrada: {e}\nPor favor, intenta de nuevo.')
 
     def attempt_move(self, from_input, to_input):
+        """Intenta mover una pieza de la posición de origen a la de destino. 
+    Devuelve un mensaje de error si el movimiento es inválido.
+    """
         try:
             self.__chess__.move(from_input, to_input)
         except (PieceNotFound, InvalidTurn, InvalidPieceMove, InvalidMove, OutOfBoard, InvalidFormat) as e:
@@ -221,9 +239,11 @@ class Cli:
         return None
     
     def salir_juego(self):
+     """Muestra un mensaje de despedida y termina la ejecución del juego."""
      print("Saliendo del juego...")
 
     def clear_terminal(self):
+     """Limpia la pantalla de la terminal."""
      try:
         os.system('cls' if os.name == 'nt' else 'clear')
      except Exception as e:

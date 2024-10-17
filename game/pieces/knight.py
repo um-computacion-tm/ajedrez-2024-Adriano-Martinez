@@ -2,14 +2,41 @@ from .piece import Piece
 from game.exceptions import InvalidPieceMove
 
 class Knight(Piece):
-    
     def __init__(self, color, board):
+        """
+        Inicializa un caballo con un color y un tablero.
+
+        Args:
+            color (str): El color del caballo, debe ser "WHITE" o "BLACK".
+            board (Board): Referencia al tablero en el que se encuentra el caballo.
+        """
         super().__init__(color, board) 
         
     def __str__(self):
+        """
+        Representación en cadena del caballo.
+
+        Returns:
+            str: Un símbolo que representa el caballo, "♘" para blanco y "♞" para negro.
+        """
         return "♘" if self.get_color() == "WHITE" else "♞"
     
     def mov_correcto(self, from_x, from_y, to_x, to_y):
+        """
+        Verifica si el movimiento del caballo es válido.
+
+        Args:
+            from_x (int): La fila de la posición de origen.
+            from_y (int): La columna de la posición de origen.
+            to_x (int): La fila de la posición de destino.
+            to_y (int): La columna de la posición de destino.
+
+        Raises:
+            InvalidPieceMove: Si el movimiento no es válido o si el destino está ocupado por una pieza del mismo color.
+
+        Returns:
+            bool: True si el movimiento es válido.
+        """
         # Verifica si el movimiento es a una posición válida
         if not self.valid_positions(from_x, from_y, to_x, to_y):
             raise InvalidPieceMove(piece_name="el Caballo")
@@ -22,6 +49,16 @@ class Knight(Piece):
         return True
 
     def get_possible_positions(self, from_row, from_col):
+        """
+        Obtiene las posiciones posibles a las que puede moverse el caballo.
+
+        Args:
+            from_row (int): La fila de la posición de origen.
+            from_col (int): La columna de la posición de origen.
+
+        Returns:
+            list: Una lista de tuplas que representan las posiciones posibles a las que puede moverse el caballo.
+        """
         possible_moves = [
             (2, 1), (2, -1), (-2, 1), (-2, -1),
             (1, 2), (1, -2), (-1, 2), (-1, -2)
