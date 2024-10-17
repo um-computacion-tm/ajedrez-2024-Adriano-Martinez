@@ -5,6 +5,17 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+##  [0.4.8] - 2024-10-17
+### Agregando
+- **test_cli.py**:
+  - Se han añadido más pruebas para completar cobertura de codigo.
+### Cambios
+- **README.md**:
+  - Se han corregido los enlaces de la documentación.
+- **Dockerfile**:
+  - Se ha actualizado para poder iniciar redis en segundo plano.
+- Aplicando documentacion Docstrings.
+
 ##  [0.4.7] - 2024-10-16
 ### Agregando
 - **game/cli.py**:
@@ -17,7 +28,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   - Refactorizando código.
 - **test_cli.py**:
   - Solucionando pruebas.
-
 
 ##  [0.4.6] - 2024-10-15
 ### Cambios

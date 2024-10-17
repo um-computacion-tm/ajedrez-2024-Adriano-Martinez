@@ -13,12 +13,12 @@ El juego se ejecuta utilizando Docker. Sigue los siguientes pasos para instalar 
 2. **Crear la imagen de Docker del juego**  
    Para construir la imagen Docker del juego, ejecuta:
 ```bash
-    $ sudo docker build -t ajedrez-2024-Adriano-Martinez . --no-cache
+    $ sudo docker build -t ajedrez-2024-adriano-martinez . --no-cache
 ```
 3. **Ejecutar los tests e iniciar el juego**  
    Una vez creada la imagen, puedes ejecutar el siguiente comando para correr los tests e iniciar el juego:
 ```bash
-    $ sudo docker run -i ajedrez-2024-Adriano-Martinez
+    $ sudo docker run -i ajedrez-2024-adriano-martinez
 ```
 
 ## Reglas del Juego
@@ -40,7 +40,7 @@ El juego sigue las reglas básicas del ajedrez con algunas modificaciones:
   - Si el movimiento es válido, se actualizará el tablero.
   - Si el movimiento no es válido, se te pedirá ingresar nuevamente una posición válida.
 - `Solicitar empate` (Pedir Tablas): Puedes ofrecer un empate al oponente escribiendo `draw` en la terminal. Si ambos jugadores aceptan, el juego termina en tablas. Si el oponente rechaza, la partida continúa.
-- `Rendirse`: Puedes rendirte escribiendo "3" en la terminal, lo que otorga la victoria a tu oponente.
+- `Rendirse`: Puedes rendirte escribiendo `3` en la terminal, lo que otorga la victoria a tu oponente.
 - `Volver al menu principal`: Puedes escribir `4` en la terminal en cualquier momento para volver al menú principal sin terminar la partida.
 - Si selecionaste una opcion que no querias puedes cancelarla escribiendo `back` en la terminal.
 `Guardado de Partidas`: El juego utiliza Redis para permitir a los jugadores guardar sus partidas y reanudarlas más tarde desde el mismo punto. Si estás en una partida, puedes escribir `4` en la terminal para regresar al inicio. Luego, selecciona la opción `"Guardar Partida"` e introduce un ID para la misma. Cuando vuelvas al juego, puedes introducir ese ID en `"Cargar Partida"` para reanudar desde el punto donde guardaste.
