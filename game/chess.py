@@ -161,7 +161,6 @@ class Chess:
                 'history': self.__history__,
                 'board': [[(piece.get_color(), piece.__class__.__name__) if piece else None for piece in row] for row in self.__board__.__positions__]
             }
-            print(f"Guardando datos de la partida: {game_data}")
             self.__redis__.set(game_id, pickle.dumps(game_data))
         except Exception as e:
             print(f"Error al guardar la partida: {e}")

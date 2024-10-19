@@ -101,21 +101,22 @@ class Cli:
                 print(f"Error al guardar la partida: {e}")
 
     def cargar_partida(self):
-        """Carga una partida guardada desde Redis utilizando un identificador."""
-        game_id = self.solicitar_id_partida("Introduce el ID de la partida que deseas cargar: ")
-        if game_id:
-            try:
+     """Carga una partida guardada desde Redis utilizando un identificador."""
+     game_id = self.solicitar_id_partida("Introduce el ID de la partida que deseas cargar: ")
+     if game_id:
+        try:
+            # No inicializar un nuevo Chess si ya existe uno
+            if self.__chess__ is None:
                 self.__chess__ = Chess()
-                self.__chess__.load_game(game_id)
-                if self.__chess__.is_playing():
-                    print(f"Partida cargada desde {game_id}.")
-                    print("Estado actual del juego:")
-                    print(self.__chess__.show_board())
-                    self.play()
-                else:
-                    print(f"No se pudo cargar la partida con ID {game_id}.")
-            except Exception as e:
-                print(f"Error al cargar la partida: {e}")
+            self.__chess__.load_game(game_id)
+            if self.__chess__.is_playing():
+                print(f"Partida cargada desde {game_id}.")
+                self.play()  
+            else:
+                print(f"No se pudo cargar la partida con ID {game_id}.")
+        except Exception as e:
+            print(f"Error al cargar la partida: {e}")
+
 
     def solicitar_id_partida(self, mensaje):
         """Solicita al usuario un identificador de partida y valida que no esté vacío."""

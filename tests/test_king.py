@@ -55,6 +55,5 @@ class TestKing(unittest.TestCase):
         with self.assertRaises(InvalidPieceMove):
             self.__white_king__.mov_correcto(4, 4, 5, 5)  # Movimiento inválido (misma pieza)
 
-
 if __name__ == "__main__":
     unittest.main()
