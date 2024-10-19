@@ -62,6 +62,5 @@ class TestQueen(unittest.TestCase):
         with self.assertRaises(InvalidPieceMove):
             self.__queen_white__.mov_correcto(3, 3, 5, 3)  # d4 a d6 está bloqueado
 
-
 if __name__ == "__main__":
     unittest.main()

@@ -123,21 +123,10 @@ class TestCli(unittest.TestCase):
         # Verifica que se imprimió el mensaje de error
         mock_print.assert_called_with("Error: No se recibió entrada. Finalizando.")
     
-    @patch('builtins.input', return_value="")  # Simulamos que el usuario no introduce nada
-    @patch('builtins.print')
-    def test_solicitar_id_partida_con_id_vacio(self, mock_print, mock_input):
-     cli = Cli()
-     result = cli.solicitar_id_partida("Introduce el ID de la partida: ")
-    # Verificamos que se haya imprimido el mensaje de advertencia
-     mock_print.assert_called_once_with("El ID de la partida no puede estar vacío.")
-    # Verificamos que el método haya retornado None
-     self.assertIsNone(result)
-    
     @patch('builtins.input', side_effect=['back', ''])
     def test_get_move_input_regresa_al_menu_desde(self, mock_input):
         cli = Cli()
         result = cli.get_move_input()
-
         # Verificamos que el resultado sea ('back', None)
         self.assertEqual(result, ('back', None))
         mock_input.assert_called_once_with('Desde (e.g. e2, escribe "back" para cancelar accion): ')
@@ -146,7 +135,6 @@ class TestCli(unittest.TestCase):
     def test_get_move_input_regresa_al_menu_hasta(self, mock_input):
         cli = Cli()
         result = cli.get_move_input()
-
         # Verificamos que el resultado sea ('back', None)
         self.assertEqual(result, ('back', None))
         # Verificamos que se llamaron las entradas correctas
@@ -192,45 +180,6 @@ class TestCli(unittest.TestCase):
         # Verifica que se llamó a mostrar_instrucciones
         mock_mostrar_instrucciones.assert_called_once()
     
-    @patch('builtins.print')
-    def test_guardar_partida_sin_partida_activa(self, mock_print):
-     cli = Cli()
-     cli.__chess__ = None  # Simula que no hay ninguna partida activa
-    # Llama al método que queremos probar
-     cli.guardar_partida()
-    # Verifica que se imprimió el mensaje correcto cuando no hay partida activa
-     mock_print.assert_called_once_with("No hay ninguna partida activa para guardar.")
-    
-    @patch.object(Chess, 'save_game', side_effect=Exception("Fallo al guardar"))
-    @patch('builtins.print')
-    def test_guardar_partida_con_error(self, mock_print, mock_save_game):
-     cli = Cli()
-     cli.__chess__ = Chess()  # Simulamos que hay una partida activa
-     cli.__chess__.save_game = mock_save_game
-     with patch.object(cli, 'solicitar_id_partida', return_value="partida123"):
-        cli.guardar_partida()
-    # Verificamos que se haya impreso el mensaje de error
-     mock_print.assert_any_call("Error al guardar la partida: Fallo al guardar")
-
-    @patch('builtins.input', side_effect=['4', 'test_id', '3'])  # Simula que el usuario guarda la partida y luego sale
-    @patch('builtins.print')
-    def test_guardar_partida(self, mock_print, mock_input):
-        cli = Cli()
-        cli.__chess__ = MagicMock()  # Simula el objeto Chess
-        cli.mostrar_menu()
-        # Verifica que la partida se haya guardado con el ID correcto
-        cli.__chess__.save_game.assert_called_with('test_id')
-        mock_print.assert_any_call("Partida guardada con ID test_id.")
-
-    @patch('builtins.input', side_effect=['5', 'partida_guardada', '3'])
-    @patch('game.chess.Chess')  # Mockea la clase Chess completa
-    @patch.object(Cli, 'play')
-    def test_cargar_partida(self, mock_play, mock_chess, mock_input):
-     cli = Cli()
-     cli.__chess__ = mock_chess.return_value  # Usa el mock de la clase Chess completa
-     cli.mostrar_menu()  # Ejecuta el menú
-     mock_play.assert_called_once()  # Verifica que se llamó a 'play' después de cargar la partida
-
     @patch('builtins.input')
     @patch('game.chess.Chess')  # Mockea la clase Chess
     def test_play(self, mock_chess, mock_input):
@@ -264,16 +213,6 @@ class TestCli(unittest.TestCase):
         # Verificamos que el juego ha terminado
         self.assertFalse(cli.__chess__.is_playing())
     
-    @patch.object(Chess, 'load_game', side_effect=Exception("Fallo al cargar"))
-    @patch('builtins.print')
-    def test_cargar_partida_con_error(self, mock_print, mock_load_game):
-     cli = Cli()
-     cli.__chess__ = Chess()  # Simulamos que hay un juego de ajedrez activo
-     with patch.object(cli, 'solicitar_id_partida', return_value="partida123"):
-        cli.cargar_partida()
-    # Verificamos que se haya impreso el mensaje de error
-     mock_print.assert_any_call("Error al cargar la partida: Fallo al cargar")
-
     @patch('os.system')
     def test_clear_terminal_exception(self, mock_system):
         cli = Cli()

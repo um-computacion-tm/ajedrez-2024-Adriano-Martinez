@@ -20,10 +20,6 @@ class Cli:
             elif opcion == '3':
                 self.salir_juego()
                 break
-            elif opcion == '4':
-                self.guardar_partida()
-            elif opcion == '5':
-                self.cargar_partida()
             else:
                 print("\nOpción no válida. Por favor, intenta de nuevo.")
      except EOFError:
@@ -38,9 +34,7 @@ class Cli:
         print("1. Iniciar Partida")
         print("2. Ver Instrucciones")
         print("3. Salir")
-        print("4. Guardar Partida")
-        print("5. Cargar Partida")
-
+        
     def iniciar_partida(self):
         """Inicia una nueva partida o continúa una partida activa."""
         if self.__chess__ is None:
@@ -86,45 +80,7 @@ class Cli:
      else:
         print("\nEl empate ha sido rechazado. La partida continúa.")  # Mensaje cuando se rechaza
      return draw
-    
-    def guardar_partida(self):
-        """Guarda la partida activa en Redis con un identificador proporcionado por el usuario."""
-        if self.__chess__ is None:
-            print("No hay ninguna partida activa para guardar.")
-            return
-        game_id = self.solicitar_id_partida("Introduce un identificador para guardar la partida: ")
-        if game_id:
-            try:
-                self.__chess__.save_game(game_id)
-                print(f"Partida guardada con ID {game_id}.")
-            except Exception as e:
-                print(f"Error al guardar la partida: {e}")
 
-    def cargar_partida(self):
-        """Carga una partida guardada desde Redis utilizando un identificador."""
-        game_id = self.solicitar_id_partida("Introduce el ID de la partida que deseas cargar: ")
-        if game_id:
-            try:
-                self.__chess__ = Chess()
-                self.__chess__.load_game(game_id)
-                if self.__chess__.is_playing():
-                    print(f"Partida cargada desde {game_id}.")
-                    print("Estado actual del juego:")
-                    print(self.__chess__.show_board())
-                    self.play()
-                else:
-                    print(f"No se pudo cargar la partida con ID {game_id}.")
-            except Exception as e:
-                print(f"Error al cargar la partida: {e}")
-
-    def solicitar_id_partida(self, mensaje):
-        """Solicita al usuario un identificador de partida y valida que no esté vacío."""
-        game_id = input(mensaje).strip()
-        if not game_id:
-            print("El ID de la partida no puede estar vacío.")
-            return None
-        return game_id
-    
     def mostrar_instrucciones(self):
         """Muestra las instrucciones básicas del juego de ajedrez."""
         self.clear_terminal()

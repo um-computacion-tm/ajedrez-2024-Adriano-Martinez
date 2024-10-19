@@ -32,8 +32,6 @@ El juego sigue las reglas básicas del ajedrez con algunas modificaciones:
 - `Iniciar Partida`: Comienza una nueva partida de ajedrez.
 - `Ver Instrucciones`: Muestra las reglas básicas del juego.
 - `Salir del Juego`: Cierra el juego.
-- `Guardar Partida`: Guarda el estado actual de la partida usando un identificador.
-- `Cargar Partida`: Carga una partida guardada previamente.
 ## Fase de Juego
 - Una vez que la partida comienza, los jugadores alternan turnos y tienen las siguientes opciones disponibles:
 - `Mover una pieza`: Mueve una pieza en el tablero. Debes ingresar la posición inicial y final de la pieza usando notación algebraica (Ej: a2 a a4).
@@ -43,10 +41,8 @@ El juego sigue las reglas básicas del ajedrez con algunas modificaciones:
 - `Rendirse`: Puedes rendirte escribiendo `3` en la terminal, lo que otorga la victoria a tu oponente.
 - `Volver al menu principal`: Puedes escribir `4` en la terminal en cualquier momento para volver al menú principal sin terminar la partida.
 - Si selecionaste una opcion que no querias puedes cancelarla escribiendo `back` en la terminal.
-`Guardado de Partidas`: El juego utiliza Redis para permitir a los jugadores guardar sus partidas y reanudarlas más tarde desde el mismo punto. Si estás en una partida, puedes escribir `4` en la terminal para regresar al inicio. Luego, selecciona la opción `"Guardar Partida"` e introduce un ID para la misma. Cuando vuelvas al juego, puedes introducir ese ID en `"Cargar Partida"` para reanudar desde el punto donde guardaste.
-
 ## Cómo Ganar
-Para ganar, tu oponente debe quedar solo con el Rey, mientras que tú con el Rey y al menos una pieza adicional. Es decir, que el primero que se quede sin piezas (exceptuando al Rey), pierde.
+Para ganar, debes capturar todas las piezas del oponente. Es decir, que el primero que se quede sin piezas, pierde.
 
 ## Integraciones 
 

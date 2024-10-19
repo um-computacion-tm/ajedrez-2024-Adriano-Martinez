@@ -7,8 +7,6 @@ class TestChess(unittest.TestCase):
 
     def setUp(self):
         self.__chess__ = Chess()
-        # Limpia cualquier estado anterior en Redis antes de iniciar el test
-        self.__chess__.__redis__.delete("test_game")
 
     def test_initial_turn_is_white(self):
         # Comprueba que el turno inicial sea de las blancas.
@@ -47,26 +45,6 @@ class TestChess(unittest.TestCase):
             self.assertTrue(self.__chess__.end_game())  # Las negras ganan
             self.assertFalse(self.__chess__.is_playing())  # El juego debe haber terminado
 
-    def test_save_and_load_game(self):
-        self.__chess__.move("e2", "e4")  # Se hace un movimiento
-        self.__chess__.save_game("test_game")  # Guarda el estado del juego en Redis
-
-        # Crear un nuevo objeto Chess para cargar el juego
-        loaded_chess = Chess()
-        loaded_chess.load_game("test_game")  # Cargar el juego guardado
-
-        # Verifica el turno y el historial
-        self.assertEqual(loaded_chess.get_turn(), "BLACK")
-        self.assertEqual(loaded_chess.__history__, [('e2', 'e4')])
-
-        # Verifica el estado del tablero
-        self.assertIsNotNone(loaded_chess.__board__.__positions__[4][4])  # Debe haber un peón blanco en e4
-        self.assertIsNone(loaded_chess.__board__.__positions__[2][4])  # Debe estar vacío en e3
-
-    def tearDown(self):
-        # Limpia el juego guardado en Redis
-        self.__chess__.__redis__.delete("test_game")
-
     def test_move_piece_not_found(self):
         with self.assertRaises(PieceNotFound):
             self.__chess__.move("a3", "a4")  # No hay una pieza en a3
@@ -88,14 +66,12 @@ class TestChess(unittest.TestCase):
     def test_show_board(self):
         # Muestra el tablero inicial
         initial_board = self.__chess__.show_board()
-
         # Verifica que algunas piezas clave estén en las posiciones correctas
         self.assertIn("♖", initial_board)  # Torre blanca
         self.assertIn("♔", initial_board)  # Rey blanco
         self.assertIn("♙", initial_board)  # Peón blanco
         self.assertIn("♚", initial_board)  # Rey negro
         self.assertIn("♜", initial_board)  # Torre negra
-
         # Realiza un movimiento y vuelve a verificar el tablero
         self.__chess__.move("e2", "e4")  # Mueve un peón blanco
         updated_board = self.__chess__.show_board()
@@ -156,22 +132,5 @@ class TestChess(unittest.TestCase):
         result = self.__chess__.move("e2", "e4")  # Intenta hacer un movimiento
         self.assertIsNone(result)  # Verifica que el resultado sea None o el valor que has decidido retornar
 
-    def test_create_piece_with_unknown_type(self):
-    # Intenta crear una pieza con un tipo desconocido
-     with self.assertRaises(ValueError) as context:
-        self.__chess__.create_piece("WHITE", "UNKNOWN_TYPE")  # Reemplaza con el método correcto para acceder a create_piece
-
-    # Verifica que el mensaje de error sea el esperado
-     self.assertEqual(str(context.exception), "Tipo de pieza desconocido: UNKNOWN_TYPE")
-    
-    def test_save_game_raises_exception(self):
-    # Simula un error al intentar guardar en Redis
-     with mock.patch.object(self.__chess__.__redis__, 'set', side_effect=Exception("Simulated error")):
-        with self.assertRaises(Exception) as context:
-            self.__chess__.save_game("test_game")  # Intenta guardar la partida
-
-        # Verifica que el mensaje de error sea el esperado
-        self.assertIn("Simulated error", str(context.exception))
-    
 if __name__ == "__main__":
     unittest.main()

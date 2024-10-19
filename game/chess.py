@@ -1,6 +1,3 @@
-import os
-import redis
-import pickle
 from game.board import Board
 from game.exceptions import PieceNotFound, InvalidMove, InvalidTurn, ErrorChess, InvalidPieceMove, InvalidFormat
 
@@ -8,14 +5,11 @@ class Chess:
     def __init__(self):
         """
         Inicializa el tablero, el turno de juego, el historial de movimientos y el estado del juego.
-        También configura la conexión a Redis para almacenar los datos del juego.
         """
         self.__board__ = Board()
         self.__turn__ = "WHITE"
         self.__history__ = []  # lista de movimientos 
         self.__game_over__ = False
-        redis_host = os.getenv('REDIS_HOST', 'localhost')  # Obtiene el host de Redis desde la variable de entorno
-        self.__redis__ = redis.StrictRedis(host=redis_host, port=6379, db=0)
         
     def surrender(self):
         """
@@ -141,49 +135,4 @@ class Chess:
             return True
         return False
     
-    def create_piece(self, color, piece_type):
-        """
-        Crea una nueva pieza del tipo especificado y del color dado.
-        Lanza un error si el tipo de pieza no es válido.
-        """
-        piece_class = Board.get_piece_class(piece_type)
-        if piece_class:
-            return piece_class(color, self.__board__)
-        raise ValueError(f"Tipo de pieza desconocido: {piece_type}")
-
-    def save_game(self, game_id):
-        """
-        Guarda el estado actual del juego en Redis utilizando el ID de juego dado.
-        """
-        try:
-            game_data = {
-                'turn': self.__turn__,
-                'history': self.__history__,
-                'board': [[(piece.get_color(), piece.__class__.__name__) if piece else None for piece in row] for row in self.__board__.__positions__]
-            }
-            print(f"Guardando datos de la partida: {game_data}")
-            self.__redis__.set(game_id, pickle.dumps(game_data))
-        except Exception as e:
-            print(f"Error al guardar la partida: {e}")
-            raise  
-
-    def load_game(self, game_id):
-        """
-        Carga un juego guardado desde Redis utilizando el ID de juego dado.
-        """
-        game_data = self.__redis__.get(game_id)
-        if game_data:
-            game_data = pickle.loads(game_data)
-            self.__turn__ = game_data['turn']
-            self.__history__ = game_data['history']
-            
-            # Reconstruye el tablero a partir de la información guardada
-            for row in range(8):
-                for col in range(8):
-                    piece_data = game_data['board'][row][col]
-                    if piece_data:
-                        color, piece_type = piece_data
-                        piece_type = piece_type.lower()  # Convertir a minúsculas
-                        self.__board__.__positions__[row][col] = self.create_piece(color, piece_type)
-                    else:
-                        self.__board__.__positions__[row][col] = None
+    

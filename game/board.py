@@ -198,23 +198,4 @@ class Board:
                 if piece and piece.get_color() == color:
                     self.remove_piece(row, col)
 
-    @staticmethod
-    def get_piece_class(piece_type):
-        """
-        Obtiene la clase correspondiente a un tipo de pieza.
-
-        Args:
-            piece_type (str): Nombre de la pieza ("rook", "knight", "bishop", etc.).
-        
-        Returns:
-            class: La clase de la pieza, o None si no se reconoce el tipo.
-        """
-        piece_classes = {
-            'rook': Rook,
-            'knight': Knight,
-            'bishop': Bishop,
-            'queen': Queen,
-            'king': King,
-            'pawn': Pawn,
-        }
-        return piece_classes.get(piece_type.lower(), None)
+    
