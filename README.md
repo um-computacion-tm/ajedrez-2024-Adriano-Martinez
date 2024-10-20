@@ -25,6 +25,14 @@ El juego se ejecuta utilizando Docker. Sigue los siguientes pasos para instalar 
 El juego sigue las reglas básicas del ajedrez con algunas modificaciones:
 - `Reglas originales del ajedrez`: Consultarlas [aquí](https://es.wikipedia.org/wiki/Leyes_del_ajedrez)
 - `Reglas de este juego`: En este ajedrez se respetan los movimientos de las piezas como en el ajedrez tradicional. Sin embargo, no se implementan reglas como jaque, jaque mate, ni movimientos especiales.
+## Configuración del Tablero
+- Las piezas blancas se colocan en las filas 1 y 2, mientras que las piezas negras se colocan en las filas 8 y 7:
+  - **Piezas Blancas**:
+    - Fila 2: Peones
+    - Fila 1: Torres, Caballos, Alfiles, Rey, Reina
+  - **Piezas Negras**:
+    - Fila 8: Torres, Caballos, Alfiles, Rey, Reina
+    - Fila 7: Peones
 ## Cómo Jugar
 - El juego sigue las reglas del ajedrez tradicional y se desarrolla por turnos alternos entre los jugadores.A continuacion, se detalla la interacción en las dos fases principales: el **menú principal** y el menu de la **fase de juego**:
 ## Menú Principal
@@ -42,8 +50,7 @@ El juego sigue las reglas básicas del ajedrez con algunas modificaciones:
 - `Volver al menu principal`: Puedes escribir `4` en la terminal en cualquier momento para volver al menú principal sin terminar la partida.
 - Si selecionaste una opcion que no querias puedes cancelarla escribiendo `back` en la terminal.
 ## Cómo Ganar
-Para ganar, debes capturar todas las piezas del oponente. Es decir, que el primero que se quede sin piezas, pierde.
-
+Para ganar, debes capturar todas las piezas del oponente o capturar el rey. Tambien tienes la opción de rendirte o ofrecer el empate.
 ## Integraciones 
 
 # CircleCI
