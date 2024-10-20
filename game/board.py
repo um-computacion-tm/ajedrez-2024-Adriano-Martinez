@@ -198,4 +198,12 @@ class Board:
                 if piece and piece.get_color() == color:
                     self.remove_piece(row, col)
 
-    
+    def is_king_alive(self, color):
+     """
+     Verifica si el rey de un color específico está vivo en el tablero.
+     """
+     for row in self.__positions__:
+        for piece in row:
+            if piece and isinstance(piece, King) and piece.get_color().lower() == color.lower():
+                return True
+     return False

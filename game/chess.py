@@ -79,12 +79,6 @@ class Chess:
         except (PieceNotFound, InvalidMove, InvalidTurn, ValueError, InvalidPieceMove) as e:
             raise
 
-    def get_turn(self):
-        """
-        Obtiene el turno actual del juego.
-        """
-        return self.__turn__
-    
     def change_turn(self):
         """
         Cambia el turno del jugador actual (de blancas a negras o viceversa).
@@ -123,8 +117,17 @@ class Chess:
         """
         Verifica si el juego ha terminado al no quedar piezas de un color.
         """
-        white_count, black_count = self.__board__.count_pieces()
+        if not self.__board__.is_king_alive("WHITE"):
+            print("¡Las negras han ganado! El rey blanco ha sido capturado.")
+            self.__game_over__ = True
+            return True
+        
+        if not self.__board__.is_king_alive("BLACK"):
+            print("¡Las blancas han ganado! El rey negro ha sido capturado.")
+            self.__game_over__ = True
+            return True
 
+        white_count, black_count = self.__board__.count_pieces()
         if white_count == 0:
             print("¡Las negras han ganado! Las blancas no tienen piezas.")
             self.__game_over__ = True
@@ -133,6 +136,5 @@ class Chess:
             print("¡Las blancas han ganado! Las negras no tienen piezas.")
             self.__game_over__ = True
             return True
+        
         return False
-    
-    

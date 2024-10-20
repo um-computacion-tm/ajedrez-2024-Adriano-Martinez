@@ -5,6 +5,29 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+##  [0.4.9] - 2024-10-19
+### Agregando
+- Documentación en docstrings para tests.
+- **board.py**:
+  - Se ha añadido método `is_king_alive` para verificar si un rey está vivo.
+### Cambios
+- **README.md**:
+  - Se ha corregido informacion en readme. 
+- **game/chess.py**:
+  - Se ha modificado el metodo `end_game` para finalizar la partida si se captura al rey.
+### Eliminando
+- **game/cli.py**:
+  - Se ha eliminado el archivo `guardar_partida`, `cargar_partida` y `solicitar_id_partida`.
+- **game/chess.py**:
+  - Se ha eliminado el método `save_game`,`load_game` y `create_piece`.
+  - Se ha eliminado atributo de redis.
+- **game/board.py**:
+  - Se ha eliminado el método `get_piece_class`.
+- **test_cli.py**:
+  - Se han eliminado pruebas en relacion a redis. 
+- **test_chess.py**:
+  - Se han eliminado pruebas en relacion a redis.
+
 ##  [0.4.8] - 2024-10-17
 ### Agregando
 - **test_cli.py**:
@@ -232,7 +255,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Agregando
 - Se ha creado un archivo **game** para reorganizar los archivos de **chess.py**, **cli.py**, **board.py**, **exceptions.py** y el archivo **pieces** con todas las piezas del ajedres.
 - **game/board.py**:
-  - Funcion `get_all_pieces`
+  - Funcion `get_all_pieces` para obtener todas las piezas del tablero.
 - **game/chess.py**:
   - Funcion `request_draw` metodo para pedir el empate en el juego.
 
@@ -318,8 +341,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   - Se ha añadido funcion `OutOfBoard` excepcion por si la posicion esta fuera del rango del tablero.
 - Implementando metodo para testear la pieza pawn
 - **pieces/piece.py**:
-  - Se ha añadido funcion `valid_position`, `possible_diagonal_positions`, `possible_orthogonal_positions`, `possible_positions_vd`,`possible_positions_va`
-
+  - Se ha añadido funcion `valid_position` que verifica si el destino está entre las posiciones válidas.
+  - Se ha añadido funcion `possible_diagonal_positions` logica para posibles movimientos diagonales.
+  - Se ha añadido funcion `possible_orthogonal_positions` logica para posibles movimientos ortogonales.
+  - Se ha añadido funcion `possible_positions_vd` 
+  - Se ha añadido funcion `possible_positions_va`
 ### Cambios
 - **pieces/pawn.py**:
   - Mejorando logica en la funcion `is_forward_move` e `is_diagonal_capture`
@@ -349,10 +375,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Agregando
 - **exceptions.py**:
   - Refactorizando codigo.
-  - Se ha añadido funcion `InvalidPieceMove`
+  - Se ha añadido funcion `InvalidPieceMove` mensaje de error para los movimientos invalidos de la pieza.
 - **pawn.py**:
-  - Funcion `is_forward_move`
-  - Funcion `is_diagonal_capture`
+  - Funcion `is_forward_move` logica para que el peon pueda avanzar hacia adelante.
+  - Funcion `is_diagonal_capture` logica para que el peon pueda capturar en diagonal.
 
 ### Cambios
 - **exceptions.py**:
@@ -383,7 +409,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [0.1.7] - 2024-08-31
 ### Agregando
 - **exceptions.py**:
-  - Añadiendo funcion `InvalidMoveQueenMove`.
+  - Añadiendo funcion `InvalidMoveQueenMove` para mostrar mensaje de erro para los movimientos invalidos de la reina.
 - **pieces/queen.py**:
   - Implementando funcion `_is_path_clear`, `_check_diagonal_path`, `_check_horizontal_path`, `_check_vertical_path`, `_check_path` para los movimientos validos e invalidos para la reina. 
 - **test_queen.py**: Creado archivo para testear la pieza de la reina
@@ -447,10 +473,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - **exeptions.py**: para definir excepciones
   - Implementando funcion `InvalidMove`
 - **chess.py**:
-  - Funcion `validate_coords` 
-  - Funcion `end_game` 
+  - Funcion `validate_coords` sirve para validar si el movimiento es correcto.
+  - Funcion `end_game` sirve para verificar si el juego ha terminado.
 - **pieces/king,pawn,queen,rook,bishop,knight**:
-  - Funcion `mov_correcto` 
+  - Funcion `mov_correcto` valida el movimiento correcto de la pieza.
    
 ### Cambios
 - **board.py**:
@@ -469,24 +495,24 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   - Implementación del método `__str__` para una mejor visualización del tablero.
   - Metodo `is_valid_move` valida si el movimiento esta dentro del rango del tablero. 
 - **chess.py**:
-  - Funcion `turn` 
-  - Funcion `show_board`
-  - Funcion `is_playin` 
+  - Funcion `turn` indica de quien es el turno.
+  - Funcion `show_board` para mostrar el tablero actual.
+  - Funcion `is_playin` indica el estado actual del juego.
 - **test_board**:
   - Nuevo metodo de testeo unitario para verificar la implementación de __str__ en `board.py`.
 - **pieces/pawn,king,queen,knight,rook,bishop**:
   - funcion `_str_` para representar el simbolo de cada pieza 
 - **pieces/piece**:
-  - Funcion `get_color`
+  - Funcion `get_color` para obtener el color de la pieza.
 
 ### Cambios
 - **board.py**:
-  - Metodo `move-piece` simplificando logica
+  - Metodo `move_piece` simplificando logica.
 
 ## [0.0.9] - 2024-08-19
 ### Agregando
 - **board.py**:
-  - Metodo `move_piece` para que se pueda mover la pieza 
+  - Metodo `move_piece` para que se pueda validar el movimiento de la pieza. 
 
 ### Cambios
 - **chess.py**:
@@ -508,7 +534,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Agregando
 - **cli.py**: una interfaz de usuario en la línea de comandos para interactuar con el juego de ajedrez.
   - Metodo `play` que gestiona la interacción del usuario para mover piezas en el tablero.
-  - Función `main` que inicializa el juego
+  - Función `main` que inicializa el juego.
 
 ## [0.0.5] - 2024-08-14
 ### Agregando

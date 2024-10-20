@@ -8,39 +8,39 @@ class TestCli(unittest.TestCase):
     
     @patch('builtins.input', side_effect=['s' ,'1', 'e2', 'e4', '4', 's'])  # Simula el input para mover e2 a e4 y luego volver al menú
     @patch('game.chess.Chess.move')  # Mockea el método 'move' de Chess
-    def test_iniciar_partida_continuar(self, mock_move, mock_input):
+    def test_start_game_continue(self, mock_move, mock_input):
         cli = Cli()
         cli.__chess__ = Chess()  # Inicializa el objeto Chess
-        cli.iniciar_partida()
+        cli.start_game()
         mock_move.assert_called_once_with('e2', 'e4')
 
     @patch('builtins.input', side_effect=['1','1', 'e2', 'e4', '4', 's', '3'])  # Simula el input para mover e2 a e4 y luego volver al menú
     @patch('game.chess.Chess.move')  # Mockea el método 'move' de Chess
-    def test_iniciar_partida_nueva(self, mock_move, mock_input):
+    def test_start_game_new(self, mock_move, mock_input):
         cli = Cli()
         cli.__chess__ = None  # Inicializa el objeto Chess
-        cli.mostrar_menu()
+        cli.show_menu()
         mock_move.assert_called_once_with('e2', 'e4')
     
     @patch('builtins.input', side_effect=['n' ,'1', 'e2', 'e4', '4', 's'])  # Simula el input para mover e2 a e4 y luego volver al menú
     @patch('game.chess.Chess.move')  # Mockea el método 'move' de Chess
-    def test_iniciar_partida_reiniciar(self, mock_move, mock_input):
+    def test_start_game_reboot(self, mock_move, mock_input):
         cli = Cli()
         cli.__chess__ = Chess()  # Inicializa el objeto Chess
-        cli.iniciar_partida()
+        cli.start_game()
         mock_move.assert_called_once_with('e2', 'e4')
 
     @patch('builtins.input')
-    def test_mostrar_menu(self, mock_input):
+    def test_show_menu(self, mock_input):
      mock_input.side_effect = ['menu']  # Simula la entrada para volver al menú
     cli = Cli()
-    cli.mostrar_menu()  # Llama a mostrar_menu y asegura que no falla
+    cli.show_menu()  # Llama a mostrar_menu y asegura que no falla
 
     @patch('builtins.print')
     @patch('builtins.input', side_effect=[''])
-    def test_ver_instrucciones(self, mock_input, mock_print):
+    def test_see_instructions(self, mock_input, mock_print):
      cli = Cli()
-     cli.mostrar_instrucciones()  # Llama a la función a probar
+     cli.show_instructions()  # Llama a la función a probar
     
     # Verifica que los mensajes correctos fueron impresos
      mock_print.assert_any_call("\nInstrucciones del Juego:")
@@ -54,10 +54,10 @@ class TestCli(unittest.TestCase):
     @patch('builtins.input', side_effect=['s', 's'])  # Ambos jugadores aceptan el empate
     @patch('builtins.print')
     @patch.object(Cli, 'request_draw', return_value=True)  # Simula que el empate es aceptado
-    def test_aplicar_accion_solicitud_empate(self, mock_request_draw, mock_print, mock_input):
+    def test_apply_action_request_tie(self, mock_request_draw, mock_print, mock_input):
      cli = Cli()
      cli.__chess__ = Chess()  # Usamos una instancia real de Chess
-     error_message, should_return, should_break = cli.aplicar_accion('2')
+     error_message, should_return, should_break = cli.apply_action('2')
     # Verificamos que la solicitud de empate fue llamada
      mock_request_draw.assert_called_once()
     # Verificamos que `should_break` es True ya que el juego termina en empate
@@ -67,14 +67,14 @@ class TestCli(unittest.TestCase):
     
     @patch('builtins.input', side_effect=['s'])  # El jugador confirma la rendición
     @patch('builtins.print')
-    @patch.object(Cli, 'confirmar_accion', return_value=True)  # Simula que el jugador confirma la rendición
-    def test_aplicar_accion_rendirse(self, mock_confirmar_accion, mock_print, mock_input):
+    @patch.object(Cli, 'confirm_action', return_value=True)  # Simula que el jugador confirma la rendición
+    def test_apply_action_surrender(self, mock_confirm_action, mock_print, mock_input):
      cli = Cli()
      cli.__chess__ = MagicMock()  # Mockea el objeto Chess
 
-     error_message, should_return, should_break = cli.aplicar_accion('3')
+     error_message, should_return, should_break = cli.apply_action('3')
     # Verificamos que se pidió confirmación
-     mock_confirmar_accion.assert_called_once_with("¿Estás seguro de que quieres rendirte? (s/n): ")
+     mock_confirm_action.assert_called_once_with("¿Estás seguro de que quieres rendirte? (s/n): ")
     # Verificamos que el método surrender fue llamado
      cli.__chess__.surrender.assert_called_once()
     # Verificamos que se imprimió el mensaje de rendición
@@ -117,9 +117,9 @@ class TestCli(unittest.TestCase):
     # Método para probar EOFError
     @patch('builtins.input', side_effect=EOFError)  # Simula un EOFError en la entrada
     @patch('builtins.print')  # Mockea print para capturar salidas
-    def test_mostrar_menu_eof_error(self, mock_print, mock_input):
+    def test_show_menu_eof_error(self, mock_print, mock_input):
         cli = Cli()
-        cli.mostrar_menu()  # Llama al método
+        cli.show_menu()  # Llama al método
         # Verifica que se imprimió el mensaje de error
         mock_print.assert_called_with("Error: No se recibió entrada. Finalizando.")
     
@@ -155,9 +155,9 @@ class TestCli(unittest.TestCase):
     # Método para probar KeyboardInterrupt
     @patch('builtins.input', side_effect=KeyboardInterrupt)  # Simula un KeyboardInterrupt en la entrada
     @patch('builtins.print')  # Mockea print para capturar salidas
-    def test_mostrar_menu_keyboard_interrupt(self, mock_print, mock_input):
+    def test_show_menu_keyboard_interrupt(self, mock_print, mock_input):
         cli = Cli()
-        cli.mostrar_menu()  # Llama al método
+        cli.show_menu()  # Llama al método
         # Verifica que se imprimió el mensaje de interrupción
         mock_print.assert_called_with("\nInterrupción detectada, saliendo del menú.")
     
@@ -173,12 +173,12 @@ class TestCli(unittest.TestCase):
         self.assertEqual(result, "Ocurrió un error inesperado: Error inesperado")
 
     @patch('builtins.input', side_effect=['2', '3'])  # Simula seleccionar la opción 2 para mostrar instrucciones y luego salir
-    @patch.object(Cli, 'mostrar_instrucciones')
-    def test_mostrar_menu_opcion_instrucciones(self, mock_mostrar_instrucciones, mock_input):
+    @patch.object(Cli, 'show_instructions')  # Mockea el método show_instructions
+    def test_show_menu_option_instructions(self, mock_show_instructions, mock_input):
         cli = Cli()
-        cli.mostrar_menu()  # Llama al método que estamos probando
+        cli.show_menu()  # Llama al método que estamos probando
         # Verifica que se llamó a mostrar_instrucciones
-        mock_mostrar_instrucciones.assert_called_once()
+        mock_show_instructions.assert_called_once()
     
     @patch('builtins.input')
     @patch('game.chess.Chess')  # Mockea la clase Chess

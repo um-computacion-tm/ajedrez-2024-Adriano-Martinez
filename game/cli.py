@@ -6,19 +6,19 @@ class Cli:
     def __init__(self):
         self.__chess__ = None # Inicializa el objeto Cli sin una partida de ajedrez activa
 
-    def mostrar_menu(self):
+    def show_menu(self):
      """Muestra el menú principal del juego de ajedrez y procesa la selección del jugador."""
      try:
         while True:
             self.clear_terminal()
-            self.mostrar_opciones_menu()
+            self.show_menu_options()
             opcion = input("\nSelecciona una opción (1-5): ")
             if opcion == '1':
-                self.iniciar_partida()
+                self.start_game()
             elif opcion == '2':
-                self.mostrar_instrucciones()
+                self.show_instructions()
             elif opcion == '3':
-                self.salir_juego()
+                self.exit_game()
                 break
             else:
                 print("\nOpción no válida. Por favor, intenta de nuevo.")
@@ -27,7 +27,7 @@ class Cli:
      except KeyboardInterrupt:
         print("\nInterrupción detectada, saliendo del menú.")
 
-    def mostrar_opciones_menu(self):
+    def show_menu_options(self):
         """Muestra las opciones del menú principal del juego de ajedrez."""
         print("\nBienvenido al Juego de Ajedrez")
         print("------------------------------")
@@ -35,7 +35,7 @@ class Cli:
         print("2. Ver Instrucciones")
         print("3. Salir")
         
-    def iniciar_partida(self):
+    def start_game(self):
         """Inicia una nueva partida o continúa una partida activa."""
         if self.__chess__ is None:
             self.__chess__ = Chess()
@@ -43,7 +43,7 @@ class Cli:
             print("Las blancas comienzan el juego.\n")
             self.play()
         else:
-            if self.confirmar_accion("Ya hay una partida activa. ¿Quieres continuar con la partida actual? (s/n): "):
+            if self.confirm_action("Ya hay una partida activa. ¿Quieres continuar con la partida actual? (s/n): "):
                 self.play()
             else:
                 self.__chess__ = Chess()  # Reinicia la partida
@@ -51,7 +51,7 @@ class Cli:
                 print("Las blancas comienzan el juego.\n")
                 self.play()
 
-    def confirmar_accion(self, mensaje):
+    def confirm_action(self, mensaje):
         """Solicita confirmación del usuario para realizar una acción.
         Devuelve True si la respuesta es 's', False si es 'n'.
         """
@@ -81,7 +81,7 @@ class Cli:
         print("\nEl empate ha sido rechazado. La partida continúa.")  # Mensaje cuando se rechaza
      return draw
 
-    def mostrar_instrucciones(self):
+    def show_instructions(self):
         """Muestra las instrucciones básicas del juego de ajedrez."""
         self.clear_terminal()
         print("\nInstrucciones del Juego:")
@@ -91,7 +91,7 @@ class Cli:
         print("4. Para mover una pieza, selecciona primero la posición de origen y luego la de destino esto en forma algebraica(a2 a a4).")
         input("\nPresiona Enter para volver al menú...")
     
-    def aplicar_accion(self, opcion):
+    def apply_action(self, opcion):
         """Ejecuta la acción seleccionada en el menú de partida activa. 
         Devuelve un mensaje de error, si hay, y si debe salir o volver al menú.
         """
@@ -104,12 +104,12 @@ class Cli:
             if self.request_draw():  # Solicita un empate
              should_break = True
         elif opcion == '3':
-            if self.confirmar_accion("¿Estás seguro de que quieres rendirte? (s/n): "):
+            if self.confirm_action("¿Estás seguro de que quieres rendirte? (s/n): "):
                 self.__chess__.surrender()  # Rinde al jugador
                 print("\n¡Te has rendido! Fin de la partida.")
                 should_break = True
         elif opcion == '4':
-            if self.confirmar_accion("¿Estás seguro de que quieres volver al menú principal? (s/n): "):
+            if self.confirm_action("¿Estás seguro de que quieres volver al menú principal? (s/n): "):
                 should_return = True
         return error_message, should_return, should_break
 
@@ -123,8 +123,8 @@ class Cli:
             print(f'\nError: {error_message}')  # Muestra mensaje de error si existe
             error_message = None  # Reinicia mensaje de error
 
-        opcion = self.menu_partida_activa()  # Obtiene la opción del menú
-        error_message, should_return, should_break = self.aplicar_accion(opcion)
+        opcion = self.active_game_menu()  # Obtiene la opción del menú
+        error_message, should_return, should_break = self.apply_action(opcion)
         if should_break:
             break
         if should_return:
@@ -143,7 +143,7 @@ class Cli:
 
      return self.attempt_move(from_input, to_input)  # Intenta mover la pieza
 
-    def menu_partida_activa(self):
+    def active_game_menu(self):
      """Muestra las opciones disponibles durante una partida activa."""
      print("\nOpciones de la partida:")
      print("1. Mover una pieza")
@@ -194,7 +194,7 @@ class Cli:
             return f"Ocurrió un error inesperado: {e}"
         return None
     
-    def salir_juego(self):
+    def exit_game(self):
      """Muestra un mensaje de despedida y termina la ejecución del juego."""
      print("Saliendo del juego...")
 
