@@ -114,27 +114,29 @@ class Chess:
         print(f"Piezas blancas: {white_count}, Piezas negras: {black_count}")
 
     def end_game(self):
-        """
-        Verifica si el juego ha terminado al no quedar piezas de un color.
-        """
-        if not self.__board__.is_king_alive("WHITE"):
-            print("¡Las negras han ganado! El rey blanco ha sido capturado.")
-            self.__game_over__ = True
-            return True
-        
-        if not self.__board__.is_king_alive("BLACK"):
-            print("¡Las blancas han ganado! El rey negro ha sido capturado.")
-            self.__game_over__ = True
-            return True
+     """
+     Verifica si el juego ha terminado al no quedar piezas de un color.
+     """
+     game_over = False  # Variable para rastrear si el juego ha terminado
 
-        white_count, black_count = self.__board__.count_pieces()
-        if white_count == 0:
-            print("¡Las negras han ganado! Las blancas no tienen piezas.")
-            self.__game_over__ = True
-            return True
-        elif black_count == 0:
-            print("¡Las blancas han ganado! Las negras no tienen piezas.")
-            self.__game_over__ = True
-            return True
-        
-        return False
+     if not self.__board__.is_king_alive("WHITE"):
+        print("¡Las negras han ganado! El rey blanco ha sido capturado.")
+        self.__game_over__ = True
+        game_over = True
+    
+     if not self.__board__.is_king_alive("BLACK"):
+        print("¡Las blancas han ganado! El rey negro ha sido capturado.")
+        self.__game_over__ = True
+        game_over = True
+
+     white_count, black_count = self.__board__.count_pieces()
+     if white_count == 0:
+        print("¡Las negras han ganado! Las blancas no tienen piezas.")
+        self.__game_over__ = True
+        game_over = True
+     elif black_count == 0:
+        print("¡Las blancas han ganado! Las negras no tienen piezas.")
+        self.__game_over__ = True
+        game_over = True
+    
+     return game_over  # Retorna el estado del juego al final
